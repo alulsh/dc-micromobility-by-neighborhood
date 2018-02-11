@@ -4,7 +4,7 @@ const turf = require('@turf/turf');
 const dcNeighborhoodData = 'https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson';
 
 /*
-The LimeBike bearer token was tweeted publicly in 
+The LimeBike bearer token was tweeted publicly in
 https://twitter.com/DDOTDC/status/960885111066636289
 I assume it's ok to have this committed to an open source project
 */
