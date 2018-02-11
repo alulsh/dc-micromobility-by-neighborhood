@@ -63,7 +63,28 @@ function jumpData(){
   });
 }
 
-function loadDcNeighborhoods(bikeshareData, jumpData) {
+function spinData(){
+  let bikeArray = [];
+
+  return new Promise((resolve) => {
+    let request = new XMLHttpRequest();
+    request.open('GET', 'https://web.spin.pm/api/gbfs/v1/free_bike_status');
+    request.responseType = 'json';
+    request.send();
+    request.onload = () => {
+      const bikes = request.response.data.bikes;
+      bikes.forEach(bike => {
+        let lonLat = [];
+        lonLat.push(bike.lon);
+        lonLat.push(bike.lat);
+        bikeArray.push(lonLat);
+      });
+      resolve(bikeArray);
+    };
+  });
+}
+
+function loadDcNeighborhoods(bikeshareData, jumpData, spinData) {
 
   let request = new XMLHttpRequest();
   request.open('GET', 'https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson');
@@ -73,11 +94,13 @@ function loadDcNeighborhoods(bikeshareData, jumpData) {
     const cabiStations = new FeatureCollection(bikeshareData);
     const neighborhoods = request.response.features;
     const jumpBikes = turf.points(jumpData);
+    const spinBikes = turf.points(spinData);
 
     neighborhoods.forEach(neighborhood => {
       const polygon = turf.polygon(neighborhood.geometry.coordinates);
       const cabiWithin = turf.pointsWithinPolygon(cabiStations, polygon);
       const jumpWithin = turf.pointsWithinPolygon(jumpBikes, polygon);
+      const spinWithin = turf.pointsWithinPolygon(spinBikes, polygon);
 
       let totalBikes = 0;
       cabiWithin.features.forEach(station =>{
@@ -86,6 +109,7 @@ function loadDcNeighborhoods(bikeshareData, jumpData) {
 
       neighborhood.properties.cabiBikes = totalBikes;
       neighborhood.properties.jumpBikes = jumpWithin.features.length;
+      neighborhood.properties.spinBikes = spinWithin.features.length;
 
       map.addLayer({
         id: `cabibikes-${neighborhood.properties.OBJECTID}`,
@@ -147,6 +171,36 @@ function loadDcNeighborhoods(bikeshareData, jumpData) {
         }
       });
 
+      map.addLayer({
+        id: `spinbikes-${neighborhood.properties.OBJECTID}`,
+        type: 'fill',
+        source: {
+          type: 'geojson',
+          data: neighborhood
+        },
+        layout: {
+          visibility: 'none'
+        },
+        paint: {
+          'fill-color': {
+            property: 'spinBikes',
+            stops: [
+              [0, '#F2F12D'],
+              [1, '#EED322'],
+              [5, '#E6B71E'],
+              [10, '#DA9C20'],
+              [15, '#CA8323'],
+              [20, '#B86B25'],
+              [30, '#A25626'],
+              [40, '#8B4225'],
+              [50, '#723122']
+            ]
+          },
+          'fill-opacity': 0.6,
+          'fill-outline-color': '#FFF'
+        }
+      });
+
       let popup = new mapboxgl.Popup({
         closeButton: false,
         closeOnClick: false
@@ -164,11 +218,21 @@ function loadDcNeighborhoods(bikeshareData, jumpData) {
           .addTo(map);
       });
 
+      map.on('mouseenter', `spinbikes-${neighborhood.properties.OBJECTID}`, e => {
+        popup.setLngLat(e.lngLat)
+          .setHTML(`<h4>${e.features[0].properties.NBH_NAMES}</h4><p>${e.features[0].properties.spinBikes} Spin bikes</p>`)
+          .addTo(map);
+      });
+
       map.on('mouseleave', `cabibikes-${neighborhood.properties.OBJECTID}`, () => {
         popup.remove();
       });
 
       map.on('mouseleave', `jumpbikes-${neighborhood.properties.OBJECTID}`, () => {
+        popup.remove();
+      });
+
+      map.on('mouseleave', `spinbikes-${neighborhood.properties.OBJECTID}`, () => {
         popup.remove();
       });
     });
@@ -177,7 +241,8 @@ function loadDcNeighborhoods(bikeshareData, jumpData) {
 
 const toggles = [
   ['Capital Bikeshare Bikes','cabibikes'],
-  ['JUMP Bikes','jumpbikes']
+  ['JUMP Bikes','jumpbikes'],
+  ['Spin Bikes','spinbikes']
 ];
 
 toggles.forEach(toggle => {
@@ -224,8 +289,12 @@ map.on('load', () => {
     .then(res => res)
     .catch(err => console.error(err));
 
-  Promise.all([bikeshare, jumpBike]).then(res => {
-    loadDcNeighborhoods(res[0],res[1]);
+  let spinBike = spinData()
+    .then(res => res)
+    .catch(err => console.error(err));
+
+  Promise.all([bikeshare, jumpBike, spinBike]).then(res => {
+    loadDcNeighborhoods(res[0],res[1],res[2]);
   });
 
 });
