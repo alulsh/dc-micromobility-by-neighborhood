@@ -1,0 +1,11 @@
+{
+  "name": "dc-bikeshare-map",
+  "version": "1.0.0",
+  "description": "Analyze and explore DC bikeshare bikes per neighborhood",
+  "author": "Alexandra Ulsh",
+  "license": "MIT License",
+  "dependencies": {
+    "@turf/turf": "^5.1.6",
+    "request": "^2.83.0"
+  }
+}
