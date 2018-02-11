@@ -1,10 +1,12 @@
+'use strict';
+
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWx1bHNoIiwiYSI6ImY0NDBjYTQ1NjU4OGJmMDFiMWQ1Y2RmYjRlMGI1ZjIzIn0.pngboKEPsfuC4j54XDT3VA';
 
 let map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/light-v9',
-    center: [-77.04, 38.89],
-    zoom: 10.60
+  container: 'map',
+  style: 'mapbox://styles/mapbox/light-v9',
+  center: [-77.04, 38.89],
+  zoom: 10.60
 });
 
 const cabiBikeScale = [
@@ -31,18 +33,16 @@ const jumpScale = [
   [8, '#723122']
 ]
 
-function BikeShareStation (lon, lat, capacity, stationId, bikesAvailable) {
+function BikeShareStation(lon, lat, capacity) {
   this.type = 'Feature',
   this.geometry = {},
   this.properties = {},
   this.geometry.type = 'Point',
   this.geometry.coordinates = [lon, lat],
   this.properties.capacity = capacity
-  this.properties.stationId = stationId
-  this.properties.bikesAvailable = bikesAvailable
 }
 
-function FeatureCollection (features) {
+function FeatureCollection(features) {
   this.type = 'FeatureCollection',
   this.features = features
 }
@@ -51,7 +51,7 @@ function cabiData() {
   let stationArray = [];
 
   return new Promise((resolve, reject) => {
-    var request = new XMLHttpRequest();
+    let request = new XMLHttpRequest();
     request.open('GET', 'https://gbfs.capitalbikeshare.com/gbfs/en/station_information.json');
     request.responseType = 'json';
     request.send();
@@ -70,11 +70,11 @@ function jumpData(){
   let bikeArray = [];
 
   return new Promise((resolve, reject) => {
-    var request = new XMLHttpRequest();
+    let request = new XMLHttpRequest();
     request.open('GET', 'https://dc.jumpmobility.com/opendata/free_bike_status.json');
     request.responseType = 'json';
     request.send();
-    request.onload = function() {
+    request.onload = () => {
       const bikes = request.response.data.bikes;
       bikes.forEach(bike => {
         let lonLat = [];
@@ -89,11 +89,11 @@ function jumpData(){
 
 function loadDcNeighborhoods(bikeshareData, jumpData) {
 
-  var request = new XMLHttpRequest();
+  let request = new XMLHttpRequest();
   request.open('GET', 'https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson');
   request.responseType = 'json';
   request.send();
-  request.onload = function() {
+  request.onload = () => {
     const cabiStations = new FeatureCollection(bikeshareData);
     const neighborhoods = request.response.features;
     const jumpBikes = turf.points(jumpData);
@@ -151,86 +151,88 @@ function loadDcNeighborhoods(bikeshareData, jumpData) {
         }
       });
 
-      var popup = new mapboxgl.Popup({
+      let popup = new mapboxgl.Popup({
         closeButton: false,
         closeOnClick: false
       });
 
-      map.on('mouseenter', `cabibikes-${neighborhood.properties.OBJECTID}`, function (e) {
+      map.on('mouseenter', `cabibikes-${neighborhood.properties.OBJECTID}`, e => {
         popup.setLngLat(e.lngLat)
           .setHTML(`<h4>${e.features[0].properties.NBH_NAMES}</h4><p>${e.features[0].properties.cabiBikes} Capital Bikeshare bikes</p>`)
           .addTo(map);
       });
 
-      map.on('mouseenter', `jumpbikes-${neighborhood.properties.OBJECTID}`, function (e) {
+      map.on('mouseenter', `jumpbikes-${neighborhood.properties.OBJECTID}`, e => {
         popup.setLngLat(e.lngLat)
           .setHTML(`<h4>${e.features[0].properties.NBH_NAMES}</h4><p>${e.features[0].properties.jumpBikes} JUMP bikes</p>`)
           .addTo(map);
       });
 
-      map.on('mouseleave', `cabibikes-${neighborhood.properties.OBJECTID}`, function() {
+      map.on('mouseleave', `cabibikes-${neighborhood.properties.OBJECTID}`, () => {
         popup.remove();
       });
 
-      map.on('mouseleave', `jumpbikes-${neighborhood.properties.OBJECTID}`, function() {
+      map.on('mouseleave', `jumpbikes-${neighborhood.properties.OBJECTID}`, () => {
         popup.remove();
       });
     });
   };
 }
 
-var toggles = [ ['Capital Bikeshare Bikes','cabibikes'], 
-  ['JUMP Bikes','jumpbikes']];
+const toggles = [
+  ['Capital Bikeshare Bikes','cabibikes'], 
+  ['JUMP Bikes','jumpbikes']
+];
 
 toggles.forEach(toggle => {
-  var link = document.createElement('a');
+  let link = document.createElement('a');
   link.href = '#';
   link.className = 'active';
   link.id = toggle[1];
   link.textContent = toggle[0];
 
-  link.onclick = function (e) {
-    var clickedLayer = this.id;
+  link.onclick = function(e) {
+    let clickedLayer = this.id;
     e.preventDefault();
     e.stopPropagation();
 
-    var legend = document.getElementById(`${clickedLayer}-legend`);
-    var visibility = map.getLayoutProperty(`${clickedLayer}-1`, 'visibility');
+    let legend = document.getElementById(`${clickedLayer}-legend`);
+    let visibility = map.getLayoutProperty(`${clickedLayer}-1`, 'visibility');
 
     if (visibility === 'visible') {
-      legend.style.display = "none";
-      for (var i = 1; i < 47; i++) {
+      legend.style.display = 'none';
+      for (let i = 1; i < 47; i++) {
         map.setLayoutProperty(`${clickedLayer}-${i}`, 'visibility', 'none');
         this.className = '';
       }
     } else {
-      legend.style.display = "";
-      for (var i = 1; i < 47; i++) {
+      legend.style.display = '';
+      for (let i = 1; i < 47; i++) {
         map.setLayoutProperty(`${clickedLayer}-${i}`, 'visibility', 'visible');
         this.className = '';
       }
     }
   };
 
-  var layers = document.getElementById('menu');
+  let layers = document.getElementById('menu');
   layers.appendChild(link);
 
 });
 
-map.on('load', function () {
+map.on('load', () => {
 
-  var bikeshareData;
-  var jumpBikeData;
+  let bikeshareData;
+  let jumpBikeData;
 
-  var bikeshare = cabiData()
+  let bikeshare = cabiData()
     .then(res => bikeshareData = res)
     .catch(err => console.error(err))
 
-  var jumpBike = jumpData()
+  let jumpBike = jumpData()
     .then(res => jumpBikeData = res)
     .catch(err => console.error(err))
 
-  Promise.all([bikeshare, jumpBike]).then(function(res){
+  Promise.all([bikeshare, jumpBike]).then(res => {
     loadDcNeighborhoods(res[0],res[1]);
   });
 
