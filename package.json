@@ -3,9 +3,19 @@
   "version": "1.0.0",
   "description": "Analyze and explore DC bikeshare bikes per neighborhood",
   "author": "Alexandra Ulsh",
-  "license": "MIT License",
-  "dependencies": {
-    "@turf/turf": "^5.1.6",
-    "request": "^2.83.0"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alulsh/dc-bikeshare-by-neighborhood"
+  },
+  "scripts": {
+    "test": "eslint -c .eslintrc.js *.js */*.js",
+    "start": "serve"
+  },
+  "devDependencies": {
+    "eslint": "^4.17.0",
+    "request": "^2.83.0",
+    "serve": "^6.4.9",
+    "@turf/turf": "^5.1.6"
   }
 }
