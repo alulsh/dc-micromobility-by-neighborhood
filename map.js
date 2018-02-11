@@ -9,30 +9,6 @@ let map = new mapboxgl.Map({
   zoom: 10.60
 });
 
-const cabiBikeScale = [
-  [0, '#F2F12D'],
-  [10, '#EED322'],
-  [20, '#E6B71E'],
-  [50, '#DA9C20'],
-  [100, '#CA8323'],
-  [200, '#B86B25'],
-  [300, '#A25626'],
-  [400, '#8B4225'],
-  [500, '#723122']
-]
-
-const jumpScale = [
-  [0, '#F2F12D'],
-  [1, '#EED322'],
-  [2, '#E6B71E'],
-  [3, '#DA9C20'],
-  [4, '#CA8323'],
-  [5, '#B86B25'],
-  [6, '#A25626'],
-  [7, '#8B4225'],
-  [8, '#723122']
-]
-
 function BikeShareStation(lon, lat, capacity) {
   this.type = 'Feature',
   this.geometry = {},
@@ -124,7 +100,17 @@ function loadDcNeighborhoods(bikeshareData, jumpData) {
         paint: {
           'fill-color': {
             property: 'cabiBikes',
-            stops: cabiBikeScale
+            stops: [
+              [0, '#F2F12D'],
+              [10, '#EED322'],
+              [20, '#E6B71E'],
+              [50, '#DA9C20'],
+              [100, '#CA8323'],
+              [200, '#B86B25'],
+              [300, '#A25626'],
+              [400, '#8B4225'],
+              [500, '#723122']
+            ]
           },
           'fill-opacity': 0.6,
           'fill-outline-color': '#FFF'
@@ -144,7 +130,17 @@ function loadDcNeighborhoods(bikeshareData, jumpData) {
         paint: {
           'fill-color': {
             property: 'jumpBikes',
-            stops: jumpScale
+            stops: [
+              [0, '#F2F12D'],
+              [1, '#EED322'],
+              [2, '#E6B71E'],
+              [3, '#DA9C20'],
+              [4, '#CA8323'],
+              [5, '#B86B25'],
+              [6, '#A25626'],
+              [7, '#8B4225'],
+              [8, '#723122']
+            ]
           },
           'fill-opacity': 0.6,
           'fill-outline-color': '#FFF'
