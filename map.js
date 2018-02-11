@@ -183,7 +183,6 @@ const toggles = [
 toggles.forEach(toggle => {
   let link = document.createElement('a');
   link.href = '#';
-  link.className = 'active';
   link.id = toggle[1];
   link.textContent = toggle[0];
 
@@ -197,15 +196,15 @@ toggles.forEach(toggle => {
 
     if (visibility === 'visible') {
       legend.style.display = 'none';
+      this.className = '';
       for (let i = 1; i < 47; i++) {
         map.setLayoutProperty(`${clickedLayer}-${i}`, 'visibility', 'none');
-        this.className = '';
       }
     } else {
       legend.style.display = '';
+      this.className = 'active';
       for (let i = 1; i < 47; i++) {
         map.setLayoutProperty(`${clickedLayer}-${i}`, 'visibility', 'visible');
-        this.className = '';
       }
     }
   };
