@@ -15,18 +15,18 @@ function BikeShareStation(lon, lat, capacity) {
   this.properties = {},
   this.geometry.type = 'Point',
   this.geometry.coordinates = [lon, lat],
-  this.properties.capacity = capacity
+  this.properties.capacity = capacity;
 }
 
 function FeatureCollection(features) {
   this.type = 'FeatureCollection',
-  this.features = features
+  this.features = features;
 }
 
 function cabiData() {
   let stationArray = [];
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let request = new XMLHttpRequest();
     request.open('GET', 'https://gbfs.capitalbikeshare.com/gbfs/en/station_information.json');
     request.responseType = 'json';
@@ -38,14 +38,14 @@ function cabiData() {
         stationArray.push(newStation);
       });
       resolve(stationArray);
-    }
+    };
   });
 }
 
 function jumpData(){
   let bikeArray = [];
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let request = new XMLHttpRequest();
     request.open('GET', 'https://dc.jumpmobility.com/opendata/free_bike_status.json');
     request.responseType = 'json';
@@ -59,7 +59,7 @@ function jumpData(){
         bikeArray.push(lonLat);
       });
       resolve(bikeArray);
-    }
+    };
   });
 }
 
@@ -73,7 +73,7 @@ function loadDcNeighborhoods(bikeshareData, jumpData) {
     const cabiStations = new FeatureCollection(bikeshareData);
     const neighborhoods = request.response.features;
     const jumpBikes = turf.points(jumpData);
-    
+
     neighborhoods.forEach(neighborhood => {
       const polygon = turf.polygon(neighborhood.geometry.coordinates);
       const cabiWithin = turf.pointsWithinPolygon(cabiStations, polygon);
@@ -176,7 +176,7 @@ function loadDcNeighborhoods(bikeshareData, jumpData) {
 }
 
 const toggles = [
-  ['Capital Bikeshare Bikes','cabibikes'], 
+  ['Capital Bikeshare Bikes','cabibikes'],
   ['JUMP Bikes','jumpbikes']
 ];
 
@@ -216,16 +216,13 @@ toggles.forEach(toggle => {
 
 map.on('load', () => {
 
-  let bikeshareData;
-  let jumpBikeData;
-
   let bikeshare = cabiData()
-    .then(res => bikeshareData = res)
-    .catch(err => console.error(err))
+    .then(res => res)
+    .catch(err => console.error(err));
 
   let jumpBike = jumpData()
-    .then(res => jumpBikeData = res)
-    .catch(err => console.error(err))
+    .then(res => res)
+    .catch(err => console.error(err));
 
   Promise.all([bikeshare, jumpBike]).then(res => {
     loadDcNeighborhoods(res[0],res[1]);

@@ -4,18 +4,18 @@ const turf = require('@turf/turf');
 const dcNeighborhoodData = 'https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson';
 const capitalBikeshareData = 'https://gbfs.capitalbikeshare.com/gbfs/en/station_information.json';
 
-function BikeShareStation (lon, lat, capacity) {
+function BikeShareStation(lon, lat, capacity) {
   this.type = 'Feature',
   this.geometry = {},
   this.properties = {},
   this.geometry.type = 'Point',
   this.geometry.coordinates = [lon, lat],
-  this.properties.capacity = capacity
+  this.properties.capacity = capacity;
 }
 
-function FeatureCollection (features) {
+function FeatureCollection(features) {
   this.type = 'FeatureCollection',
-  this.features = features
+  this.features = features;
 }
 
 function bikeShareArray(){
@@ -43,7 +43,6 @@ function loadDcNeighborhoods(bikeshareData) {
     neighborhoods.forEach(neighborhood => {
       const polygon = turf.polygon(neighborhood.geometry.coordinates);
       const ptsWithin = turf.pointsWithinPolygon(stations, polygon);
-      const stationsInNeighborhood = ptsWithin.features;
 
       let totalBikes = 0;
       ptsWithin.features.forEach(station =>{
@@ -56,4 +55,4 @@ function loadDcNeighborhoods(bikeshareData) {
 
 bikeShareArray()
   .then(res => loadDcNeighborhoods(res))
-  .catch(err => console.error(err))
+  .catch(err => console.error(err));
