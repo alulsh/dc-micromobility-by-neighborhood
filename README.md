@@ -28,8 +28,6 @@ Neighborhoods no longer loading? Did the URL change or break? [Please create a n
 
 Station capacity information comes from [Motivate's](https://www.motivateco.com/use-our-data/) [General Bikeshare Feed Specification](https://gbfs.capitalbikeshare.com/gbfs/gbfs.json) JSON API for Capital Bikeshare.
 
-The [station information endpoint](https://gbfs.capitalbikeshare.com/gbfs/en/station_information.json) endpoint provides station latitude, longitude, and capacity.
-
 ### JUMP Bikes
 
 JUMP bike data for DC is available on their [DC open data portal](https://dc.jumpmobility.com/opendata) in [GBFS format](https://github.com/NABSA/gbfs).
@@ -44,9 +42,7 @@ Per this February 6th, 2018 tweet from [DDOT](https://twitter.com/DDOTDC/status/
 
 Unfortunately this endpoint has no `Access-Control-Allow-Origin` header. You get the following CORS error when attempting to access this endpoint via client-side JavaScript:
 
-```
-Failed to load https://lime.bike/api/partners/v1/bikes?region=Washington%20DC%20Proper: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://localhost:5000' is therefore not allowed access. The response had HTTP status code 404.
-```
+`Failed to load https://lime.bike/api/partners/v1/bikes?region=Washington%20DC%20Proper: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://localhost:5000' is therefore not allowed access. The response had HTTP status code 404.`
 
 Check out [the LimeBike Node.js script](https://github.com/alulsh/dc-bikeshare-by-neighborhood/blob/master/scripts/limebike.js) in this repo for live LimeBike data per D.C. neighborhood cluster.
 
