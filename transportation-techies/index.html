@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
+  <title>big</title>
+  <link href='big.css' rel='stylesheet' type='text/css' />
+  <link href='highlight.css' rel='stylesheet' type='text/css' />
+  <style>
+    .new-shiny { background: #aaaaaa; }
+  </style>
+  <script src='big.js'></script>
+  <script src='highlight.js'></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body class='light'>
+  <div><h1 id="dc-bikeshare-bikes-by-neighborhood">DC Bikeshare Bikes By Neighborhood</h1>
+<h2 id="transportation-techies">Transportation Techies</h2>
+<h3 id="february-13th-2018">February 13th 2018</h3>
+</div>
+<div><h1 id="alexandra-ulsh">Alexandra Ulsh</h1>
+<p>Information Security Engineer</p>
+<p>Mapbox</p>
+<p><a href="https://twitter.com">@AlexUlsh</a></p>
+</div>
+<div><h1 id="2015-how-many-capital-bikeshare-bikes-are-there-per-dc-quadrant-">2015 - How many Capital Bikeshare bikes are there per DC quadrant?</h1>
+</div>
+<div><p><img src="img/old-github-project.png" alt="Old GitHub project"></p>
+</div>
+<div><p><img src="img/capital-bikeshare-node.png" alt="Capital bikeshare Node"></p>
+</div>
+<div><p><img src="img/bikeshare-xml.png" alt="Capital bikeshare XML feed"></p>
+</div>
+<div><h1 id="2018-how-many-bikeshare-bikes-are-there-per-dc-neighborhood-">2018 - How many bikeshare bikes are there per DC neighborhood?</h1>
+</div>
+<div><h1 id="challenge">Challenge</h1>
+<h2 id="only-use-github-pages-and-client-side-javascript-">Only use GitHub Pages and client side JavaScript!</h2>
+</div>
+<div><p><img src="img/dc-neighborhood-clusters.png" alt="DC neighborhood clusters"></p>
+</div>
+<div><p><img src="img/post-bikeshare.png" alt="Post article on DC bikeshare systems"></p>
+</div>
+<div><h1 id="public-apis">Public APIs</h1>
+<ul>
+<li>[x] Capital Bikeshare</li>
+<li>[x] JUMP Bikes</li>
+<li>[~] Spin</li>
+<li>[~] LimeBike</li>
+<li>[ ] Ofo</li>
+<li>[ ] Mobike</li>
+</ul>
+</div>
+<div><h1 id="gbfs">GBFS</h1>
+<h2 id="general-bikeshare-feed-specification">General Bikeshare Feed Specification</h2>
+</div>
+<div><p><img src="img/raised-hands.png" alt="Raised hands emoji"></p>
+</div>
+<div><h1 id="spin">Spin</h1>
+<p><img src="img/spin-tweet.png" alt="DC DDOT tweet about Spin"></p>
+</div>
+<div><p>LimeBike</p>
+<p>CORS errors :(</p>
+<p><img src="img/limebike-CORS.png" alt="CORS errors with LimeBike"></p>
+</div>
+<div><h1 id="node-script-for-limebike">Node script for LimeBike</h1>
+<p>Demo time</p>
+</div>
+<div><p><img src="img/ofo.png" alt="Ofo GitHub issue"></p>
+</div>
+<div><p><img src="img/mobike.png" alt="Mobike GitHub issue"></p>
+</div>
+<div><h1 id="how-do-i-calculate-the-number-of-bikes-per-neighborhood-">How do I calculate the number of bikes per neighborhood?</h1>
+</div>
+<div><p><img src="img/turf.png" alt="Turf.js"></p>
+</div>
+<div><h1 id="-turf-pointswithinpolygon-"><code>turf.pointsWithinPolygon</code></h1>
+<pre><code class="lang-js">neighborhoods.forEach(neighborhood =&gt; {
+  const polygon = turf.polygon(neighborhood.geometry.coordinates);
+  const cabiWithin = turf.pointsWithinPolygon(cabiStations, polygon);
+  const jumpWithin = turf.pointsWithinPolygon(jumpBikes, polygon);
+  const spinWithin = turf.pointsWithinPolygon(spinBikes, polygon);
+}
+</code></pre>
+</div>
+<div><h1 id="cabi-bikes-not-stations">Cabi bikes, not stations</h1>
+<pre><code class="lang-js">let totalBikes = 0;
+cabiWithin.features.forEach(station =&gt;{
+  totalBikes += station.properties.capacity;
+});
+</code></pre>
+</div>
+<div><p><img src="img/raw-data.png" alt="What&#39;s the best way to display this data?"></p>
+</div>
+<div><p><img src="img/turf-centroid.png" alt="Turf centroid"></p>
+</div>
+<div><h1 id="choropleth-map-with-data-driven-styling">Choropleth map with data-driven styling</h1>
+<p><img src="img/map-full.png" alt="Screenshot of dc-bikeshare-by-neighborhood"></p>
+</div>
+<div><pre><code class="lang-js">map.addLayer({
+  id: `cabibikes-${neighborhood.properties.OBJECTID}`,
+  type: &#39;fill&#39;,
+  source: {
+    type: &#39;geojson&#39;,
+    data: neighborhood
+  },
+  layout: {
+    visibility: &#39;none&#39;
+  },
+  paint: {
+    &#39;fill-color&#39;: {
+      property: &#39;cabiBikes&#39;,
+      stops: [
+        [0, &#39;#F2F12D&#39;],
+        [10, &#39;#EED322&#39;],
+        [20, &#39;#E6B71E&#39;],
+        [50, &#39;#DA9C20&#39;],
+        [100, &#39;#CA8323&#39;],
+        [200, &#39;#B86B25&#39;],
+        [300, &#39;#A25626&#39;],
+        [400, &#39;#8B4225&#39;],
+        [500, &#39;#723122&#39;]
+      ]
+    },
+    &#39;fill-opacity&#39;: 0.6,
+    &#39;fill-outline-color&#39;: &#39;#FFF&#39;
+  }
+});
+</code></pre>
+</div>
+<div><h1 id="how-do-i-load-data-from-3-apis-">How do I load data from 3 APIS?</h1>
+</div>
+<div><h1 id="promises">Promises</h1>
+</div>
+<div><pre><code class="lang-js">function jumpData(){
+  let bikeArray = [];
+
+  return new Promise((resolve) =&gt; {
+    let request = new XMLHttpRequest();
+    request.open(&#39;GET&#39;, &#39;https://dc.jumpmobility.com/opendata/free_bike_status.json&#39;);
+    request.responseType = &#39;json&#39;;
+    request.send();
+    request.onload = () =&gt; {
+      const bikes = request.response.data.bikes;
+      bikes.forEach(bike =&gt; {
+        let lonLat = [];
+        lonLat.push(bike.lon);
+        lonLat.push(bike.lat);
+        bikeArray.push(lonLat);
+      });
+      resolve(bikeArray);
+    };
+  });
+}
+</code></pre>
+</div>
+<div><pre><code class="lang-js">map.on(&#39;load&#39;, () =&gt; {
+
+  let bikeshare = cabiData()
+    .then(res =&gt; res)
+    .catch(err =&gt; console.error(err));
+
+  let jumpBike = jumpData()
+    .then(res =&gt; res)
+    .catch(err =&gt; console.error(err));
+
+  let spinBike = spinData()
+    .then(res =&gt; res)
+    .catch(err =&gt; console.error(err));
+
+  Promise.all([bikeshare, jumpBike, spinBike]).then(res =&gt; {
+    loadDcNeighborhoods(res[0],res[1],res[2]);
+  });
+
+});
+</code></pre>
+</div>
+<div><p>Code:
+<a href="https://github.com/alulsh/dc-bikeshare-by-neighborhood">https://github.com/alulsh/dc-bikeshare-by-neighborhood</a></p>
+<p><br/></p>
+<p>Site:
+<a href="https://www.alexandraulsh.com/dc-bikeshare-by-neighborhood/">https://www.alexandraulsh.com/dc-bikeshare-by-neighborhood/</a></p>
+</div>
+<div><h1 id="questions-">Questions?</h1>
+<p>@AlexUlsh</p>
+<p>alexandra.ulsh@gmail.com</p>
+</div>
+</body>
+</html>
