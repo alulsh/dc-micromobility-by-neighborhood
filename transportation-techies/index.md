@@ -46,7 +46,7 @@ Mapbox
 
 ---
 
-![Post article on DC bikeshare systems](img/post-bikeshare.png)
+![CityLab article on dockless bikeshares](img/citylab-dockless.png)
 
 ---
 
