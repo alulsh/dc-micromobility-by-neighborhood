@@ -44,15 +44,21 @@ Unfortunately this endpoint has no `Access-Control-Allow-Origin` header. You get
 
 `Failed to load https://lime.bike/api/partners/v1/bikes?region=Washington%20DC%20Proper: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://localhost:5000' is therefore not allowed access. The response had HTTP status code 404.`
 
-Check out [the LimeBike Node.js script](https://github.com/alulsh/dc-bikeshare-by-neighborhood/blob/master/scripts/limebike.js) in this repo for live LimeBike data per D.C. neighborhood cluster.
+Check out [the LimeBike Node.js script](https://github.com/alulsh/dc-bikeshare-by-neighborhood/blob/master/scripts/limebike.js) in this repo for live LimeBike data per D.C. neighborhood cluster. Issues with CORS are [being tracked in issue #3](https://github.com/alulsh/dc-bikeshare-by-neighborhood/issues/3).
 
 ### Mobike
 
-[Mobike](https://mobike.com/global/) does not provide an official public API. [There is an endpoint you can submit a POST request to](https://github.com/ubahnverleih/WoBike#mobike-china-italy-uk-japan), but it doesn't seem designed or intended for public use. You must set the `Referer` and `user-agent` headers to match a WeChat client. Once they provide a public API we'll be able to add it to this map.
+[Mobike](https://mobike.com/global/) does not provide an official public API. [There is an endpoint you can submit a POST request to](https://github.com/ubahnverleih/WoBike#mobike-china-italy-uk-japan), but it doesn't seem designed or intended for public use. You must set the `Referer` and `user-agent` headers to match a WeChat client. 
+
+Once they provide a public API we'll be able to add it to this map. [We're tracking issues with the Mobike API in issue #1](https://github.com/alulsh/dc-bikeshare-by-neighborhood/issues/1).
 
 ### Ofo
 
-[Ofo](https://www.ofo.com/us/en) does not provide an API that can be securely used with client side JavaScript. [Their API requires authentication with an OTP code and authorization token](https://github.com/ubahnverleih/WoBike/blob/master/Ofo.md).
+[Ofo](https://www.ofo.com/us/en) does not provide an API that can be securely used with client side JavaScript. [Their main API requires authentication with an OTP code and authorization token](https://github.com/ubahnverleih/WoBike/blob/master/Ofo.md).
+
+[DDOT DC provided an API endpoint](https://twitter.com/DDOTDC/status/963143987216314368) but it's HTTP only. It also cannot be used securely client side.
+
+[Issues with Ofo's API are being tracked in issue #2](https://github.com/alulsh/dc-bikeshare-by-neighborhood/issues/2). In the mean time, [you can use this Node.js script to obtain live Ofo bike data per D.C. neighborhood](https://github.com/alulsh/dc-bikeshare-by-neighborhood/blob/master/scripts/ofo.js).
 
 ## Local development
 
