@@ -75,13 +75,23 @@ function spinData(){
       const bikes = request.response.data.bikes;
       bikes.forEach(bike => {
         let lonLat = [];
-        lonLat.push(bike.lon);
-        lonLat.push(bike.lat);
-        bikeArray.push(lonLat);
+        if (isNumber(bike.lon) && isNumber(bike.lat)) {
+          lonLat.push(bike.lon);
+          lonLat.push(bike.lat);
+          bikeArray.push(lonLat);
+        }
       });
       resolve(bikeArray);
     };
   });
+}
+
+function isNumber(number) {
+  if (typeof number !== 'number') {
+    return false;
+  } else {
+    return true;
+  }
 }
 
 function loadDcNeighborhoods(bikeshareData, jumpData, spinData) {
