@@ -71,7 +71,7 @@ function loadDcNeighborhoods(bikeshareData) {
           data: neighborhood
         },
         layout: {
-          visibility: 'none'
+          visibility: 'visible'
         },
         paint: {
           'fill-color': {
@@ -111,44 +111,6 @@ function loadDcNeighborhoods(bikeshareData) {
     });
   };
 }
-
-const toggles = [
-  ['Capital Bikeshare Bikes','cabibikes']
-];
-
-toggles.forEach(toggle => {
-  let link = document.createElement('a');
-  link.href = '#';
-  link.id = toggle[1];
-  link.textContent = toggle[0];
-
-  link.onclick = function(e) {
-    let clickedLayer = this.id;
-    e.preventDefault();
-    e.stopPropagation();
-
-    let legend = document.getElementById(`${clickedLayer}-legend`);
-    let visibility = map.getLayoutProperty(`${clickedLayer}-1`, 'visibility');
-
-    if (visibility === 'visible') {
-      legend.style.display = 'none';
-      this.className = '';
-      for (let i = 1; i < 47; i++) {
-        map.setLayoutProperty(`${clickedLayer}-${i}`, 'visibility', 'none');
-      }
-    } else {
-      legend.style.display = '';
-      this.className = 'active';
-      for (let i = 1; i < 47; i++) {
-        map.setLayoutProperty(`${clickedLayer}-${i}`, 'visibility', 'visible');
-      }
-    }
-  };
-
-  let layers = document.getElementById('menu');
-  layers.appendChild(link);
-
-});
 
 map.on('load', () => {
 
