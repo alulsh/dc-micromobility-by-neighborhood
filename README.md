@@ -8,11 +8,7 @@ A map that lets you analyze and explore the number of DC bikeshare bikes by DC n
 
 ## How do I view the data?
 
-Click a bikeshare service in the left hand menu.
-
-![Bikeshare menu](assets/layers.png)
-
-Then mouse over different neighborhoods to see how many bikes for that bikeshare service are in that neighborhood cluster.
+Mouse over different neighborhoods to see how many bikes for that bikeshare service are in that neighborhood cluster.
 
 ![Neighborhood mouseover popup with number of bikeshare bikes](assets/mouseover.png)
 
