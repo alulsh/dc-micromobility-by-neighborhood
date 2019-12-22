@@ -24,41 +24,45 @@ DC neighborhood clusters come from the District of Columbia's Office of the Chie
 
 Neighborhoods no longer loading? Did the URL change or break? [Please create a new issue to report this bug](https://github.com/alulsh/dc-bikeshare-by-neighborhood/issues/new).
 
-### Capital Bikeshare
+### Current bikeshare services
+
+#### Capital Bikeshare
 
 Station capacity information comes from [Motivate's](https://www.motivateco.com/use-our-data/) [General Bikeshare Feed Specification](https://gbfs.capitalbikeshare.com/gbfs/gbfs.json) JSON API for Capital Bikeshare.
 
-### JUMP Bikes
+#### JUMP Bikes
 
 JUMP bike data for DC is available on their [DC open data portal](https://dc.jumpmobility.com/opendata) in [GBFS format](https://github.com/NABSA/gbfs).
 
-### Spin
+### Historical bikeshare services
 
-Per this February 6th, 2018 tweet from [DDOT](https://twitter.com/DDOTDC/status/960885112731832320), Spin API information is available at https://web.spin.pm/api/gbfs/v1/gbfs in GBFS format.
+Most dockless pedal bike operations left Washington, D.C. in [summer 2018](https://ggwash.org/view/69307/who-killed-dcs-dockless-pedal-bicycles)
 
-### LimeBike
+#### Spin
 
-Per this February 6th, 2018 tweet from [DDOT](https://twitter.com/DDOTDC/status/960885111066636289), LimeBike bike information is available at `https://lime.bike/api/partners/v1/bikes?region=Washington%20DC%20Proper` with a bearer token. The data is not available in GBFS format.
+Spin ended its dockless bike program and switched to electric scooters in [August 2018](https://dc.curbed.com/2018/8/20/17761122/dc-dockless-bikes-scooters-transportation-spin-pilot).
 
-Unfortunately this endpoint has no `Access-Control-Allow-Origin` header. You get the following CORS error when attempting to access this endpoint via client-side JavaScript:
+This February 6th, 2018 tweet from [DDOT](https://twitter.com/DDOTDC/status/960885112731832320), mentioned the former Spin API information was available at https://web.spin.pm/api/gbfs/v1/gbfs in GBFS format.
+
+#### Lime
+
+Lime ended its dockless bike program and switched to electric scooters in [August 2018](https://dc.curbed.com/2018/8/31/17806012/dc-dockless-bikes-scooters-lime-pilot-program).
+
+Per this February 6th, 2018 tweet from [DDOT](https://twitter.com/DDOTDC/status/960885111066636289), Lime bike information was available at `https://lime.bike/api/partners/v1/bikes?region=Washington%20DC%20Proper` with a bearer token. The data is not available in GBFS format.
+
+Unfortunately this endpoint had no `Access-Control-Allow-Origin` header. You received the following CORS error when attempting to access this endpoint via client-side JavaScript:
 
 `Failed to load https://lime.bike/api/partners/v1/bikes?region=Washington%20DC%20Proper: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://localhost:5000' is therefore not allowed access. The response had HTTP status code 404.`
 
-Check out [the LimeBike Node.js script](https://github.com/alulsh/dc-bikeshare-by-neighborhood/blob/master/scripts/limebike.js) in this repo for live LimeBike data per D.C. neighborhood cluster. Issues with CORS are [being tracked in issue #3](https://github.com/alulsh/dc-bikeshare-by-neighborhood/issues/3).
+#### Mobike
 
-### Mobike
+Mobike left the DC market in [July 2018](https://www.washingtonpost.com/news/dr-gridlock/wp/2018/07/25/mobike-becomes-second-dockless-bike-operator-to-pull-out-of-d-c/). They never provided an official public API. [There was an endpoint you could submit a POST request to](https://github.com/ubahnverleih/WoBike#mobike-china-italy-uk-japan), but it did not seem to be designed or intended for public use. You needed to set the `Referer` and `user-agent` headers to match a WeChat client.
 
-[Mobike](https://mobike.com/global/) does not provide an official public API. [There is an endpoint you can submit a POST request to](https://github.com/ubahnverleih/WoBike#mobike-china-italy-uk-japan), but it doesn't seem designed or intended for public use. You must set the `Referer` and `user-agent` headers to match a WeChat client. 
+#### Ofo
 
-Once they provide a public API we'll be able to add it to this map. [We're tracking issues with the Mobike API in issue #1](https://github.com/alulsh/dc-bikeshare-by-neighborhood/issues/1).
+Ofo left the DC market in [July 2018](https://www.washingtonpost.com/news/dr-gridlock/wp/2018/07/24/dockless-bike-share-company-ofo-is-the-first-to-pull-out-of-d-c/). Ofo did not provide an API that could be securely used with client side JavaScript. [Their main API required authentication with an OTP code and authorization token](https://github.com/ubahnverleih/WoBike/blob/master/Ofo.md).
 
-### Ofo
-
-[Ofo](https://www.ofo.com/us/en) does not provide an API that can be securely used with client side JavaScript. [Their main API requires authentication with an OTP code and authorization token](https://github.com/ubahnverleih/WoBike/blob/master/Ofo.md).
-
-[DDOT DC provided an API endpoint](https://twitter.com/DDOTDC/status/963143987216314368) but it's HTTP only. It also cannot be used securely client side.
-
-[Issues with Ofo's API are being tracked in issue #2](https://github.com/alulsh/dc-bikeshare-by-neighborhood/issues/2). In the mean time, [you can use this Node.js script to obtain live Ofo bike data per D.C. neighborhood](https://github.com/alulsh/dc-bikeshare-by-neighborhood/blob/master/scripts/ofo.js).
+[DDOT DC provided an API endpoint](https://twitter.com/DDOTDC/status/963143987216314368) but it was HTTP only. It also could not be used securely client side.
 
 ## Local development
 
