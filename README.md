@@ -32,7 +32,7 @@ Station capacity information comes from [Motivate's](https://www.motivateco.com/
 
 #### JUMP Bikes
 
-JUMP bike data for DC is available on their [DC open data portal](https://dc.jumpmobility.com/opendata) in [GBFS format](https://github.com/NABSA/gbfs).
+JUMP bike data for DC is available in [GBFS format](https://github.com/NABSA/gbfs) from [`https://gbfs.uber.com/v1/dcb/free_bike_status.json`](https://gbfs.uber.com/v1/dcb/free_bike_status.json). Unfortunately this API does not allow for cross-origin resource sharing, so it cannot be used client-side. Follow [issue #7](https://github.com/alulsh/dc-bikeshare-by-neighborhood/issues/7) for any updates. In the mean time, you can use the script in `scripts/jump.js` to fetch the data manually using Node.js.
 
 ### Historical bikeshare services
 

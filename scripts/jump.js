@@ -2,7 +2,7 @@ const request = require('request');
 const turf = require('@turf/turf');
 
 const dcNeighborhoodData = 'https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson';
-const jumpData = 'https://dc.jumpmobility.com/opendata/free_bike_status.json';
+const jumpData = 'https://gbfs.uber.com/v1/dcb/free_bike_status.json';
 
 function jumpArray(){
   let bikeArray = [];
