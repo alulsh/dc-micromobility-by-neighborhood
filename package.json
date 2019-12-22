@@ -13,7 +13,7 @@
     "start": "serve"
   },
   "devDependencies": {
-    "eslint": "^4.17.0",
+    "eslint": "^4.18.2",
     "request": "^2.83.0",
     "serve": "^7.1.3",
     "@turf/turf": "^5.1.6"
