@@ -9,7 +9,7 @@
     "url": "https://github.com/alulsh/dc-bikeshare-by-neighborhood"
   },
   "scripts": {
-    "test": "eslint -c .eslintrc.js *.js */*.js",
+    "test": "eslint -c .eslintrc.js '*.js' '*/*.js'",
     "start": "serve"
   },
   "devDependencies": {
