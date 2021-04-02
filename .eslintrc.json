@@ -1,0 +1,15 @@
+{
+  "extends": ["airbnb-base", "plugin:prettier/recommended"],
+  "plugins": ["prettier"],
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "globals": {
+    "mapboxgl": "readonly"
+  },
+  "rules": {
+    "prettier/prettier": "error",
+    "no-plusplus": [2, { "allowForLoopAfterthoughts": true }]
+  }
+}

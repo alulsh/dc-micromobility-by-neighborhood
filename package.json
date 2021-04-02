@@ -9,12 +9,16 @@
     "url": "https://github.com/alulsh/dc-bikeshare-by-neighborhood"
   },
   "scripts": {
-    "test": "eslint -c .eslintrc.js '*.js' '*/*.js'",
+    "test": "eslint '*.js' '*/*.js'",
     "start": "serve"
   },
   "devDependencies": {
     "@turf/turf": "^5.1.6",
     "eslint": "^7.18.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1",
     "request": "^2.88.0",
     "serve": "^11.3.2"
   }
