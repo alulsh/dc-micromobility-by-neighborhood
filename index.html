@@ -1,35 +1,39 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset='utf-8' />
-  <title>DC bikeshare bikes per neighborhood</title>
-  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js'></script>
-  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css' rel='stylesheet' />
-  <script src="https://npmcdn.com/@turf/turf@5.1.6/turf.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="utf-8" />
+    <title>DC bikeshare bikes per neighborhood</title>
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js"></script>
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <script src="https://npmcdn.com/@turf/turf@5.1.6/turf.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+  <body>
+    <nav id="menu">
+      <a href="#" id="cabibikes">Capital Bikeshare Bikes</a>
+    </nav>
+    <div id="map"></div>
 
-  <nav id="menu">
-    <a href="#" id="cabibikes">Capital Bikeshare Bikes</a>
-  </nav>
-  <div id='map'></div>
+    <div id="cabibikes-legend" class="legend">
+      <h4>Bikes</h4>
+      <div><span style="background-color: #723122"></span>500</div>
+      <div><span style="background-color: #8b4225"></span>400</div>
+      <div><span style="background-color: #a25626"></span>300</div>
+      <div><span style="background-color: #b86b25"></span>200</div>
+      <div><span style="background-color: #ca8323"></span>100</div>
+      <div><span style="background-color: #da9c20"></span>50</div>
+      <div><span style="background-color: #e6b71e"></span>20</div>
+      <div><span style="background-color: #eed322"></span>10</div>
+      <div><span style="background-color: #f2f12d"></span>0</div>
+    </div>
 
-  <div id='cabibikes-legend' class='legend'>
-    <h4>Bikes</h4>
-    <div><span style='background-color: #723122'></span>500</div>
-    <div><span style='background-color: #8B4225'></span>400</div>
-    <div><span style='background-color: #A25626'></span>300</div>
-    <div><span style='background-color: #B86B25'></span>200</div>
-    <div><span style='background-color: #CA8323'></span>100</div>
-    <div><span style='background-color: #DA9C20'></span>50</div>
-    <div><span style='background-color: #E6B71E'></span>20</div>
-    <div><span style='background-color: #EED322'></span>10</div>
-    <div><span style='background-color: #F2F12D'></span>0</div>
-  </div>
-
-  <script src='map.js'></script>
-
-</body>
+    <script src="map.js"></script>
+  </body>
 </html>

@@ -7,11 +7,11 @@ body {
   position: absolute;
   top: 0;
   bottom: 0;
-  width:100%;
+  width: 100%;
 }
 
 .marker {
-  background-color: #FFF;
+  background-color: #fff;
   background-size: cover;
   width: 30px;
   height: 30px;
@@ -21,19 +21,19 @@ body {
 
 .mapboxgl-popup {
   max-width: 400px;
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 #menu {
-  background: #FFF;
+  background: #fff;
   position: absolute;
   z-index: 1;
   top: 10px;
   left: 10px;
   border-radius: 3px;
   width: 175px;
-  border: 1px solid rgba(0,0,0,0.4);
-  font-family: 'Open Sans', sans-serif;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  font-family: "Open Sans", sans-serif;
 }
 
 #menu a {
@@ -44,7 +44,7 @@ body {
   padding: 0;
   padding: 10px;
   text-decoration: none;
-  border-bottom: 1px solid rgba(0,0,0,0.25);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
   text-align: center;
 }
 
@@ -56,8 +56,8 @@ body {
   background-color: #fff;
   border-radius: 3px;
   bottom: 30px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.10);
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
   padding: 10px;
   position: absolute;
   right: 10px;
