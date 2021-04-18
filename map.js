@@ -26,9 +26,22 @@ function FeatureCollection(features) {
   this.features = features;
 }
 
-function getCabiStations() {
-  const stationArray = [];
+function convertToGeoJSON(bikeshareJSON) {
+  const newStationArray = [];
+  const stationArray = bikeshareJSON;
 
+  stationArray.forEach((station) => {
+    const newStation = new BikeShareStation(
+      station.lon,
+      station.lat,
+      station.capacity
+    );
+    newStationArray.push(newStation);
+  });
+  return new FeatureCollection(newStationArray);
+}
+
+function getCabiStationJSON() {
   return new Promise((resolve) => {
     const request = new XMLHttpRequest();
     request.open(
@@ -39,120 +52,93 @@ function getCabiStations() {
     request.send();
     request.onload = function getStations() {
       const { stations } = request.response.data;
-      stations.forEach((station) => {
-        const newStation = new BikeShareStation(
-          station.lon,
-          station.lat,
-          station.capacity
-        );
-        stationArray.push(newStation);
-      });
-      resolve(stationArray);
+      const stationGeoJSON = convertToGeoJSON(stations);
+      resolve(stationGeoJSON);
     };
   });
 }
 
-function getDcNeighborhoods() {
-  const neighborhoodsArray = [];
-
+function addCabiSource(stationGeoJSON) {
   return new Promise((resolve) => {
-    const request = new XMLHttpRequest();
-    request.open(
-      "GET",
-      "https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson"
-    );
-    request.responseType = "json";
-    request.send();
-    request.onload = () => {
-      const neighborhoods = request.response.features;
-
-      neighborhoods.forEach((neighborhood) => {
-        neighborhoodsArray.push(neighborhood);
-      });
-
-      resolve(neighborhoodsArray);
-    };
+    map.addSource("cabi-stations-source", {
+      type: "geojson",
+      data: stationGeoJSON,
+    });
+    map.addLayer({
+      id: "cabi-stations-points",
+      type: "circle",
+      source: "cabi-stations-source",
+    });
+    resolve(stationGeoJSON);
   });
 }
 
-function calculateBikesPerNeighborhood(bikeshareData, neighborhoods) {
-  const bikesPerNeighborhoodGeoJSON = [];
-  const cabiStations = new FeatureCollection(bikeshareData);
-  neighborhoods.forEach((neighborhood) => {
-    const polygon = turf.polygon(neighborhood.geometry.coordinates);
-    const cabiWithin = turf.pointsWithinPolygon(cabiStations, polygon);
-
-    let totalBikes = 0;
-    cabiWithin.features.forEach((station) => {
-      totalBikes += station.properties.capacity;
+function addDcNeighborhoodSource(stationGeoJSON) {
+  return new Promise((resolve) => {
+    map.addSource("dc-neighborhoods-source", {
+      type: "geojson",
+      data:
+        "https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson",
+      generateId: true,
     });
 
-    // eslint-disable-next-line no-param-reassign
-    neighborhood.properties.cabiBikes = totalBikes;
-    bikesPerNeighborhoodGeoJSON.push(neighborhood);
-  });
-
-  return new FeatureCollection(bikesPerNeighborhoodGeoJSON);
-}
-
-map.on("load", () => {
-  const bikeshare = getCabiStations()
-    .then((res) => res)
-    .catch((err) => new Error(err));
-
-  const dcNeighborhoods = getDcNeighborhoods()
-    .then((res) => res)
-    .catch((err) => new Error(err));
-
-  Promise.all([bikeshare, dcNeighborhoods]).then((res) => {
-    const bikesPerNeighborhood = calculateBikesPerNeighborhood(res[0], res[1]);
-
     map.addLayer({
-      id: "cabibikes",
+      id: "dc-neighborhoods-polygons",
       type: "fill",
-      source: {
-        type: "geojson",
-        data: bikesPerNeighborhood,
-      },
-      layout: {
-        visibility: "visible",
-      },
+      source: "dc-neighborhoods-source",
       paint: {
-        "fill-color": {
-          property: "cabiBikes",
-          stops: [
-            [0, "#F2F12D"],
-            [10, "#EED322"],
-            [20, "#E6B71E"],
-            [50, "#DA9C20"],
-            [100, "#CA8323"],
-            [200, "#B86B25"],
-            [300, "#A25626"],
-            [400, "#8B4225"],
-            [500, "#723122"],
-          ],
-        },
         "fill-opacity": 0.6,
         "fill-outline-color": "#FFF",
       },
     });
-  });
 
-  const popup = new mapboxgl.Popup({
-    closeButton: false,
-    closeOnClick: false,
+    map.on("sourcedata", function sourceLoaded(e) {
+      if (
+        e.sourceId === "dc-neighborhoods-source" &&
+        e.isSourceLoaded &&
+        e.coord
+      ) {
+        resolve(stationGeoJSON);
+      }
+    });
   });
+}
 
-  map.on("mouseenter", "cabibikes", (e) => {
-    popup
-      .setLngLat(e.lngLat)
-      .setHTML(
-        `<h4>${e.features[0].properties.NBH_NAMES}</h4><p>${e.features[0].properties.cabiBikes} Capital Bikeshare bikes</p>`
-      )
-      .addTo(map);
-  });
+function getPolygons(stationGeoJSON) {
+  return new Promise((resolve) => {
+    const dcPolygons = map.queryRenderedFeatures({
+      layers: ["dc-neighborhoods-polygons"],
+    });
+    dcPolygons.forEach((feature) => {
+      const polygon = turf.polygon(feature.geometry.coordinates);
+      const cabiWithin = turf.pointsWithinPolygon(stationGeoJSON, polygon);
 
-  map.on("mouseleave", "cabibikes", () => {
-    popup.remove();
+      let totalBikes = 0;
+      cabiWithin.features.forEach((station) => {
+        totalBikes += station.properties.capacity;
+      });
+
+      console.log(
+        `${totalBikes} in neighborhood ${feature.properties.NBH_NAMES} with id ${feature.id}`
+      );
+
+      map.setFeatureState(
+        {
+          source: "dc-neighborhoods-source",
+          id: feature.id,
+        },
+        {
+          totalBikes,
+        }
+      );
+    });
+    resolve(dcPolygons);
   });
+}
+
+map.on("load", () => {
+  getCabiStationJSON()
+    .then((stations) => addCabiSource(stations))
+    .then(addDcNeighborhoodSource)
+    .then(getPolygons);
 });
