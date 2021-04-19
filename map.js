@@ -141,10 +141,6 @@ function getPolygons(stationGeoJSON) {
         totalBikes += station.properties.capacity;
       });
 
-      console.log(
-        `${totalBikes} in neighborhood ${feature.properties.NBH_NAMES} with id ${feature.id}`
-      );
-
       map.setFeatureState(
         {
           source: "dc-neighborhoods-source",
@@ -164,4 +160,22 @@ map.on("load", () => {
     .then((stations) => addCabiSource(stations))
     .then(addDcNeighborhoodSource)
     .then(getPolygons);
+});
+
+const popup = new mapboxgl.Popup({
+  closeButton: false,
+  closeOnClick: false,
+});
+
+map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
+  popup
+    .setLngLat(event.lngLat)
+    .setHTML(
+      `<h4>${event.features[0].properties.NBH_NAMES}</h4><p>${event.features[0].state.totalBikes} Capital Bikeshare bikes</p>`
+    )
+    .addTo(map);
+});
+
+map.on("mouseleave", "dc-neighborhoods-polygons", () => {
+  popup.remove();
 });
