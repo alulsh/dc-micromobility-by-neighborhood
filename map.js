@@ -12,12 +12,14 @@ const map = new mapboxgl.Map({
   zoom: 10.6,
 });
 
-function BikeShareStation(lon, lat, capacity) {
+function BikeShareStation(lon, lat, name, regionId, capacity) {
   this.type = "Feature";
   this.geometry = {};
   this.properties = {};
   this.geometry.type = "Point";
   this.geometry.coordinates = [lon, lat];
+  this.properties.name = name;
+  this.properties.regionId = regionId;
   this.properties.capacity = capacity;
 }
 
@@ -34,6 +36,8 @@ function convertToGeoJSON(bikeshareJSON) {
     const newStation = new BikeShareStation(
       station.lon,
       station.lat,
+      station.name,
+      station.region_id,
       station.capacity
     );
     newStationArray.push(newStation);
@@ -113,8 +117,14 @@ function addDcNeighborhoodSource(stationGeoJSON) {
       id: "cabi-stations-points",
       type: "circle",
       source: "cabi-stations-source",
-      layout: {
-        visibility: "visible",
+      minzoom: 12,
+      // regionId 42 is for Washington, D.C.
+      filter: ["==", "regionId", "42"],
+      paint: {
+        "circle-color": "#363636",
+        "circle-radius": 4,
+        "circle-stroke-width": 1,
+        "circle-stroke-color": "#fff",
       },
     });
 
@@ -180,5 +190,18 @@ map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
 });
 
 map.on("mouseleave", "dc-neighborhoods-polygons", () => {
+  popup.remove();
+});
+
+map.on("mousemove", "cabi-stations-points", (event) => {
+  popup
+    .setLngLat(event.lngLat)
+    .setHTML(
+      `<h4>${event.features[0].properties.name}</h4><p>${event.features[0].properties.capacity} bike capacity</p>`
+    )
+    .addTo(map);
+});
+
+map.on("mouseleave", "cabi-stations-points", () => {
   popup.remove();
 });
