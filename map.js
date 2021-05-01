@@ -68,6 +68,9 @@ function addCabiSource(stationGeoJSON) {
       id: "cabi-stations-points",
       type: "circle",
       source: "cabi-stations-source",
+      layout: {
+        visibility: "none",
+      },
     });
     resolve(stationGeoJSON);
   });
