@@ -64,13 +64,11 @@ function addCabiSource(stationGeoJSON) {
       type: "geojson",
       data: stationGeoJSON,
     });
-    map.addLayer({
-      id: "cabi-stations-points",
-      type: "circle",
-      source: "cabi-stations-source",
-      layout: {
-        visibility: "none",
-      },
+    map.addSource("dc-neighborhoods-source", {
+      type: "geojson",
+      data:
+        "https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson",
+      generateId: true,
     });
     resolve(stationGeoJSON);
   });
@@ -78,13 +76,6 @@ function addCabiSource(stationGeoJSON) {
 
 function addDcNeighborhoodSource(stationGeoJSON) {
   return new Promise((resolve) => {
-    map.addSource("dc-neighborhoods-source", {
-      type: "geojson",
-      data:
-        "https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson",
-      generateId: true,
-    });
-
     map.addLayer({
       id: "dc-neighborhoods-polygons",
       type: "fill",
@@ -115,6 +106,15 @@ function addDcNeighborhoodSource(stationGeoJSON) {
         ],
         "fill-opacity": 0.6,
         "fill-outline-color": "#FFF",
+      },
+    });
+
+    map.addLayer({
+      id: "cabi-stations-points",
+      type: "circle",
+      source: "cabi-stations-source",
+      layout: {
+        visibility: "visible",
       },
     });
 
