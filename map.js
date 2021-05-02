@@ -45,7 +45,7 @@ function convertToGeoJSON(bikeshareJSON) {
   return new FeatureCollection(newStationArray);
 }
 
-function getCabiStationJSON() {
+function getCabiStationInformation() {
   return new Promise((resolve) => {
     const request = new XMLHttpRequest();
     request.open(
@@ -62,7 +62,7 @@ function getCabiStationJSON() {
   });
 }
 
-function addCabiSource(stationGeoJSON) {
+function addSources(stationGeoJSON) {
   return new Promise((resolve) => {
     map.addSource("cabi-stations-source", {
       type: "geojson",
@@ -78,7 +78,7 @@ function addCabiSource(stationGeoJSON) {
   });
 }
 
-function addDcNeighborhoodSource(stationGeoJSON) {
+function addLayers(stationGeoJSON) {
   return new Promise((resolve) => {
     map.addLayer({
       id: "dc-neighborhoods-polygons",
@@ -140,7 +140,7 @@ function addDcNeighborhoodSource(stationGeoJSON) {
   });
 }
 
-function getPolygons(stationGeoJSON) {
+function calculateBikesPerPolygon(stationGeoJSON) {
   return new Promise((resolve) => {
     const dcPolygons = map.queryRenderedFeatures({
       layers: ["dc-neighborhoods-polygons"],
@@ -169,10 +169,10 @@ function getPolygons(stationGeoJSON) {
 }
 
 map.on("load", () => {
-  getCabiStationJSON()
-    .then((stations) => addCabiSource(stations))
-    .then(addDcNeighborhoodSource)
-    .then(getPolygons);
+  getCabiStationInformation()
+    .then((stations) => addSources(stations))
+    .then(addLayers)
+    .then(calculateBikesPerPolygon);
 });
 
 const popup = new mapboxgl.Popup({
