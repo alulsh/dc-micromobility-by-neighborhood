@@ -205,3 +205,6 @@ map.on("mousemove", "cabi-stations-points", (event) => {
 map.on("mouseleave", "cabi-stations-points", () => {
   popup.remove();
 });
+
+// eslint-disable-next-line import/prefer-default-export
+export { convertToGeoJSON };
