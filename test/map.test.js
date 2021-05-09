@@ -17,6 +17,10 @@ test("Converts Capital Bikeshare JSON to valid GeoJSON", () => {
 
 test("Requests Capital Bikeshare station information", () => {
   return getCabiStationInformation().then((data) => {
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(
+      "https://gbfs.capitalbikeshare.com/gbfs/en/station_information.json"
+    );
     expect(data).toEqual(cabiStationGeoJSON);
   });
 });
