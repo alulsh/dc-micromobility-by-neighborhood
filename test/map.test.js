@@ -1,5 +1,9 @@
 import { expect, test, jest, beforeEach } from "@jest/globals";
-import { convertToGeoJSON, getCabiStationInformation } from "../map";
+import {
+  convertToGeoJSON,
+  getCabiStationInformation,
+  addSources,
+} from "../map";
 import { cabiStationInformationMock, cabiStationGeoJSON } from "./fixtures";
 
 global.fetch = jest.fn(() =>
@@ -25,5 +29,11 @@ test("Requests Capital Bikeshare station information", () => {
       "https://gbfs.capitalbikeshare.com/gbfs/en/station_information.json"
     );
     expect(data).toEqual(cabiStationGeoJSON);
+  });
+});
+
+test("addSources promise resolves with arguments", () => {
+  return addSources(cabiStationGeoJSON).then((data) => {
+    expect(data).toBe(cabiStationGeoJSON);
   });
 });

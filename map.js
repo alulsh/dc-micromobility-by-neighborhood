@@ -203,4 +203,4 @@ map.on("mouseleave", "cabi-stations-points", () => {
   popup.remove();
 });
 
-export { convertToGeoJSON, getCabiStationInformation };
+export { convertToGeoJSON, getCabiStationInformation, addSources };
