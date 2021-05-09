@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { expect, test, jest } from "@jest/globals";
 import { convertToGeoJSON, getCabiStationInformation } from "../map";
 import { cabiStationInformationMock, cabiStationGeoJSON } from "./fixtures";
