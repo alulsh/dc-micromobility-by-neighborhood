@@ -47,18 +47,15 @@ function convertToGeoJSON(bikeshareJSON) {
 
 function getCabiStationInformation() {
   return new Promise((resolve) => {
-    const request = new XMLHttpRequest();
-    request.open(
-      "GET",
-      "https://gbfs.capitalbikeshare.com/gbfs/en/station_information.json"
-    );
-    request.responseType = "json";
-    request.send();
-    request.onload = function getStations() {
-      const { stations } = request.response.data;
-      const stationGeoJSON = convertToGeoJSON(stations);
-      resolve(stationGeoJSON);
-    };
+    fetch("https://gbfs.capitalbikeshare.com/gbfs/en/station_information.json")
+      .then((response) => response.json())
+      .then((jsonData) => {
+        const stationGeoJSON = convertToGeoJSON(jsonData.data.stations);
+        resolve(stationGeoJSON);
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
   });
 }
 
