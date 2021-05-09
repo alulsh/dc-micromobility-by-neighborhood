@@ -1,4 +1,4 @@
-import { expect, test, jest } from "@jest/globals";
+import { expect, test, jest, beforeEach } from "@jest/globals";
 import { convertToGeoJSON, getCabiStationInformation } from "../map";
 import { cabiStationInformationMock, cabiStationGeoJSON } from "./fixtures";
 
@@ -7,6 +7,10 @@ global.fetch = jest.fn(() =>
     json: () => Promise.resolve(cabiStationInformationMock),
   })
 );
+
+beforeEach(() => {
+  fetch.mockClear();
+});
 
 test("Converts Capital Bikeshare JSON to valid GeoJSON", () => {
   expect(convertToGeoJSON(cabiStationInformationMock.data.stations)).toEqual(
