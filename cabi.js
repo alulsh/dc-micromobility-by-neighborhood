@@ -45,4 +45,17 @@ function getCabiStationInformation() {
   });
 }
 
-export { convertToGeoJSON, getCabiStationInformation };
+function getCabiStationStatus() {
+  return new Promise((resolve) => {
+    fetch("https://gbfs.capitalbikeshare.com/gbfs/en/station_status.json")
+      .then((response) => response.json())
+      .then((jsonData) => {
+        resolve(jsonData.data.stations);
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
+  });
+}
+
+export { convertToGeoJSON, getCabiStationInformation, getCabiStationStatus };
