@@ -62,7 +62,38 @@ function getCabiStationStatus() {
 
 // eslint-disable-next-line no-unused-vars
 function mergeCabiStationJSON(stationGeoJSON, stationStatus) {
-  return "peanut butter";
+  const mergedArray = stationGeoJSON.features.map((feature) => ({
+    ...feature,
+    ...stationStatus.find(
+      (station) => feature.properties.stationId === station.station_id
+    ),
+  }));
+
+  const cleanedArray = mergedArray.map((item) => {
+    const cleanedItem = item;
+    delete cleanedItem.eightd_has_available_keys;
+    delete cleanedItem.legacy_id;
+    delete cleanedItem.station_status;
+    delete cleanedItem.is_returning;
+    delete cleanedItem.is_installed;
+    delete cleanedItem.last_reported;
+    delete cleanedItem.station_id;
+    cleanedItem.properties.isRenting = item.is_renting;
+    delete cleanedItem.is_renting;
+    cleanedItem.properties.ebikesAvailable = item.num_ebikes_available;
+    delete cleanedItem.num_ebikes_available;
+    cleanedItem.properties.docksAvailable = item.num_docks_available;
+    delete cleanedItem.num_docks_available;
+    cleanedItem.properties.bikesAvailable = item.num_bikes_available;
+    delete cleanedItem.num_bikes_available;
+    cleanedItem.properties.bikesDisabled = item.num_bikes_disabled;
+    delete cleanedItem.num_bikes_disabled;
+    cleanedItem.properties.docksDisabled = item.num_docks_disabled;
+    delete cleanedItem.num_docks_disabled;
+    return cleanedItem;
+  });
+
+  return new FeatureCollection(cleanedArray);
 }
 
 export {
