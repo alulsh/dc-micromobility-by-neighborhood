@@ -3,11 +3,13 @@ import {
   convertToGeoJSON,
   getCabiStationInformation,
   getCabiStationStatus,
+  mergeCabiStationJSON,
 } from "../cabi";
 import {
   cabiStationInformationMock,
   cabiStationGeoJSON,
   cabiStationStatus,
+  mergedCabiGeoJSON,
 } from "./fixtures";
 
 afterEach(() => {
@@ -50,4 +52,10 @@ test("Requests Capital Bikeshare station status", () => {
     );
     expect(data).toEqual(cabiStationStatus.data.stations);
   });
+});
+
+test("Merges Capital Bikeshare station GeoJSON and live station status", () => {
+  expect(
+    mergeCabiStationJSON(cabiStationGeoJSON, cabiStationStatus.data.stations)
+  ).toEqual(mergedCabiGeoJSON);
 });

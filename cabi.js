@@ -1,4 +1,4 @@
-function BikeShareStation(lon, lat, name, regionId, capacity) {
+function BikeShareStation(lon, lat, name, regionId, capacity, stationId) {
   this.type = "Feature";
   this.geometry = {};
   this.properties = {};
@@ -6,6 +6,7 @@ function BikeShareStation(lon, lat, name, regionId, capacity) {
   this.geometry.coordinates = [lon, lat];
   this.properties.name = name;
   this.properties.regionId = regionId;
+  this.properties.stationId = stationId;
   this.properties.capacity = capacity;
 }
 
@@ -24,7 +25,8 @@ function convertToGeoJSON(bikeshareJSON) {
       station.lat,
       station.name,
       station.region_id,
-      station.capacity
+      station.capacity,
+      station.station_id
     );
     newStationArray.push(newStation);
   });
@@ -58,4 +60,14 @@ function getCabiStationStatus() {
   });
 }
 
-export { convertToGeoJSON, getCabiStationInformation, getCabiStationStatus };
+// eslint-disable-next-line no-unused-vars
+function mergeCabiStationJSON(stationGeoJSON, stationStatus) {
+  return "peanut butter";
+}
+
+export {
+  convertToGeoJSON,
+  getCabiStationInformation,
+  getCabiStationStatus,
+  mergeCabiStationJSON,
+};
