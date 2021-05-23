@@ -2,6 +2,9 @@
 
 "use strict";
 
+// eslint-disable-next-line import/extensions
+import { getCabiStationInformation } from "./cabi.js";
+
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYWx1bHNoIiwiYSI6ImY0NDBjYTQ1NjU4OGJmMDFiMWQ1Y2RmYjRlMGI1ZjIzIn0.pngboKEPsfuC4j54XDT3VA";
 
@@ -11,53 +14,6 @@ const map = new mapboxgl.Map({
   center: [-77.04, 38.89],
   zoom: 10.6,
 });
-
-function BikeShareStation(lon, lat, name, regionId, capacity) {
-  this.type = "Feature";
-  this.geometry = {};
-  this.properties = {};
-  this.geometry.type = "Point";
-  this.geometry.coordinates = [lon, lat];
-  this.properties.name = name;
-  this.properties.regionId = regionId;
-  this.properties.capacity = capacity;
-}
-
-function FeatureCollection(features) {
-  this.type = "FeatureCollection";
-  this.features = features;
-}
-
-function convertToGeoJSON(bikeshareJSON) {
-  const newStationArray = [];
-  const stationArray = bikeshareJSON;
-
-  stationArray.forEach((station) => {
-    const newStation = new BikeShareStation(
-      station.lon,
-      station.lat,
-      station.name,
-      station.region_id,
-      station.capacity
-    );
-    newStationArray.push(newStation);
-  });
-  return new FeatureCollection(newStationArray);
-}
-
-function getCabiStationInformation() {
-  return new Promise((resolve) => {
-    fetch("https://gbfs.capitalbikeshare.com/gbfs/en/station_information.json")
-      .then((response) => response.json())
-      .then((jsonData) => {
-        const stationGeoJSON = convertToGeoJSON(jsonData.data.stations);
-        resolve(stationGeoJSON);
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
-  });
-}
 
 function addSources(stationGeoJSON) {
   return new Promise((resolve) => {
@@ -203,4 +159,5 @@ map.on("mouseleave", "cabi-stations-points", () => {
   popup.remove();
 });
 
-export { convertToGeoJSON, getCabiStationInformation, addSources };
+// eslint-disable-next-line import/prefer-default-export
+export { addSources };
