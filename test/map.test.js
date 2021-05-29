@@ -12,7 +12,7 @@ test("addSources promise resolves with arguments", () => {
   });
 });
 
-test("fetchBikeData makes expected network calls", () => {
+test("fetchBikeData makes expected API calls", () => {
   global.fetch = jest.fn(() =>
     Promise.resolve({
       json: () => Promise.resolve(cabiStationInformationMock),
@@ -21,8 +21,11 @@ test("fetchBikeData makes expected network calls", () => {
 
   fetchBikeData();
 
-  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(fetch).toHaveBeenCalledTimes(2);
   expect(fetch).toHaveBeenCalledWith(
     "https://gbfs.capitalbikeshare.com/gbfs/en/station_information.json"
+  );
+  expect(fetch).toHaveBeenCalledWith(
+    "https://gbfs.capitalbikeshare.com/gbfs/en/station_status.json"
   );
 });

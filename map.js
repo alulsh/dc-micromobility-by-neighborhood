@@ -1,9 +1,13 @@
 /* eslint-disable strict */
+/* eslint-disable import/extensions */
 
 "use strict";
 
-// eslint-disable-next-line import/extensions
-import { getCabiStationInformation } from "./cabi.js";
+import {
+  getCabiStationInformation,
+  getCabiStationStatus,
+  mergeCabiStationJSON,
+} from "./cabi.js";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYWx1bHNoIiwiYSI6ImY0NDBjYTQ1NjU4OGJmMDFiMWQ1Y2RmYjRlMGI1ZjIzIn0.pngboKEPsfuC4j54XDT3VA";
@@ -122,10 +126,13 @@ function calculateBikesPerPolygon(stationGeoJSON) {
 }
 
 function fetchBikeData() {
-  getCabiStationInformation()
-    .then((stations) => addSources(stations))
-    .then(addLayers)
-    .then(calculateBikesPerPolygon);
+  const cabiStationInformation = getCabiStationInformation();
+  const cabiStationStatus = getCabiStationStatus();
+
+  Promise.all([cabiStationInformation, cabiStationStatus]).then((promises) => {
+    const mergedData = mergeCabiStationJSON(promises[0], promises[1]);
+    addSources(mergedData).then(addLayers).then(calculateBikesPerPolygon);
+  });
 }
 
 map.on("load", () => {
