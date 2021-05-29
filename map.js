@@ -237,12 +237,20 @@ const popup = new mapboxgl.Popup({
 });
 
 map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
-  popup
-    .setLngLat(event.lngLat)
-    .setHTML(
-      `<h4>${event.features[0].properties.NBH_NAMES}</h4><p>${event.features[0].state.totalBikeCapacity} Capital Bikeshare bike capacity</p>`
-    )
-    .addTo(map);
+  const percentageAvailable = (
+    (event.features[0].state.totalBikesAvailable /
+      event.features[0].state.totalBikeCapacity) *
+    100
+  ).toFixed(2);
+  const html = `
+      <h4>${event.features[0].properties.NBH_NAMES}</h4>
+      <p>
+      ${percentageAvailable}% available</br>
+      ${event.features[0].state.totalBikesAvailable} bikes available</br>
+      ${event.features[0].state.totalBikeCapacity} bike capacity</br>
+      </p>
+    `;
+  popup.setLngLat(event.lngLat).setHTML(html).addTo(map);
 });
 
 map.on("mouseleave", "dc-neighborhoods-polygons", () => {
