@@ -22,8 +22,8 @@ const map = new mapboxgl.Map({
 
 function createToggles() {
   const toggles = [
-    ["Capital Bikeshare availability", "cabi-bikes-availability"],
-    ["Capital Bikeshare capacity", "cabi-bikes-capacity"],
+    ["Capital Bikeshare availability", "cabi-bikes-availability", "default"],
+    ["Capital Bikeshare capacity", "cabi-bikes-capacity", "hidden"],
   ];
 
   toggles.forEach((toggle) => {
@@ -31,6 +31,9 @@ function createToggles() {
     link.href = "#";
     link.id = toggle[1];
     link.textContent = toggle[0];
+    if (toggle[2] === "default") {
+      link.className = "active";
+    }
 
     link.onclick = function toggleLayers(event) {
       const clickedLayer = this.id;
