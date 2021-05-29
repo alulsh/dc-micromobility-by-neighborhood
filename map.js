@@ -45,7 +45,7 @@ function addLayers(stationGeoJSON) {
         "fill-color": [
           "interpolate",
           ["linear"],
-          ["feature-state", "totalBikes"],
+          ["feature-state", "totalBikeCapacity"],
           0,
           ["to-color", "#F2F12D"],
           10,
@@ -106,9 +106,9 @@ function calculateBikesPerPolygon(stationGeoJSON) {
       const polygon = turf.polygon(feature.geometry.coordinates);
       const cabiWithin = turf.pointsWithinPolygon(stationGeoJSON, polygon);
 
-      let totalBikes = 0;
+      let totalBikeCapacity = 0;
       cabiWithin.features.forEach((station) => {
-        totalBikes += station.properties.capacity;
+        totalBikeCapacity += station.properties.capacity;
       });
 
       map.setFeatureState(
@@ -117,7 +117,7 @@ function calculateBikesPerPolygon(stationGeoJSON) {
           id: feature.id,
         },
         {
-          totalBikes,
+          totalBikeCapacity,
         }
       );
     });
@@ -148,7 +148,7 @@ map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
   popup
     .setLngLat(event.lngLat)
     .setHTML(
-      `<h4>${event.features[0].properties.NBH_NAMES}</h4><p>${event.features[0].state.totalBikes} Capital Bikeshare bikes</p>`
+      `<h4>${event.features[0].properties.NBH_NAMES}</h4><p>${event.features[0].state.totalBikeCapacity} Capital Bikeshare bike capacity</p>`
     )
     .addTo(map);
 });
@@ -161,7 +161,7 @@ map.on("mousemove", "cabi-stations-points", (event) => {
   popup
     .setLngLat(event.lngLat)
     .setHTML(
-      `<h4>${event.features[0].properties.name}</h4><p>${event.features[0].properties.capacity} bike capacity</p>`
+      `<h4>${event.features[0].properties.name}</h4><p>${event.features[0].properties.capacity} total bike capacity</p>`
     )
     .addTo(map);
 });
