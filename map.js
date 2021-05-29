@@ -22,8 +22,8 @@ const map = new mapboxgl.Map({
 
 function createToggles() {
   const toggles = [
-    ["Capital Bikeshare capacity", "cabi-bikes-capacity"],
     ["Capital Bikeshare availability", "cabi-bikes-availability"],
+    ["Capital Bikeshare capacity", "cabi-bikes-capacity"],
   ];
 
   toggles.forEach((toggle) => {
@@ -87,38 +87,17 @@ function addLayers(stationGeoJSON) {
     });
 
     map.addLayer({
-      id: "cabi-bikes-capacity",
-      type: "fill",
-      source: "dc-neighborhoods-source",
-      layout: {
-        visibility: "visible",
-      },
+      id: "cabi-stations-points",
+      type: "circle",
+      source: "cabi-stations-source",
+      minzoom: 12,
+      // regionId 42 is for Washington, D.C.
+      filter: ["==", "regionId", "42"],
       paint: {
-        "fill-color": [
-          "interpolate",
-          ["linear"],
-          ["feature-state", "totalBikeCapacity"],
-          0,
-          ["to-color", "#F2F12D"],
-          10,
-          ["to-color", "#EED322"],
-          20,
-          ["to-color", "#E6B71E"],
-          50,
-          ["to-color", "#DA9C20"],
-          100,
-          ["to-color", "#CA8323"],
-          200,
-          ["to-color", "#B86B25"],
-          300,
-          ["to-color", "#A25626"],
-          400,
-          ["to-color", "#8B4225"],
-          500,
-          ["to-color", "#723122"],
-        ],
-        "fill-opacity": 0.6,
-        "fill-outline-color": "#FFF",
+        "circle-color": "#363636",
+        "circle-radius": 4,
+        "circle-stroke-width": 1,
+        "circle-stroke-color": "#fff",
       },
     });
 
@@ -127,7 +106,7 @@ function addLayers(stationGeoJSON) {
       type: "fill",
       source: "dc-neighborhoods-source",
       layout: {
-        visibility: "none",
+        visibility: "visible",
       },
       paint: {
         "fill-color": [
@@ -159,17 +138,38 @@ function addLayers(stationGeoJSON) {
     });
 
     map.addLayer({
-      id: "cabi-stations-points",
-      type: "circle",
-      source: "cabi-stations-source",
-      minzoom: 12,
-      // regionId 42 is for Washington, D.C.
-      filter: ["==", "regionId", "42"],
+      id: "cabi-bikes-capacity",
+      type: "fill",
+      source: "dc-neighborhoods-source",
+      layout: {
+        visibility: "none",
+      },
       paint: {
-        "circle-color": "#363636",
-        "circle-radius": 4,
-        "circle-stroke-width": 1,
-        "circle-stroke-color": "#fff",
+        "fill-color": [
+          "interpolate",
+          ["linear"],
+          ["feature-state", "totalBikeCapacity"],
+          0,
+          ["to-color", "#F2F12D"],
+          10,
+          ["to-color", "#EED322"],
+          20,
+          ["to-color", "#E6B71E"],
+          50,
+          ["to-color", "#DA9C20"],
+          100,
+          ["to-color", "#CA8323"],
+          200,
+          ["to-color", "#B86B25"],
+          300,
+          ["to-color", "#A25626"],
+          400,
+          ["to-color", "#8B4225"],
+          500,
+          ["to-color", "#723122"],
+        ],
+        "fill-opacity": 0.6,
+        "fill-outline-color": "#FFF",
       },
     });
 
