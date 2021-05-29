@@ -6,6 +6,7 @@ global.mapboxgl = {
   Map: jest.fn(() => ({
     addControl: jest.fn(),
     addSource: jest.fn(),
+    addLayer: jest.fn(),
     on: jest.fn(),
   })),
   Popup: jest.fn(() => ({

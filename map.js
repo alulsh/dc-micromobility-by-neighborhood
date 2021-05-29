@@ -121,11 +121,15 @@ function calculateBikesPerPolygon(stationGeoJSON) {
   });
 }
 
-map.on("load", () => {
+function fetchBikeData() {
   getCabiStationInformation()
     .then((stations) => addSources(stations))
     .then(addLayers)
     .then(calculateBikesPerPolygon);
+}
+
+map.on("load", () => {
+  fetchBikeData();
 });
 
 const popup = new mapboxgl.Popup({
@@ -159,5 +163,4 @@ map.on("mouseleave", "cabi-stations-points", () => {
   popup.remove();
 });
 
-// eslint-disable-next-line import/prefer-default-export
-export { addSources };
+export { addSources, fetchBikeData };

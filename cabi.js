@@ -60,7 +60,6 @@ function getCabiStationStatus() {
   });
 }
 
-// eslint-disable-next-line no-unused-vars
 function mergeCabiStationJSON(stationGeoJSON, stationStatus) {
   const mergedArray = stationGeoJSON.features.map((feature) => ({
     ...feature,
