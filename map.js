@@ -240,11 +240,16 @@ const popup = new mapboxgl.Popup({
 });
 
 map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
-  const percentageAvailable = (
+  let percentageAvailable = (
     (event.features[0].state.totalBikesAvailable /
       event.features[0].state.totalBikeCapacity) *
     100
   ).toFixed(2);
+
+  if (percentageAvailable === "NaN") {
+    percentageAvailable = 0;
+  }
+
   const html = `
       <h4>${event.features[0].properties.NBH_NAMES}</h4>
       <p>
