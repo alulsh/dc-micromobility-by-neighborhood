@@ -252,11 +252,13 @@ map.on("mouseleave", "dc-neighborhoods-polygons", () => {
 map.on("mousemove", "cabi-stations-points", (event) => {
   const html = `
   <h4>${event.features[0].properties.name}</h4>
-  <p>${event.features[0].properties.capacity} total bike capacity</p>
-  <p>${event.features[0].properties.bikesAvailable} bikes available</p>
-  <p>${event.features[0].properties.docksAvailable} docks available</p>
-  <p>${event.features[0].properties.bikesDisabled} disabled bikes</p>
-  <p>${event.features[0].properties.docksDisabled} disabled docks</p>
+  <p>
+  ${event.features[0].properties.bikesAvailable} bikes available<br/>
+  ${event.features[0].properties.docksAvailable} docks available<br/>
+  ${event.features[0].properties.bikesDisabled} disabled bikes<br/>
+  ${event.features[0].properties.docksDisabled} disabled docks<br/>
+  ${event.features[0].properties.capacity} total bike capacity<br/>
+  </p>
   `;
   popup.setLngLat(event.lngLat).setHTML(html).addTo(map);
 });
