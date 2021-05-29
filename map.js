@@ -41,11 +41,62 @@ function addLayers(stationGeoJSON) {
       id: "dc-neighborhoods-polygons",
       type: "fill",
       source: "dc-neighborhoods-source",
+      layout: {
+        visibility: "visible",
+      },
+      paint: {
+        "fill-opacity": 0,
+      },
+    });
+
+    map.addLayer({
+      id: "cabi-bikes-capacity",
+      type: "fill",
+      source: "dc-neighborhoods-source",
+      layout: {
+        visibility: "visible",
+      },
       paint: {
         "fill-color": [
           "interpolate",
           ["linear"],
           ["feature-state", "totalBikeCapacity"],
+          0,
+          ["to-color", "#F2F12D"],
+          10,
+          ["to-color", "#EED322"],
+          20,
+          ["to-color", "#E6B71E"],
+          50,
+          ["to-color", "#DA9C20"],
+          100,
+          ["to-color", "#CA8323"],
+          200,
+          ["to-color", "#B86B25"],
+          300,
+          ["to-color", "#A25626"],
+          400,
+          ["to-color", "#8B4225"],
+          500,
+          ["to-color", "#723122"],
+        ],
+        "fill-opacity": 0.6,
+        "fill-outline-color": "#FFF",
+      },
+    });
+
+    map.addLayer({
+      id: "cabi-bikes-availability",
+      type: "fill",
+      source: "dc-neighborhoods-source",
+      layout: {
+        visibility: "none",
+      },
+      paint: {
+        "fill-color": [
+          "interpolate",
+          ["linear"],
+          ["feature-state", "totalBikesAvailable"],
           0,
           ["to-color", "#F2F12D"],
           10,
@@ -107,8 +158,10 @@ function calculateBikesPerPolygon(stationGeoJSON) {
       const cabiWithin = turf.pointsWithinPolygon(stationGeoJSON, polygon);
 
       let totalBikeCapacity = 0;
+      let totalBikesAvailable = 0;
       cabiWithin.features.forEach((station) => {
         totalBikeCapacity += station.properties.capacity;
+        totalBikesAvailable += station.properties.bikesAvailable;
       });
 
       map.setFeatureState(
@@ -118,6 +171,7 @@ function calculateBikesPerPolygon(stationGeoJSON) {
         },
         {
           totalBikeCapacity,
+          totalBikesAvailable,
         }
       );
     });
@@ -158,12 +212,15 @@ map.on("mouseleave", "dc-neighborhoods-polygons", () => {
 });
 
 map.on("mousemove", "cabi-stations-points", (event) => {
-  popup
-    .setLngLat(event.lngLat)
-    .setHTML(
-      `<h4>${event.features[0].properties.name}</h4><p>${event.features[0].properties.capacity} total bike capacity</p>`
-    )
-    .addTo(map);
+  const html = `
+  <h4>${event.features[0].properties.name}</h4>
+  <p>${event.features[0].properties.capacity} total bike capacity</p>
+  <p>${event.features[0].properties.bikesAvailable} bikes available</p>
+  <p>${event.features[0].properties.docksAvailable} docks available</p>
+  <p>${event.features[0].properties.bikesDisabled} disabled bikes</p>
+  <p>${event.features[0].properties.docksDisabled} disabled docks</p>
+  `;
+  popup.setLngLat(event.lngLat).setHTML(html).addTo(map);
 });
 
 map.on("mouseleave", "cabi-stations-points", () => {
