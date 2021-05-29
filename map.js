@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable strict */
 /* eslint-disable import/extensions */
 
@@ -18,6 +19,42 @@ const map = new mapboxgl.Map({
   center: [-77.04, 38.89],
   zoom: 10.6,
 });
+
+function createToggles() {
+  const toggles = [
+    ["Capital Bikeshare capacity", "cabi-bikes-capacity"],
+    ["Capital Bikeshare availability", "cabi-bikes-availability"],
+  ];
+
+  toggles.forEach((toggle) => {
+    const link = document.createElement("a");
+    link.href = "#";
+    link.id = toggle[1];
+    link.textContent = toggle[0];
+
+    link.onclick = function toggleLayers(event) {
+      const clickedLayer = this.id;
+      event.preventDefault();
+      event.stopPropagation();
+
+      const legend = document.getElementById("cabibikes-legend");
+      const visibility = map.getLayoutProperty(`${clickedLayer}`, "visibility");
+
+      if (visibility === "visible") {
+        legend.style.display = "none";
+        this.className = "";
+        map.setLayoutProperty(`${clickedLayer}`, "visibility", "none");
+      } else {
+        legend.style.display = "";
+        this.className = "active";
+        map.setLayoutProperty(`${clickedLayer}`, "visibility", "visible");
+      }
+    };
+
+    const layers = document.getElementById("menu");
+    layers.appendChild(link);
+  });
+}
 
 function addSources(stationGeoJSON) {
   return new Promise((resolve) => {
@@ -191,6 +228,7 @@ function fetchBikeData() {
 
 map.on("load", () => {
   fetchBikeData();
+  createToggles();
 });
 
 const popup = new mapboxgl.Popup({
