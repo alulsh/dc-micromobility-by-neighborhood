@@ -52,6 +52,20 @@ body {
   border: none;
 }
 
+#menu a:hover {
+  background-color: #dcdcdc;
+  color: #404040;
+}
+
+#menu a.active {
+  background-color: #696969;
+  color: #ffffff;
+}
+
+#menu a.active:hover {
+  background: #a9a9a9;
+}
+
 .legend {
   background-color: #fff;
   border-radius: 3px;
