@@ -67,8 +67,7 @@ function addSources(stationGeoJSON) {
     });
     map.addSource("dc-neighborhoods-source", {
       type: "geojson",
-      data:
-        "https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson",
+      data: "https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson",
       generateId: true,
     });
     resolve(stationGeoJSON);
