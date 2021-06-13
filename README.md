@@ -77,10 +77,6 @@ Don't use Node and npm? You can still run this project locally by running `index
 
 This project doesn't have unit tests but does use [eslint](https://eslint.org/) for linting. Linting tests run automatically after every commit with Travis CI.
 
-## Scripts
-
-The `scripts` directory of this project has Node.js scripts to fetch data from the various bikeshare services in Washington, D.C. These scripts are useful for debugging or obtaining data unavailable with client side JavaScript (e.g. LimeBike).
-
 ## Contributing
 
 Notice a bug in the project? Did one of the missing bikeshare services recently implement a public API? [Create a new issue in this repository](https://github.com/alulsh/dc-bikeshare-by-neighborhood/issues/new) to help me out!
