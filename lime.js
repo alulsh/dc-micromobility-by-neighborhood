@@ -10,8 +10,13 @@ function getLimeBikes() {
     fetch("https://vercel-test-alulsh.vercel.app/api/proxy?service=lime")
       .then((response) => response.json())
       .then((jsonData) => {
-        const bikesOnly = filterLimeBikes(jsonData.data.bikes);
-        resolve(bikesOnly);
+        let bikesOnly;
+        try {
+          bikesOnly = filterLimeBikes(jsonData.data.bikes);
+          resolve(bikesOnly);
+        } catch (error) {
+          throw new Error("Cannot filter Lime API vehicle data");
+        }
       })
       .catch((error) => {
         throw new Error(error);
