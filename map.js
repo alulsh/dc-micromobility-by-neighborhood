@@ -308,4 +308,15 @@ map.on("mouseleave", "cabi-stations-points", () => {
   popup.remove();
 });
 
+map.on("mousemove", "lime-bikes-points", (event) => {
+  const html = `
+  <h4>Lime ${event.features[0].properties.vehicleType} </h4>
+  `;
+  popup.setLngLat(event.lngLat).setHTML(html).addTo(map);
+});
+
+map.on("mouseleave", "lime-bikes-points", () => {
+  popup.remove();
+});
+
 export { addSources, fetchBikeData };
