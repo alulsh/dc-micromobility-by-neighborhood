@@ -6,7 +6,7 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-test("Requests Lime API from CORS proxy", () => {
+test("Requests then filters Lime API data from CORS proxy", () => {
   global.fetch = jest.fn(() =>
     Promise.resolve({
       json: () => Promise.resolve(limeApi),
@@ -18,7 +18,7 @@ test("Requests Lime API from CORS proxy", () => {
     expect(fetch).toHaveBeenCalledWith(
       "https://vercel-test-alulsh.vercel.app/api/proxy?service=lime"
     );
-    expect(data).toEqual(limeApi.data.bikes);
+    expect(data).toEqual(limeBikesOnly);
   });
 });
 
