@@ -330,10 +330,46 @@ const limeApi = {
   },
 };
 
+const limeBikesOnly = [
+  {
+    bike_id: "82f6a131-eee5-4772-bd3f-17443da42879",
+    lat: "38.962",
+    lon: "-77.0273",
+    is_reserved: 0,
+    is_disabled: 0,
+    vehicle_type: "bike",
+  },
+  {
+    bike_id: "c7350ed4-a4a9-40de-9e54-eea20751f6b7",
+    lat: "38.898",
+    lon: "-76.9173",
+    is_reserved: 0,
+    is_disabled: 0,
+    vehicle_type: "bike",
+  },
+  {
+    bike_id: "2c8b70c9-1cb8-49ca-9643-8fb476aa64eb",
+    lat: "38.8988",
+    lon: "-76.9205",
+    is_reserved: 0,
+    is_disabled: 0,
+    vehicle_type: "bike",
+  },
+  {
+    bike_id: "b32005a3-f5ac-4271-9081-d80c56e28164",
+    lat: "38.8934",
+    lon: "-76.9221",
+    is_reserved: 0,
+    is_disabled: 0,
+    vehicle_type: "bike",
+  },
+];
+
 export {
   cabiStationInformationMock,
   cabiStationGeoJSON,
   cabiStationStatus,
   mergedCabiGeoJSON,
   limeApi,
+  limeBikesOnly,
 };

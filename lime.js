@@ -11,5 +11,11 @@ function getLimeBikes() {
   });
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export { getLimeBikes };
+function filterLimeBikes(limeVehicles) {
+  const bikesOnly = limeVehicles.filter(
+    (vehicle) => vehicle.vehicle_type === "bike"
+  );
+  return bikesOnly;
+}
+
+export { getLimeBikes, filterLimeBikes };
