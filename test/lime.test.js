@@ -1,6 +1,6 @@
 import { expect, test, jest, afterEach } from "@jest/globals";
-import { getLimeBikes, filterLimeBikes } from "../lime";
-import { limeApi, limeBikesOnly } from "./fixtures";
+import { getLimeBikes, filterLimeBikes, convertToGeoJSON } from "../lime";
+import { limeApi, limeBikesOnly, limeBikesGeoJSON } from "./fixtures";
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -24,4 +24,8 @@ test("Requests then filters Lime API data from CORS proxy", () => {
 
 test("Filters out scooter and mopeds from Lime API response", () => {
   expect(filterLimeBikes(limeApi.data.bikes)).toEqual(limeBikesOnly);
+});
+
+test("Converts filtered Lime bike data to GeoJSON", () => {
+  expect(convertToGeoJSON(limeBikesOnly)).toEqual(limeBikesGeoJSON);
 });

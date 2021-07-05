@@ -60,11 +60,15 @@ function createToggles() {
   });
 }
 
-function addSources(stationGeoJSON) {
+function addSources(stationGeoJSON, limeBikes) {
   return new Promise((resolve) => {
     map.addSource("cabi-stations-source", {
       type: "geojson",
       data: stationGeoJSON,
+    });
+    map.addSource("lime-bikes-source", {
+      type: "geojson",
+      data: limeBikes,
     });
     map.addSource("dc-neighborhoods-source", {
       type: "geojson",
@@ -227,7 +231,9 @@ function fetchBikeData() {
   Promise.all([cabiStationInformation, cabiStationStatus, limeBikes]).then(
     (promises) => {
       const mergedData = mergeCabiStationJSON(promises[0], promises[1]);
-      addSources(mergedData).then(addLayers).then(calculateBikesPerPolygon);
+      addSources(mergedData, promises[2])
+        .then(addLayers)
+        .then(calculateBikesPerPolygon);
     }
   );
 }

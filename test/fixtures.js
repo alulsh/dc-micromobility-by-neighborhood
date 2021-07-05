@@ -365,6 +365,60 @@ const limeBikesOnly = [
   },
 ];
 
+const limeBikesGeoJSON = {
+  type: "FeatureCollection",
+  features: [
+    {
+      type: "Feature",
+      geometry: {
+        coordinates: [-77.0273, 38.962],
+        type: "Point",
+      },
+      properties: {
+        isReserved: 0,
+        isDisabled: 0,
+        vehicleType: "bike",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        coordinates: [-76.9173, 38.898],
+        type: "Point",
+      },
+      properties: {
+        isReserved: 0,
+        isDisabled: 0,
+        vehicleType: "bike",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        coordinates: [-76.9205, 38.8988],
+        type: "Point",
+      },
+      properties: {
+        isReserved: 0,
+        isDisabled: 0,
+        vehicleType: "bike",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        coordinates: [-76.9221, 38.8934],
+        type: "Point",
+      },
+      properties: {
+        isReserved: 0,
+        isDisabled: 0,
+        vehicleType: "bike",
+      },
+    },
+  ],
+};
+
 export {
   cabiStationInformationMock,
   cabiStationGeoJSON,
@@ -372,4 +426,5 @@ export {
   mergedCabiGeoJSON,
   limeApi,
   limeBikesOnly,
+  limeBikesGeoJSON,
 };
