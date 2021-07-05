@@ -109,6 +109,22 @@ function addLayers(stationGeoJSON) {
     });
 
     map.addLayer({
+      id: "lime-bikes-points",
+      type: "circle",
+      source: "lime-bikes-source",
+      layout: {
+        visibility: "visible",
+      },
+      minzoom: 12,
+      paint: {
+        "circle-color": "#BFFF00",
+        "circle-radius": 4,
+        "circle-stroke-width": 1,
+        "circle-stroke-color": "#fff",
+      },
+    });
+
+    map.addLayer({
       id: "cabi-bikes-availability",
       type: "fill",
       source: "dc-neighborhoods-source",
