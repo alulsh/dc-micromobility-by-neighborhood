@@ -1,5 +1,5 @@
 import { expect, test, jest, afterEach } from "@jest/globals";
-import { addSources, fetchBikeData } from "../map";
+import { addCabiSource, fetchBikeData } from "../map";
 import {
   cabiStationGeoJSON,
   cabiStationInformationMock,
@@ -11,7 +11,7 @@ afterEach(() => {
 });
 
 test("addSources promise resolves with arguments", () => {
-  return addSources(cabiStationGeoJSON).then((data) => {
+  return addCabiSource(cabiStationGeoJSON).then((data) => {
     expect(data).toBe(cabiStationGeoJSON);
   });
 });

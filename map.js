@@ -25,6 +25,7 @@ function createToggles() {
   const toggles = [
     ["Capital Bikeshare availability", "cabi-bikes-availability", "default"],
     ["Capital Bikeshare capacity", "cabi-bikes-capacity", "hidden"],
+    ["Lime electric bikes", "total-lime-bikes", "hidden"],
   ];
 
   toggles.forEach((toggle) => {
@@ -60,54 +61,41 @@ function createToggles() {
   });
 }
 
-function addSources(stationGeoJSON, limeBikes) {
+function addCabiSource(stationGeoJSON) {
   return new Promise((resolve) => {
     map.addSource("cabi-stations-source", {
       type: "geojson",
       data: stationGeoJSON,
     });
-    map.addSource("lime-bikes-source", {
-      type: "geojson",
-      data: limeBikes,
-    });
-    map.addSource("dc-neighborhoods-source", {
-      type: "geojson",
-      data: "https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson",
-      generateId: true,
-    });
     resolve(stationGeoJSON);
   });
 }
 
-function addLayers(stationGeoJSON) {
+function addNeighborhoodPolygons() {
+  map.addSource("dc-neighborhoods-source", {
+    type: "geojson",
+    data: "https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson",
+    generateId: true,
+  });
+  map.addLayer({
+    id: "dc-neighborhoods-polygons",
+    type: "fill",
+    source: "dc-neighborhoods-source",
+    layout: {
+      visibility: "visible",
+    },
+    paint: {
+      "fill-opacity": 0,
+    },
+  });
+}
+
+function addLimeBikeLayer(limeBikeGeojson) {
   return new Promise((resolve) => {
-    map.addLayer({
-      id: "dc-neighborhoods-polygons",
-      type: "fill",
-      source: "dc-neighborhoods-source",
-      layout: {
-        visibility: "visible",
-      },
-      paint: {
-        "fill-opacity": 0,
-      },
+    map.addSource("lime-bikes-source", {
+      type: "geojson",
+      data: limeBikeGeojson,
     });
-
-    map.addLayer({
-      id: "cabi-stations-points",
-      type: "circle",
-      source: "cabi-stations-source",
-      minzoom: 12,
-      // regionId 42 is for Washington, D.C.
-      filter: ["==", "regionId", "42"],
-      paint: {
-        "circle-color": "#363636",
-        "circle-radius": 4,
-        "circle-stroke-width": 1,
-        "circle-stroke-color": "#fff",
-      },
-    });
-
     map.addLayer({
       id: "lime-bikes-points",
       type: "circle",
@@ -118,6 +106,69 @@ function addLayers(stationGeoJSON) {
       minzoom: 12,
       paint: {
         "circle-color": "#BFFF00",
+        "circle-radius": 4,
+        "circle-stroke-width": 1,
+        "circle-stroke-color": "#fff",
+      },
+    });
+    map.addLayer({
+      id: "total-lime-bikes",
+      type: "fill",
+      source: "dc-neighborhoods-source",
+      layout: {
+        visibility: "none",
+      },
+      paint: {
+        "fill-color": [
+          "interpolate",
+          ["linear"],
+          ["feature-state", "totalLimeBikes"],
+          0,
+          ["to-color", "#F2F12D"],
+          10,
+          ["to-color", "#EED322"],
+          20,
+          ["to-color", "#E6B71E"],
+          50,
+          ["to-color", "#DA9C20"],
+          100,
+          ["to-color", "#CA8323"],
+          200,
+          ["to-color", "#B86B25"],
+          300,
+          ["to-color", "#A25626"],
+          400,
+          ["to-color", "#8B4225"],
+          500,
+          ["to-color", "#723122"],
+        ],
+        "fill-opacity": 0.6,
+        "fill-outline-color": "#FFF",
+      },
+    });
+    map.on("sourcedata", function sourceLoaded(e) {
+      if (
+        e.sourceId === "dc-neighborhoods-source" &&
+        e.isSourceLoaded &&
+        e.coord
+      ) {
+        resolve(limeBikeGeojson);
+      }
+    });
+  });
+}
+
+function addCabiLayers(stationGeoJSON) {
+  return new Promise((resolve) => {
+    map.addLayer({
+      id: "cabi-stations-points",
+      type: "circle",
+      source: "cabi-stations-source",
+      minzoom: 12,
+      // regionId 42 is for Washington, D.C.
+      filter: ["==", "regionId", "42"],
+      paint: {
+        "circle-color": "#363636",
         "circle-radius": 4,
         "circle-stroke-width": 1,
         "circle-stroke-color": "#fff",
@@ -208,7 +259,7 @@ function addLayers(stationGeoJSON) {
   });
 }
 
-function calculateBikesPerPolygon(stationGeoJSON) {
+function calculateCabiBikesPerPolygon(stationGeoJSON) {
   return new Promise((resolve) => {
     const dcPolygons = map.queryRenderedFeatures({
       layers: ["dc-neighborhoods-polygons"],
@@ -239,22 +290,49 @@ function calculateBikesPerPolygon(stationGeoJSON) {
   });
 }
 
+function calculateLimeBikesPerPolygon(limeBikeGeojson) {
+  return new Promise((resolve) => {
+    const dcPolygons = map.queryRenderedFeatures({
+      layers: ["dc-neighborhoods-polygons"],
+    });
+    dcPolygons.forEach((feature) => {
+      const polygon = turf.polygon(feature.geometry.coordinates);
+      const limeBikesWithin = turf.pointsWithinPolygon(
+        limeBikeGeojson,
+        polygon
+      );
+
+      const totalLimeBikes = limeBikesWithin.features.length;
+
+      map.setFeatureState(
+        {
+          source: "dc-neighborhoods-source",
+          id: feature.id,
+        },
+        {
+          totalLimeBikes,
+        }
+      );
+    });
+    resolve(dcPolygons);
+  });
+}
+
 function fetchBikeData() {
   const cabiStationInformation = getCabiStationInformation();
   const cabiStationStatus = getCabiStationStatus();
-  const limeBikes = getLimeBikes();
+  getLimeBikes().then(addLimeBikeLayer).then(calculateLimeBikesPerPolygon);
 
-  Promise.all([cabiStationInformation, cabiStationStatus, limeBikes]).then(
-    (promises) => {
-      const mergedData = mergeCabiStationJSON(promises[0], promises[1]);
-      addSources(mergedData, promises[2])
-        .then(addLayers)
-        .then(calculateBikesPerPolygon);
-    }
-  );
+  Promise.all([cabiStationInformation, cabiStationStatus]).then((promises) => {
+    const mergedData = mergeCabiStationJSON(promises[0], promises[1]);
+    addCabiSource(mergedData)
+      .then(addCabiLayers)
+      .then(calculateCabiBikesPerPolygon);
+  });
 }
 
 map.on("load", () => {
+  addNeighborhoodPolygons();
   fetchBikeData();
   createToggles();
 });
@@ -319,4 +397,4 @@ map.on("mouseleave", "lime-bikes-points", () => {
   popup.remove();
 });
 
-export { addSources, fetchBikeData };
+export { addCabiSource, fetchBikeData };
