@@ -200,21 +200,6 @@ function addLimeBikeLayer(limeBikeGeojson) {
 function addCabiLayers(stationGeoJSON) {
   return new Promise((resolve) => {
     map.addLayer({
-      id: "cabi-stations-points",
-      type: "circle",
-      source: "cabi-stations-source",
-      minzoom: 12,
-      // regionId 42 is for Washington, D.C.
-      filter: ["==", "regionId", "42"],
-      paint: {
-        "circle-color": "#363636",
-        "circle-radius": 4,
-        "circle-stroke-width": 1,
-        "circle-stroke-color": "#fff",
-      },
-    });
-
-    map.addLayer({
       id: "cabi-bikes-availability",
       type: "fill",
       source: "dc-neighborhoods-source",
@@ -283,6 +268,21 @@ function addCabiLayers(stationGeoJSON) {
         ],
         "fill-opacity": 0.6,
         "fill-outline-color": "#FFF",
+      },
+    });
+
+    map.addLayer({
+      id: "cabi-stations-points",
+      type: "circle",
+      source: "cabi-stations-source",
+      minzoom: 12,
+      // regionId 42 is for Washington, D.C.
+      filter: ["==", "regionId", "42"],
+      paint: {
+        "circle-color": "#363636",
+        "circle-radius": 4,
+        "circle-stroke-width": 1,
+        "circle-stroke-color": "#fff",
       },
     });
 
