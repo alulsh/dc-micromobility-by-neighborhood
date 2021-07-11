@@ -32,6 +32,16 @@ function clearToggles(toggle, activeLayer) {
   });
 }
 
+function clearLegends(clickedLayer) {
+  const legends = document.getElementsByClassName("legend");
+  let i;
+  for (i = 0; i < legends.length; i++) {
+    if (legends[i].id !== clickedLayer) {
+      legends[i].style.display = "none";
+    }
+  }
+}
+
 function createToggles() {
   const toggles = [
     ["Capital Bikeshare availability", "cabi-bikes-availability", "default"],
@@ -63,6 +73,7 @@ function createToggles() {
         map.setLayoutProperty(`${clickedLayer}`, "visibility", "none");
       } else {
         clearToggles(this, clickedLayer);
+        clearLegends(clickedLayer);
         legend.style.display = "";
         this.className = "active";
         map.setLayoutProperty(`${clickedLayer}`, "visibility", "visible");
