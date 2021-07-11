@@ -21,6 +21,17 @@ const map = new mapboxgl.Map({
   zoom: 10.6,
 });
 
+function clearToggles(toggle, activeLayer) {
+  const navMenu = toggle.parentElement;
+  navMenu.childNodes.forEach((node) => {
+    if (node.id !== activeLayer) {
+      // eslint-disable-next-line no-param-reassign
+      node.className = "";
+      map.setLayoutProperty(node.id, "visibility", "none");
+    }
+  });
+}
+
 function createToggles() {
   const toggles = [
     ["Capital Bikeshare availability", "cabi-bikes-availability", "default"],
@@ -46,10 +57,12 @@ function createToggles() {
       const visibility = map.getLayoutProperty(`${clickedLayer}`, "visibility");
 
       if (visibility === "visible") {
+        clearToggles(this, clickedLayer);
         legend.style.display = "none";
         this.className = "";
         map.setLayoutProperty(`${clickedLayer}`, "visibility", "none");
       } else {
+        clearToggles(this, clickedLayer);
         legend.style.display = "";
         this.className = "active";
         map.setLayoutProperty(`${clickedLayer}`, "visibility", "visible");
