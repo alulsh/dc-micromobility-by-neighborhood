@@ -46,7 +46,7 @@ function createToggles() {
   const toggles = [
     ["Capital Bikeshare availability", "cabi-bikes-availability", "default"],
     ["Capital Bikeshare capacity", "cabi-bikes-capacity", "hidden"],
-    ["Lime electric bikes", "total-lime-bikes", "hidden"],
+    ["Lime bikes", "total-lime-bikes", "hidden"],
   ];
 
   toggles.forEach((toggle) => {
@@ -129,7 +129,7 @@ function addLimeBikeLayer(limeBikeGeojson) {
       },
       minzoom: 12,
       paint: {
-        "circle-color": "#BFFF00",
+        "circle-color": "#50C878",
         "circle-radius": 4,
         "circle-stroke-width": 1,
         "circle-stroke-color": "#fff",
