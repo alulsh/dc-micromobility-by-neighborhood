@@ -53,7 +53,7 @@ function createToggles() {
       event.preventDefault();
       event.stopPropagation();
 
-      const legend = document.getElementById("cabibikes-legend");
+      const legend = document.getElementById(`${clickedLayer}-legend`);
       const visibility = map.getLayoutProperty(`${clickedLayer}`, "visibility");
 
       if (visibility === "visible") {
@@ -137,26 +137,22 @@ function addLimeBikeLayer(limeBikeGeojson) {
           ["linear"],
           ["feature-state", "totalLimeBikes"],
           0,
-          ["to-color", "#F2F12D"],
+          ["to-color", "rgb(255, 255, 255)"],
+          5,
+          ["to-color", "rgb(244, 255, 212)"],
           10,
-          ["to-color", "#EED322"],
+          ["to-color", "rgb(233, 255, 170)"],
+          15,
+          ["to-color", "rgb(223, 255, 127)"],
           20,
-          ["to-color", "#E6B71E"],
-          50,
-          ["to-color", "#DA9C20"],
-          100,
-          ["to-color", "#CA8323"],
-          200,
-          ["to-color", "#B86B25"],
-          300,
-          ["to-color", "#A25626"],
-          400,
-          ["to-color", "#8B4225"],
-          500,
-          ["to-color", "#723122"],
+          ["to-color", "rgb(212, 255, 85)"],
+          25,
+          ["to-color", "rgb(201, 255, 42)"],
+          30,
+          ["to-color", "rgb(191, 255, 0)"],
         ],
         "fill-opacity": 0.6,
-        "fill-outline-color": "#FFF",
+        "fill-outline-color": "#DCDCDC",
       },
     });
     map.on("sourcedata", function sourceLoaded(e) {
@@ -356,24 +352,49 @@ const popup = new mapboxgl.Popup({
 });
 
 map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
-  let percentageAvailable = (
-    (event.features[0].state.totalBikesAvailable /
-      event.features[0].state.totalBikeCapacity) *
-    100
-  ).toFixed(2);
+  let activeLayer;
+  let percentageAvailable;
+  let html;
 
-  if (percentageAvailable === "NaN") {
-    percentageAvailable = 0;
+  const navMenu = document.getElementById("menu");
+  navMenu.childNodes.forEach((item) => {
+    if (item.className === "active") {
+      activeLayer = item.id;
+    }
+  });
+
+  switch (activeLayer) {
+    case "total-lime-bikes":
+      html = `
+      <h4>${event.features[0].properties.NBH_NAMES}</h4>
+      <p>${event.features[0].state.totalLimeBikes} electric Lime bikes</p>
+      `;
+      break;
+    case "cabi-bikes-availability":
+    case "cabi-bikes-capacity":
+      percentageAvailable = (
+        (event.features[0].state.totalBikesAvailable /
+          event.features[0].state.totalBikeCapacity) *
+        100
+      ).toFixed(2);
+
+      if (percentageAvailable === "NaN") {
+        percentageAvailable = 0;
+      }
+
+      html = `
+        <h4>${event.features[0].properties.NBH_NAMES}</h4>
+        <p>
+        ${percentageAvailable}% available</br>
+        ${event.features[0].state.totalBikesAvailable} bikes available</br>
+        ${event.features[0].state.totalBikeCapacity} bike capacity</br>
+        </p>
+      `;
+      break;
+    default:
+      html = `No data selected. Select a data source on the left hand menu.`;
   }
 
-  const html = `
-      <h4>${event.features[0].properties.NBH_NAMES}</h4>
-      <p>
-      ${percentageAvailable}% available</br>
-      ${event.features[0].state.totalBikesAvailable} bikes available</br>
-      ${event.features[0].state.totalBikeCapacity} bike capacity</br>
-      </p>
-    `;
   popup.setLngLat(event.lngLat).setHTML(html).addTo(map);
 });
 
