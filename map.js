@@ -42,6 +42,23 @@ function clearLegends(clickedLayer) {
   }
 }
 
+function togglePointLayers(clickedLayer, visibility) {
+  switch (clickedLayer) {
+    case "total-lime-bikes":
+      map.moveLayer("total-lime-bikes", "lime-bikes-points");
+      map.setLayoutProperty("lime-bikes-points", "visibility", visibility);
+      break;
+    case "cabi-bikes-availability":
+    case "cabi-bikes-capacity":
+      map.moveLayer("cabi-bikes-availability", "cabi-stations-points");
+      map.moveLayer("cabi-bikes-capacity", "cabi-stations-points");
+      map.setLayoutProperty("cabi-stations-points", "visibility", visibility);
+      break;
+    default:
+      break;
+  }
+}
+
 function createToggles() {
   const toggles = [
     ["Capital Bikeshare availability", "cabi-bikes-availability", "default"],
@@ -71,12 +88,14 @@ function createToggles() {
         legend.style.display = "none";
         this.className = "";
         map.setLayoutProperty(`${clickedLayer}`, "visibility", "none");
+        togglePointLayers(clickedLayer, "none");
       } else {
         clearToggles(this, clickedLayer);
         clearLegends(clickedLayer);
         legend.style.display = "";
         this.className = "active";
         map.setLayoutProperty(`${clickedLayer}`, "visibility", "visible");
+        togglePointLayers(clickedLayer, "visible");
       }
     };
 
@@ -125,7 +144,7 @@ function addLimeBikeLayer(limeBikeGeojson) {
       type: "circle",
       source: "lime-bikes-source",
       layout: {
-        visibility: "visible",
+        visibility: "none",
       },
       minzoom: 12,
       paint: {
