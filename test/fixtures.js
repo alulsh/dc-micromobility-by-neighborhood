@@ -419,6 +419,55 @@ const limeBikesGeoJSON = {
   ],
 };
 
+const spinApi = {
+  last_updated: 1628353875,
+  ttl: 30,
+  data: {
+    bikes: [
+      {
+        bike_id: "e6c9f8cd-9d29-4862-89b9-545f82f46ef3",
+        lat: 38.9216,
+        lon: -77.04226,
+        vehicle_type: "scooter",
+        is_reserved: 0,
+        is_disabled: 0,
+      },
+      {
+        bike_id: "ae043de6-64c8-4a20-a88f-75ca12724197",
+        lat: 38.86727,
+        lon: -77.0135,
+        vehicle_type: "scooter",
+        is_reserved: 0,
+        is_disabled: 0,
+      },
+      {
+        bike_id: "a0c9ca9d-3fda-40c4-8d8f-b9e4c7f62238",
+        lat: 38.92864,
+        lon: -77.03502,
+        vehicle_type: "scooter",
+        is_reserved: 0,
+        is_disabled: 0,
+      },
+      {
+        bike_id: "795d27ed-c516-420c-a0fb-775a5486bb85",
+        lat: 38.90836,
+        lon: -77.04302,
+        vehicle_type: "scooter",
+        is_reserved: 0,
+        is_disabled: 0,
+      },
+      {
+        bike_id: "21d4b9a4-9872-4112-b650-0ae03ee41d4d",
+        lat: 38.91574,
+        lon: -76.98388,
+        vehicle_type: "scooter",
+        is_reserved: 0,
+        is_disabled: 0,
+      },
+    ],
+  },
+};
+
 export {
   cabiStationInformationMock,
   cabiStationGeoJSON,
@@ -427,4 +476,5 @@ export {
   limeApi,
   limeBikesOnly,
   limeBikesGeoJSON,
+  spinApi,
 };

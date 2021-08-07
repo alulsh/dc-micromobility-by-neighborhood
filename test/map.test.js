@@ -30,7 +30,7 @@ test("fetchBikeData makes expected API calls", () => {
 
   fetchBikeData();
 
-  expect(fetch).toHaveBeenCalledTimes(3);
+  expect(fetch).toHaveBeenCalledTimes(4);
   expect(fetch).toHaveBeenCalledWith(
     "https://gbfs.capitalbikeshare.com/gbfs/en/station_information.json"
   );
@@ -39,5 +39,8 @@ test("fetchBikeData makes expected API calls", () => {
   );
   expect(fetch).toHaveBeenCalledWith(
     "https://vercel-cors-proxy.vercel.app/api/proxy?service=lime"
+  );
+  expect(fetch).toHaveBeenCalledWith(
+    "https://gbfs.spin.pm/api/gbfs/v1/washington_dc/free_bike_status"
   );
 });
