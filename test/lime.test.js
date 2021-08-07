@@ -16,7 +16,7 @@ test("Returns filtered and processed GeoJSON from Lime API via CORS proxy", () =
   return getLimeBikes().then((data) => {
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(
-      "https://vercel-test-alulsh.vercel.app/api/proxy?service=lime"
+      "https://vercel-cors-proxy.vercel.app/api/proxy?service=lime"
     );
     expect(data).toEqual(limeBikesGeoJSON);
   });

@@ -30,7 +30,7 @@ function convertToGeoJSON(limeBikes) {
 
 function getLimeBikes() {
   return new Promise((resolve) => {
-    fetch("https://vercel-test-alulsh.vercel.app/api/proxy?service=lime")
+    fetch("https://vercel-cors-proxy.vercel.app/api/proxy?service=lime")
       .then((response) => response.json())
       .then((jsonData) => {
         const bikesOnly = filterLimeBikes(jsonData.data.bikes);

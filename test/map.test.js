@@ -38,6 +38,6 @@ test("fetchBikeData makes expected API calls", () => {
     "https://gbfs.capitalbikeshare.com/gbfs/en/station_status.json"
   );
   expect(fetch).toHaveBeenCalledWith(
-    "https://vercel-test-alulsh.vercel.app/api/proxy?service=lime"
+    "https://vercel-cors-proxy.vercel.app/api/proxy?service=lime"
   );
 });
