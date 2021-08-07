@@ -65,6 +65,7 @@ function createToggles() {
     ["Capital Bikeshare availability", "cabi-bikes-availability", "default"],
     ["Capital Bikeshare capacity", "cabi-bikes-capacity", "hidden"],
     ["Lime bikes", "total-lime-bikes", "hidden"],
+    ["Spin scooters", "total-spin-scooters", "hidden"],
   ];
 
   toggles.forEach((toggle) => {
@@ -193,6 +194,70 @@ function addLimeBikeLayer(limeBikeGeojson) {
         e.coord
       ) {
         resolve(limeBikeGeojson);
+      }
+    });
+  });
+}
+
+function addSpinScootersLayer(spinScootersGeoJSON) {
+  return new Promise((resolve) => {
+    map.addSource("spin-scooters-source", {
+      type: "geojson",
+      data: spinScootersGeoJSON,
+    });
+    map.addLayer({
+      id: "spin-scooters-points",
+      type: "circle",
+      source: "spin-scooters-source",
+      layout: {
+        visibility: "none",
+      },
+      minzoom: 12,
+      paint: {
+        "circle-color": "#50C878",
+        "circle-radius": 4,
+        "circle-stroke-width": 1,
+        "circle-stroke-color": "#fff",
+      },
+    });
+    map.addLayer({
+      id: "total-spin-scooters",
+      type: "fill",
+      source: "dc-neighborhoods-source",
+      layout: {
+        visibility: "none",
+      },
+      paint: {
+        "fill-color": [
+          "interpolate",
+          ["linear"],
+          ["feature-state", "totalSpinScooters"],
+          0,
+          ["to-color", "rgb(255, 255, 255)"],
+          5,
+          ["to-color", "rgb(244, 255, 212)"],
+          10,
+          ["to-color", "rgb(233, 255, 170)"],
+          15,
+          ["to-color", "rgb(223, 255, 127)"],
+          20,
+          ["to-color", "rgb(212, 255, 85)"],
+          25,
+          ["to-color", "rgb(201, 255, 42)"],
+          30,
+          ["to-color", "rgb(191, 255, 0)"],
+        ],
+        "fill-opacity": 0.6,
+        "fill-outline-color": "#DCDCDC",
+      },
+    });
+    map.on("sourcedata", function sourceLoaded(e) {
+      if (
+        e.sourceId === "dc-neighborhoods-source" &&
+        e.isSourceLoaded &&
+        e.coord
+      ) {
+        resolve(spinScootersGeoJSON);
       }
     });
   });
@@ -358,11 +423,41 @@ function calculateLimeBikesPerPolygon(limeBikeGeojson) {
   });
 }
 
+function calculateSpinScootersPerPolygon(spinScootersGeoJSON) {
+  return new Promise((resolve) => {
+    const dcPolygons = map.queryRenderedFeatures({
+      layers: ["dc-neighborhoods-polygons"],
+    });
+    dcPolygons.forEach((feature) => {
+      const polygon = turf.polygon(feature.geometry.coordinates);
+      const spinScootersWithin = turf.pointsWithinPolygon(
+        spinScootersGeoJSON,
+        polygon
+      );
+
+      const totalSpinScooters = spinScootersWithin.features.length;
+
+      map.setFeatureState(
+        {
+          source: "dc-neighborhoods-source",
+          id: feature.id,
+        },
+        {
+          totalSpinScooters,
+        }
+      );
+    });
+    resolve(dcPolygons);
+  });
+}
+
 function fetchBikeData() {
   const cabiStationInformation = getCabiStationInformation();
   const cabiStationStatus = getCabiStationStatus();
   getLimeBikes().then(addLimeBikeLayer).then(calculateLimeBikesPerPolygon);
-  getSpinScooters();
+  getSpinScooters()
+    .then(addSpinScootersLayer)
+    .then(calculateSpinScootersPerPolygon);
 
   Promise.all([cabiStationInformation, cabiStationStatus]).then((promises) => {
     const mergedData = mergeCabiStationJSON(promises[0], promises[1]);
