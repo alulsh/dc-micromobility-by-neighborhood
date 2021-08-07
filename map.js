@@ -49,6 +49,10 @@ function togglePointLayers(clickedLayer, visibility) {
       map.moveLayer("total-lime-bikes", "lime-bikes-points");
       map.setLayoutProperty("lime-bikes-points", "visibility", visibility);
       break;
+    case "total-spin-scooters":
+      map.moveLayer("total-spin-scooters", "spin-scooters-points");
+      map.setLayoutProperty("spin-scooters-points", "visibility", visibility);
+      break;
     case "cabi-bikes-availability":
     case "cabi-bikes-capacity":
       map.moveLayer("cabi-bikes-availability", "cabi-stations-points");
@@ -497,6 +501,12 @@ map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
       <p>${event.features[0].state.totalLimeBikes} electric Lime bikes</p>
       `;
       break;
+    case "total-spin-scooters":
+      html = `
+        <h4>${event.features[0].properties.NBH_NAMES}</h4>
+        <p>${event.features[0].state.totalSpinScooters} Spin scooters</p>
+        `;
+      break;
     case "cabi-bikes-availability":
     case "cabi-bikes-capacity":
       percentageAvailable = (
@@ -555,6 +565,17 @@ map.on("mousemove", "lime-bikes-points", (event) => {
 });
 
 map.on("mouseleave", "lime-bikes-points", () => {
+  popup.remove();
+});
+
+map.on("mousemove", "spin-scooters-points", (event) => {
+  const html = `
+  <h4>Spin ${event.features[0].properties.vehicleType}</h4>
+  `;
+  popup.setLngLat(event.lngLat).setHTML(html).addTo(map);
+});
+
+map.on("mouseleave", "spin-scooters-points", () => {
   popup.remove();
 });
 
