@@ -1,6 +1,6 @@
 import { expect, test, jest, afterEach } from "@jest/globals";
-import { getSpinScooters } from "../spin";
-import { spinApi } from "./fixtures";
+import { getSpinScooters, convertToGeoJSON } from "../spin";
+import { spinApi, spinScootersGeoJSON } from "./fixtures";
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -18,6 +18,10 @@ test("Fetch Spin API", () => {
     expect(fetch).toHaveBeenCalledWith(
       "https://gbfs.spin.pm/api/gbfs/v1/washington_dc/free_bike_status"
     );
-    expect(data).toEqual(spinApi);
+    expect(data).toEqual(spinScootersGeoJSON);
   });
+});
+
+test("Converts Spin scooter data to GeoJSON", () => {
+  expect(convertToGeoJSON(spinApi.data.bikes)).toEqual(spinScootersGeoJSON);
 });

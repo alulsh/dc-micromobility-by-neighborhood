@@ -468,6 +468,72 @@ const spinApi = {
   },
 };
 
+const spinScootersGeoJSON = {
+  type: "FeatureCollection",
+  features: [
+    {
+      type: "Feature",
+      geometry: {
+        coordinates: [-77.04226, 38.9216],
+        type: "Point",
+      },
+      properties: {
+        isReserved: 0,
+        isDisabled: 0,
+        vehicleType: "scooter",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        coordinates: [-77.0135, 38.86727],
+        type: "Point",
+      },
+      properties: {
+        isReserved: 0,
+        isDisabled: 0,
+        vehicleType: "scooter",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        coordinates: [-77.03502, 38.92864],
+        type: "Point",
+      },
+      properties: {
+        isReserved: 0,
+        isDisabled: 0,
+        vehicleType: "scooter",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        coordinates: [-77.04302, 38.90836],
+        type: "Point",
+      },
+      properties: {
+        isReserved: 0,
+        isDisabled: 0,
+        vehicleType: "scooter",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        coordinates: [-76.98388, 38.91574],
+        type: "Point",
+      },
+      properties: {
+        isReserved: 0,
+        isDisabled: 0,
+        vehicleType: "scooter",
+      },
+    },
+  ],
+};
+
 export {
   cabiStationInformationMock,
   cabiStationGeoJSON,
@@ -477,4 +543,5 @@ export {
   limeBikesOnly,
   limeBikesGeoJSON,
   spinApi,
+  spinScootersGeoJSON,
 };
