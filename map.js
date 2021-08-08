@@ -508,17 +508,37 @@ function calculatePercentageAvailable(totalBikesAvailable, totalBikeCapacity) {
   return percentageAvailable;
 }
 
-function generateNeighborhoodPolygonHTML(layerName, eventFeatures) {
+function generatePopupHTML(layerName, eventFeatures) {
   let header = `<h4>${eventFeatures.properties.NBH_NAMES}</h4>`;
   let paragraph;
   let percentageAvailable;
 
   switch (layerName) {
+    case "lime-bikes-points":
+      header = "";
+      paragraph = `<p>Lime ${eventFeatures.properties.vehicleType}</p>`;
+      break;
     case "total-lime-bikes":
       paragraph = `<p>${eventFeatures.state.totalLimeBikes} electric Lime bikes</p>`;
       break;
+    case "spin-scooters-points":
+      header = "";
+      paragraph = `<p>Spin ${eventFeatures.properties.vehicleType}</p>`;
+      break;
     case "total-spin-scooters":
       paragraph = `<p>${eventFeatures.state.totalSpinScooters} Spin scooters</p>`;
+      break;
+    case "cabi-stations-points":
+      header = `<h4>${eventFeatures.properties.name}</h4>`;
+      paragraph = `
+          <p>
+          ${eventFeatures.properties.bikesAvailable} bikes available<br/>
+          ${eventFeatures.properties.docksAvailable} docks available<br/>
+          ${eventFeatures.properties.bikesDisabled} disabled bikes<br/>
+          ${eventFeatures.properties.docksDisabled} disabled docks<br/>
+          ${eventFeatures.properties.capacity} total bike capacity<br/>
+          </p>
+        `;
       break;
     case "cabi-bikes-availability":
     case "cabi-bikes-capacity":
@@ -547,10 +567,7 @@ function generateNeighborhoodPolygonHTML(layerName, eventFeatures) {
 
 map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
   const activeLayer = getActiveMenuLayer();
-  const popupHTML = generateNeighborhoodPolygonHTML(
-    activeLayer,
-    event.features[0]
-  );
+  const popupHTML = generatePopupHTML(activeLayer, event.features[0]);
   popup.setLngLat(event.lngLat).setHTML(popupHTML).addTo(map);
 });
 
@@ -560,31 +577,7 @@ map.on("mouseleave", "dc-neighborhoods-polygons", () => {
 
 function createLayerPopup(layerName) {
   map.on("mousemove", layerName, (event) => {
-    let popupHTML;
-
-    switch (layerName) {
-      case "spin-scooters-points":
-        popupHTML = `<h4>Spin ${event.features[0].properties.vehicleType}</h4>`;
-        break;
-      case "lime-bikes-points":
-        popupHTML = `<h4>Lime ${event.features[0].properties.vehicleType}</h4>`;
-        break;
-      case "cabi-stations-points":
-        popupHTML = `
-          <h4>${event.features[0].properties.name}</h4>
-          <p>
-          ${event.features[0].properties.bikesAvailable} bikes available<br/>
-          ${event.features[0].properties.docksAvailable} docks available<br/>
-          ${event.features[0].properties.bikesDisabled} disabled bikes<br/>
-          ${event.features[0].properties.docksDisabled} disabled docks<br/>
-          ${event.features[0].properties.capacity} total bike capacity<br/>
-          </p>
-        `;
-        break;
-      default:
-        break;
-    }
-
+    const popupHTML = generatePopupHTML(layerName, event.features[0]);
     popup.setLngLat(event.lngLat).setHTML(popupHTML).addTo(map);
   });
 }
