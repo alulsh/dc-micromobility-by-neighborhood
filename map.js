@@ -545,17 +545,19 @@ function generateNeighborhoodPolygonHTML(layerName, eventFeatures) {
   return html;
 }
 
-map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
-  const activeLayer = getActiveMenuLayer();
-  const html = generateNeighborhoodPolygonHTML(activeLayer, event.features[0]);
-  popup.setLngLat(event.lngLat).setHTML(html).addTo(map);
-});
-
-function createPointLayerPopup(layerName) {
+function createLayerPopup(layerName) {
   map.on("mousemove", layerName, (event) => {
     let popupHTML;
+    let activeLayer;
 
     switch (layerName) {
+      case "dc-neighborhoods-polygons":
+        activeLayer = getActiveMenuLayer();
+        popupHTML = generateNeighborhoodPolygonHTML(
+          activeLayer,
+          event.features[0]
+        );
+        break;
       case "spin-scooters-points":
         popupHTML = `<h4>Spin ${event.features[0].properties.vehicleType}</h4>`;
         break;
@@ -582,10 +584,6 @@ function createPointLayerPopup(layerName) {
   });
 }
 
-createPointLayerPopup("spin-scooters-points");
-createPointLayerPopup("lime-bikes-points");
-createPointLayerPopup("cabi-stations-points");
-
 const popupLayers = [
   "spin-scooters-points",
   "lime-bikes-points",
@@ -600,6 +598,7 @@ function removePopup(layerName) {
 }
 
 popupLayers.forEach((layer) => {
+  createLayerPopup(layer);
   removePopup(layer);
 });
 
