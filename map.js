@@ -22,8 +22,8 @@ const map = new mapboxgl.Map({
   zoom: 10.6,
 });
 
-function clearToggles(toggle, activeLayer) {
-  const navMenu = toggle.parentElement;
+function clearMenuItems(menuItem, activeLayer) {
+  const navMenu = menuItem.parentElement;
   navMenu.childNodes.forEach((node) => {
     if (node.id !== activeLayer) {
       // eslint-disable-next-line no-param-reassign
@@ -64,20 +64,20 @@ function togglePointLayers(clickedLayer, visibility) {
   }
 }
 
-function createToggles() {
-  const toggles = [
+function createMenuItems() {
+  const menuItems = [
     ["Capital Bikeshare availability", "cabi-bikes-availability", "default"],
     ["Capital Bikeshare capacity", "cabi-bikes-capacity", "hidden"],
     ["Lime bikes", "total-lime-bikes", "hidden"],
     ["Spin scooters", "total-spin-scooters", "hidden"],
   ];
 
-  toggles.forEach((toggle) => {
+  menuItems.forEach((item) => {
     const link = document.createElement("a");
     link.href = "#";
-    link.id = toggle[1];
-    link.textContent = toggle[0];
-    if (toggle[2] === "default") {
+    link.id = item[1];
+    link.textContent = item[0];
+    if (item[2] === "default") {
       link.className = "active";
     }
 
@@ -90,13 +90,13 @@ function createToggles() {
       const visibility = map.getLayoutProperty(`${clickedLayer}`, "visibility");
 
       if (visibility === "visible") {
-        clearToggles(this, clickedLayer);
+        clearMenuItems(this, clickedLayer);
         legend.style.display = "none";
         this.className = "";
         map.setLayoutProperty(`${clickedLayer}`, "visibility", "none");
         togglePointLayers(clickedLayer, "none");
       } else {
-        clearToggles(this, clickedLayer);
+        clearMenuItems(this, clickedLayer);
         clearLegends(clickedLayer);
         legend.style.display = "";
         this.className = "active";
@@ -474,7 +474,7 @@ function fetchBikeData() {
 map.on("load", () => {
   addNeighborhoodPolygons();
   fetchBikeData();
-  createToggles();
+  createMenuItems();
 });
 
 const popup = new mapboxgl.Popup({
