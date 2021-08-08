@@ -535,39 +535,40 @@ map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
   popup.setLngLat(event.lngLat).setHTML(html).addTo(map);
 });
 
-map.on("mousemove", "cabi-stations-points", (event) => {
-  const html = `
-  <h4>${event.features[0].properties.name}</h4>
-  <p>
-  ${event.features[0].properties.bikesAvailable} bikes available<br/>
-  ${event.features[0].properties.docksAvailable} docks available<br/>
-  ${event.features[0].properties.bikesDisabled} disabled bikes<br/>
-  ${event.features[0].properties.docksDisabled} disabled docks<br/>
-  ${event.features[0].properties.capacity} total bike capacity<br/>
-  </p>
-  `;
-  popup.setLngLat(event.lngLat).setHTML(html).addTo(map);
-});
+function createPointLayerPopup(layerName) {
+  map.on("mousemove", layerName, (event) => {
+    let popupHTML;
 
-map.on("mousemove", "lime-bikes-points", (event) => {
-  const html = `
-  <h4>Lime ${event.features[0].properties.vehicleType} </h4>
-  `;
-  popup.setLngLat(event.lngLat).setHTML(html).addTo(map);
-});
+    switch (layerName) {
+      case "spin-scooters-points":
+        popupHTML = `<h4>Spin ${event.features[0].properties.vehicleType}</h4>`;
+        break;
+      case "lime-bikes-points":
+        popupHTML = `<h4>Lime ${event.features[0].properties.vehicleType}</h4>`;
+        break;
+      case "cabi-stations-points":
+        popupHTML = `
+          <h4>${event.features[0].properties.name}</h4>
+          <p>
+          ${event.features[0].properties.bikesAvailable} bikes available<br/>
+          ${event.features[0].properties.docksAvailable} docks available<br/>
+          ${event.features[0].properties.bikesDisabled} disabled bikes<br/>
+          ${event.features[0].properties.docksDisabled} disabled docks<br/>
+          ${event.features[0].properties.capacity} total bike capacity<br/>
+          </p>
+        `;
+        break;
+      default:
+        break;
+    }
 
-map.on("mousemove", "spin-scooters-points", (event) => {
-  const html = `
-  <h4>Spin ${event.features[0].properties.vehicleType}</h4>
-  `;
-  popup.setLngLat(event.lngLat).setHTML(html).addTo(map);
-});
-
-function removePopup(layerName) {
-  map.on("mouseleave", layerName, () => {
-    popup.remove();
+    popup.setLngLat(event.lngLat).setHTML(popupHTML).addTo(map);
   });
 }
+
+createPointLayerPopup("spin-scooters-points");
+createPointLayerPopup("lime-bikes-points");
+createPointLayerPopup("cabi-stations-points");
 
 const popupLayers = [
   "spin-scooters-points",
@@ -575,6 +576,12 @@ const popupLayers = [
   "cabi-stations-points",
   "dc-neighborhoods-polygons",
 ];
+
+function removePopup(layerName) {
+  map.on("mouseleave", layerName, () => {
+    popup.remove();
+  });
+}
 
 popupLayers.forEach((layer) => {
   removePopup(layer);
