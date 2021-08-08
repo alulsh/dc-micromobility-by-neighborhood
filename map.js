@@ -535,10 +535,6 @@ map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
   popup.setLngLat(event.lngLat).setHTML(html).addTo(map);
 });
 
-map.on("mouseleave", "dc-neighborhoods-polygons", () => {
-  popup.remove();
-});
-
 map.on("mousemove", "cabi-stations-points", (event) => {
   const html = `
   <h4>${event.features[0].properties.name}</h4>
@@ -553,19 +549,11 @@ map.on("mousemove", "cabi-stations-points", (event) => {
   popup.setLngLat(event.lngLat).setHTML(html).addTo(map);
 });
 
-map.on("mouseleave", "cabi-stations-points", () => {
-  popup.remove();
-});
-
 map.on("mousemove", "lime-bikes-points", (event) => {
   const html = `
   <h4>Lime ${event.features[0].properties.vehicleType} </h4>
   `;
   popup.setLngLat(event.lngLat).setHTML(html).addTo(map);
-});
-
-map.on("mouseleave", "lime-bikes-points", () => {
-  popup.remove();
 });
 
 map.on("mousemove", "spin-scooters-points", (event) => {
@@ -575,8 +563,21 @@ map.on("mousemove", "spin-scooters-points", (event) => {
   popup.setLngLat(event.lngLat).setHTML(html).addTo(map);
 });
 
-map.on("mouseleave", "spin-scooters-points", () => {
-  popup.remove();
+function removePopup(layerName) {
+  map.on("mouseleave", layerName, () => {
+    popup.remove();
+  });
+}
+
+const popupLayers = [
+  "spin-scooters-points",
+  "lime-bikes-points",
+  "cabi-stations-points",
+  "dc-neighborhoods-polygons",
+];
+
+popupLayers.forEach((layer) => {
+  removePopup(layer);
 });
 
 export { addCabiSource, fetchBikeData };
