@@ -565,6 +565,11 @@ function generatePopupHTML(layerName, eventFeatures) {
   return html;
 }
 
+/* 
+  dc-neighborhoods-polygon layer mouse events need to be declared separately
+  or else the point layer popups will not load
+*/
+
 map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
   const activeLayer = getActiveMenuLayer();
   const popupHTML = generatePopupHTML(activeLayer, event.features[0]);
