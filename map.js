@@ -495,6 +495,19 @@ function getActiveMenuLayer() {
   return activeLayer;
 }
 
+function calculatePercentageAvailable(totalBikesAvailable, totalBikeCapacity) {
+  let percentageAvailable = (
+    (totalBikesAvailable / totalBikeCapacity) *
+    100
+  ).toFixed(2);
+
+  if (percentageAvailable === "Nan") {
+    percentageAvailable = 0;
+  }
+
+  return percentageAvailable;
+}
+
 map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
   const activeLayer = getActiveMenuLayer();
   let percentageAvailable;
@@ -515,15 +528,10 @@ map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
       break;
     case "cabi-bikes-availability":
     case "cabi-bikes-capacity":
-      percentageAvailable = (
-        (event.features[0].state.totalBikesAvailable /
-          event.features[0].state.totalBikeCapacity) *
-        100
-      ).toFixed(2);
-
-      if (percentageAvailable === "NaN") {
-        percentageAvailable = 0;
-      }
+      percentageAvailable = calculatePercentageAvailable(
+        event.features[0].state.totalBikesAvailable,
+        event.features[0].state.totalBikeCapacity
+      );
 
       html = `
         <h4>${event.features[0].properties.NBH_NAMES}</h4>
