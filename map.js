@@ -508,44 +508,46 @@ function calculatePercentageAvailable(totalBikesAvailable, totalBikeCapacity) {
   return percentageAvailable;
 }
 
-map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
-  const activeLayer = getActiveMenuLayer();
+function generateNeighborhoodPolygonHTML(layerName, eventFeatures) {
+  let header = `<h4>${eventFeatures.properties.NBH_NAMES}</h4>`;
+  let paragraph;
   let percentageAvailable;
-  let html;
 
-  switch (activeLayer) {
+  switch (layerName) {
     case "total-lime-bikes":
-      html = `
-      <h4>${event.features[0].properties.NBH_NAMES}</h4>
-      <p>${event.features[0].state.totalLimeBikes} electric Lime bikes</p>
-      `;
+      paragraph = `<p>${eventFeatures.state.totalLimeBikes} electric Lime bikes</p>`;
       break;
     case "total-spin-scooters":
-      html = `
-        <h4>${event.features[0].properties.NBH_NAMES}</h4>
-        <p>${event.features[0].state.totalSpinScooters} Spin scooters</p>
-        `;
+      paragraph = `<p>${eventFeatures.state.totalSpinScooters} Spin scooters</p>`;
       break;
     case "cabi-bikes-availability":
     case "cabi-bikes-capacity":
       percentageAvailable = calculatePercentageAvailable(
-        event.features[0].state.totalBikesAvailable,
-        event.features[0].state.totalBikeCapacity
+        eventFeatures.state.totalBikesAvailable,
+        eventFeatures.state.totalBikeCapacity
       );
-
-      html = `
-        <h4>${event.features[0].properties.NBH_NAMES}</h4>
-        <p>
+      paragraph = `
+      <p>
         ${percentageAvailable}% available</br>
-        ${event.features[0].state.totalBikesAvailable} bikes available</br>
-        ${event.features[0].state.totalBikeCapacity} bike capacity</br>
-        </p>
+        ${eventFeatures.state.totalBikesAvailable} bikes available</br>
+        ${eventFeatures.state.totalBikeCapacity} bike capacity</br>
+      </p>
       `;
       break;
     default:
-      html = `No data selected. Select a data source on the left hand menu.`;
+      header = "";
+      paragraph = `<p>No data selected. Select a data source on the left hand menu.</p>`;
+      break;
   }
 
+  const html = header + paragraph;
+
+  return html;
+}
+
+map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
+  const activeLayer = getActiveMenuLayer();
+  const html = generateNeighborhoodPolygonHTML(activeLayer, event.features[0]);
   popup.setLngLat(event.lngLat).setHTML(html).addTo(map);
 });
 
