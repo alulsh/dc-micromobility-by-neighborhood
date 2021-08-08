@@ -482,17 +482,23 @@ const popup = new mapboxgl.Popup({
   closeOnClick: false,
 });
 
-map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
-  let activeLayer;
-  let percentageAvailable;
-  let html;
-
+function getActiveMenuLayer() {
   const navMenu = document.getElementById("menu");
+  let activeLayer;
+
   navMenu.childNodes.forEach((item) => {
     if (item.className === "active") {
       activeLayer = item.id;
     }
   });
+
+  return activeLayer;
+}
+
+map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
+  const activeLayer = getActiveMenuLayer();
+  let percentageAvailable;
+  let html;
 
   switch (activeLayer) {
     case "total-lime-bikes":
