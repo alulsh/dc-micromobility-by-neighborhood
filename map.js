@@ -501,7 +501,7 @@ function calculatePercentageAvailable(totalBikesAvailable, totalBikeCapacity) {
     100
   ).toFixed(2);
 
-  if (percentageAvailable === "Nan") {
+  if (percentageAvailable === "NaN") {
     percentageAvailable = 0;
   }
 
