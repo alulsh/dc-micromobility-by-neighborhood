@@ -46,27 +46,39 @@ function addNeighborhoodPolygons() {
   });
 }
 
+function createPointLayer(service, color) {
+  const layer = {
+    id: `${service}-points`,
+    type: "circle",
+    source: `${service}-source`,
+    layout: {
+      visibility: "none",
+    },
+    minzoom: 12,
+    paint: {
+      "circle-color": color,
+      "circle-radius": 4,
+      "circle-stroke-width": 1,
+      "circle-stroke-color": "#fff",
+    },
+  };
+
+  if (service === "cabi-stations") {
+    // regionId 42 is for Washington, D.C.
+    layer.filter = ["==", "regionId", "42"];
+    layer.layout.visibility = "visible";
+  }
+
+  map.addLayer(layer);
+}
+
 function addLimeBikeLayer(limeBikeGeojson) {
   return new Promise((resolve) => {
     map.addSource("lime-bikes-source", {
       type: "geojson",
       data: limeBikeGeojson,
     });
-    map.addLayer({
-      id: "lime-bikes-points",
-      type: "circle",
-      source: "lime-bikes-source",
-      layout: {
-        visibility: "none",
-      },
-      minzoom: 12,
-      paint: {
-        "circle-color": "#50C878",
-        "circle-radius": 4,
-        "circle-stroke-width": 1,
-        "circle-stroke-color": "#fff",
-      },
-    });
+    createPointLayer("lime-bikes", "#50C878");
     map.addLayer({
       id: "total-lime-bikes",
       type: "fill",
@@ -116,21 +128,7 @@ function addSpinScootersLayer(spinScootersGeoJSON) {
       type: "geojson",
       data: spinScootersGeoJSON,
     });
-    map.addLayer({
-      id: "spin-scooters-points",
-      type: "circle",
-      source: "spin-scooters-source",
-      layout: {
-        visibility: "none",
-      },
-      minzoom: 12,
-      paint: {
-        "circle-color": "#EE4B2B",
-        "circle-radius": 4,
-        "circle-stroke-width": 1,
-        "circle-stroke-color": "#fff",
-      },
-    });
+    createPointLayer("spin-scooters", "#EE4B2B");
     map.addLayer({
       id: "total-spin-scooters",
       type: "fill",
@@ -248,20 +246,7 @@ function addCabiLayers(stationGeoJSON) {
       },
     });
 
-    map.addLayer({
-      id: "cabi-stations-points",
-      type: "circle",
-      source: "cabi-stations-source",
-      minzoom: 12,
-      // regionId 42 is for Washington, D.C.
-      filter: ["==", "regionId", "42"],
-      paint: {
-        "circle-color": "#363636",
-        "circle-radius": 4,
-        "circle-stroke-width": 1,
-        "circle-stroke-color": "#fff",
-      },
-    });
+    createPointLayer("cabi-stations", "#363636");
 
     map.on("sourcedata", function sourceLoaded(e) {
       if (
