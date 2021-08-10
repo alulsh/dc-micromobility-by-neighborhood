@@ -1,8 +1,5 @@
 /* eslint-disable prefer-destructuring */
-/* eslint-disable strict */
 /* eslint-disable import/extensions */
-
-"use strict";
 
 import {
   getCabiStationInformation,
