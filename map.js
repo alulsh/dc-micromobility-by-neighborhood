@@ -64,24 +64,32 @@ function togglePointLayers(clickedLayer, visibility) {
   }
 }
 
-function createMenuItems() {
-  const menuItems = [
+function createMenuLink(service) {
+  const link = document.createElement("a");
+  link.href = "#";
+  link.id = service[1];
+  link.textContent = service[0];
+  if (service[2] === "default") {
+    link.className = "active";
+  }
+
+  return link;
+}
+
+function createMenu() {
+  const micromobilityServices = [
     ["Capital Bikeshare availability", "cabi-bikes-availability", "default"],
     ["Capital Bikeshare capacity", "cabi-bikes-capacity", "hidden"],
     ["Lime bikes", "total-lime-bikes", "hidden"],
     ["Spin scooters", "total-spin-scooters", "hidden"],
   ];
 
-  menuItems.forEach((item) => {
-    const link = document.createElement("a");
-    link.href = "#";
-    link.id = item[1];
-    link.textContent = item[0];
-    if (item[2] === "default") {
-      link.className = "active";
-    }
+  micromobilityServices.forEach((service) => {
+    const menuLink = createMenuLink(service);
+    const menuDiv = document.getElementById("menu");
+    menuDiv.appendChild(menuLink);
 
-    link.onclick = function toggleLayers(event) {
+    menuLink.onclick = function toggleLayers(event) {
       const clickedLayer = this.id;
       event.preventDefault();
       event.stopPropagation();
@@ -104,9 +112,6 @@ function createMenuItems() {
         togglePointLayers(clickedLayer, "visible");
       }
     };
-
-    const layers = document.getElementById("menu");
-    layers.appendChild(link);
   });
 }
 
@@ -474,7 +479,7 @@ function fetchBikeData() {
 map.on("load", () => {
   addNeighborhoodPolygons();
   fetchBikeData();
-  createMenuItems();
+  createMenu();
 });
 
 const popup = new mapboxgl.Popup({
