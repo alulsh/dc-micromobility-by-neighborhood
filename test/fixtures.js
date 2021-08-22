@@ -367,6 +367,7 @@ const limeBikesOnly = [
 
 const limeBikesGeoJSON = {
   type: "FeatureCollection",
+  featureStateName: "totalLimeBikes",
   features: [
     {
       type: "Feature",

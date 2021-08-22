@@ -194,28 +194,31 @@ function calculateCabiBikesPerPolygon(stationGeoJSON) {
   });
 }
 
+function calculateVehiclesPerNeighborhood(vehicleGeoJSON, neighborhoods) {
+  neighborhoods.forEach((neighborhood) => {
+    const neighborhoodPolygon = turf.polygon(neighborhood.geometry.coordinates);
+    const vehiclesPerNeighborhood = turf.pointsWithinPolygon(
+      vehicleGeoJSON,
+      neighborhoodPolygon
+    );
+    const totalVehicles = vehiclesPerNeighborhood.features.length;
+    const { featureStateName } = vehicleGeoJSON;
+    map.setFeatureState(
+      {
+        source: "dc-neighborhoods-source",
+        id: neighborhood.id,
+      },
+      {
+        [featureStateName]: totalVehicles,
+      }
+    );
+  });
+}
+
 function calculateLimeBikesPerPolygon(limeBikeGeojson) {
   return new Promise((resolve) => {
     const dcPolygons = getNeighborhoodPolygons();
-    dcPolygons.forEach((feature) => {
-      const polygon = turf.polygon(feature.geometry.coordinates);
-      const limeBikesWithin = turf.pointsWithinPolygon(
-        limeBikeGeojson,
-        polygon
-      );
-
-      const totalLimeBikes = limeBikesWithin.features.length;
-
-      map.setFeatureState(
-        {
-          source: "dc-neighborhoods-source",
-          id: feature.id,
-        },
-        {
-          totalLimeBikes,
-        }
-      );
-    });
+    calculateVehiclesPerNeighborhood(limeBikeGeojson, dcPolygons);
     resolve(dcPolygons);
   });
 }

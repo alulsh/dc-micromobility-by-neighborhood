@@ -24,6 +24,7 @@ function convertToGeoJSON(limeBikes) {
 
   return {
     type: "FeatureCollection",
+    featureStateName: "totalLimeBikes",
     features: newLimeBikes,
   };
 }
