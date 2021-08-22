@@ -17,16 +17,6 @@ export const map = new mapboxgl.Map({
   zoom: 10.6,
 });
 
-function addCabiSource(stationGeoJSON) {
-  return new Promise((resolve) => {
-    map.addSource(stationGeoJSON.properties.sourceId, {
-      type: "geojson",
-      data: stationGeoJSON,
-    });
-    resolve(stationGeoJSON);
-  });
-}
-
 function addNeighborhoodPolygons() {
   map.addSource("dc-neighborhoods-source", {
     type: "geojson",
@@ -138,6 +128,10 @@ function addSpinScootersLayer(spinScootersGeoJSON) {
 
 function addCabiLayers(stationGeoJSON) {
   return new Promise((resolve) => {
+    map.addSource(stationGeoJSON.properties.sourceId, {
+      type: "geojson",
+      data: stationGeoJSON,
+    });
     createPolygonLayer(stationGeoJSON.properties.availability);
     createPolygonLayer(stationGeoJSON.properties.capacity);
     createPointLayer(stationGeoJSON.properties);
@@ -228,7 +222,6 @@ function fetchBikeData() {
     .then(calculateVehiclesPerNeighborhood);
 
   getCapitalBikeshareBikes()
-    .then(addCabiSource)
     .then(addCabiLayers)
     .then(calculateVehiclesPerNeighborhood);
 }
@@ -238,4 +231,4 @@ map.on("load", () => {
   fetchBikeData();
 });
 
-export { addCabiSource, fetchBikeData };
+export { fetchBikeData };

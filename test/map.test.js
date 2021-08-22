@@ -1,19 +1,9 @@
 import { expect, test, jest, afterEach } from "@jest/globals";
-import { addCabiSource, fetchBikeData } from "../map";
-import {
-  cabiStationGeoJSON,
-  cabiStationInformationMock,
-  limeApi,
-} from "./fixtures";
+import { fetchBikeData } from "../map";
+import { cabiStationInformationMock, limeApi } from "./fixtures";
 
 afterEach(() => {
   jest.clearAllMocks();
-});
-
-test("addSources promise resolves with arguments", () => {
-  return addCabiSource(cabiStationGeoJSON).then((data) => {
-    expect(data).toBe(cabiStationGeoJSON);
-  });
 });
 
 test("fetchBikeData makes expected API calls", () => {
