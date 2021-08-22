@@ -165,84 +165,66 @@ function getNeighborhoodPolygons() {
   });
 }
 
-function calculateVehiclesPerNeighborhood(vehicleGeoJSON, neighborhoods) {
-  neighborhoods.forEach((neighborhood) => {
-    const neighborhoodPolygon = turf.polygon(neighborhood.geometry.coordinates);
-    const vehiclesPerNeighborhood = turf.pointsWithinPolygon(
-      vehicleGeoJSON,
-      neighborhoodPolygon
-    );
-
-    if (vehicleGeoJSON.service === "Capital Bikeshare") {
-      let totalBikeCapacity = 0;
-      let totalBikesAvailable = 0;
-      vehiclesPerNeighborhood.features.forEach((station) => {
-        totalBikeCapacity += station.properties.capacity;
-        totalBikesAvailable += station.properties.bikesAvailable;
-      });
-      map.setFeatureState(
-        {
-          source: "dc-neighborhoods-source",
-          id: neighborhood.id,
-        },
-        {
-          totalBikeCapacity,
-          totalBikesAvailable,
-        }
+function calculateVehiclesPerNeighborhood(vehicleGeoJSON) {
+  return new Promise((resolve) => {
+    const neighborhoods = getNeighborhoodPolygons();
+    neighborhoods.forEach((neighborhood) => {
+      const neighborhoodPolygon = turf.polygon(
+        neighborhood.geometry.coordinates
       );
-    } else {
-      const totalVehicles = vehiclesPerNeighborhood.features.length;
-      const { featureStateName } = vehicleGeoJSON;
-      map.setFeatureState(
-        {
-          source: "dc-neighborhoods-source",
-          id: neighborhood.id,
-        },
-        {
-          [featureStateName]: totalVehicles,
-        }
+      const vehiclesPerNeighborhood = turf.pointsWithinPolygon(
+        vehicleGeoJSON,
+        neighborhoodPolygon
       );
-    }
-  });
-}
 
-function calculateCabiBikesPerPolygon(stationGeoJSON) {
-  return new Promise((resolve) => {
-    const dcPolygons = getNeighborhoodPolygons();
-    calculateVehiclesPerNeighborhood(stationGeoJSON, dcPolygons);
-    resolve(dcPolygons);
-  });
-}
-
-function calculateLimeBikesPerPolygon(limeBikeGeojson) {
-  return new Promise((resolve) => {
-    const dcPolygons = getNeighborhoodPolygons();
-    calculateVehiclesPerNeighborhood(limeBikeGeojson, dcPolygons);
-    resolve(dcPolygons);
-  });
-}
-
-function calculateSpinScootersPerPolygon(spinScootersGeoJSON) {
-  return new Promise((resolve) => {
-    const dcPolygons = getNeighborhoodPolygons();
-    calculateVehiclesPerNeighborhood(spinScootersGeoJSON, dcPolygons);
-    resolve(dcPolygons);
+      if (vehicleGeoJSON.service === "Capital Bikeshare") {
+        let totalBikeCapacity = 0;
+        let totalBikesAvailable = 0;
+        vehiclesPerNeighborhood.features.forEach((station) => {
+          totalBikeCapacity += station.properties.capacity;
+          totalBikesAvailable += station.properties.bikesAvailable;
+        });
+        map.setFeatureState(
+          {
+            source: "dc-neighborhoods-source",
+            id: neighborhood.id,
+          },
+          {
+            totalBikeCapacity,
+            totalBikesAvailable,
+          }
+        );
+      } else {
+        const totalVehicles = vehiclesPerNeighborhood.features.length;
+        const { featureStateName } = vehicleGeoJSON;
+        map.setFeatureState(
+          {
+            source: "dc-neighborhoods-source",
+            id: neighborhood.id,
+          },
+          {
+            [featureStateName]: totalVehicles,
+          }
+        );
+      }
+    });
+    resolve(neighborhoods);
   });
 }
 
 function fetchBikeData() {
   const cabiStationInformation = getCabiStationInformation();
   const cabiStationStatus = getCabiStationStatus();
-  getLimeBikes().then(addLimeBikeLayer).then(calculateLimeBikesPerPolygon);
+  getLimeBikes().then(addLimeBikeLayer).then(calculateVehiclesPerNeighborhood);
   getSpinScooters()
     .then(addSpinScootersLayer)
-    .then(calculateSpinScootersPerPolygon);
+    .then(calculateVehiclesPerNeighborhood);
 
   Promise.all([cabiStationInformation, cabiStationStatus]).then((promises) => {
     const mergedData = mergeCabiStationJSON(promises[0], promises[1]);
     addCabiSource(mergedData)
       .then(addCabiLayers)
-      .then(calculateCabiBikesPerPolygon);
+      .then(calculateVehiclesPerNeighborhood);
   });
 }
 
