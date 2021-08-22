@@ -122,6 +122,39 @@ function getNeighborhoodPolygons() {
   });
 }
 
+function setMapFeatureState(id, vehiclesPerNeighborhood, geoJSON) {
+  if (geoJSON.properties.service === "Capital Bikeshare") {
+    let totalBikeCapacity = 0;
+    let totalBikesAvailable = 0;
+    vehiclesPerNeighborhood.features.forEach((station) => {
+      totalBikeCapacity += station.properties.capacity;
+      totalBikesAvailable += station.properties.bikesAvailable;
+    });
+    map.setFeatureState(
+      {
+        source: "dc-neighborhoods-source",
+        id,
+      },
+      {
+        totalBikeCapacity,
+        totalBikesAvailable,
+      }
+    );
+  } else {
+    const totalVehicles = vehiclesPerNeighborhood.features.length;
+    const { featureStateName } = geoJSON.properties;
+    map.setFeatureState(
+      {
+        source: "dc-neighborhoods-source",
+        id,
+      },
+      {
+        [featureStateName]: totalVehicles,
+      }
+    );
+  }
+}
+
 function calculateVehiclesPerNeighborhood(vehicleGeoJSON) {
   return new Promise((resolve) => {
     const neighborhoods = getNeighborhoodPolygons();
@@ -134,36 +167,11 @@ function calculateVehiclesPerNeighborhood(vehicleGeoJSON) {
         neighborhoodPolygon
       );
 
-      if (vehicleGeoJSON.properties.service === "Capital Bikeshare") {
-        let totalBikeCapacity = 0;
-        let totalBikesAvailable = 0;
-        vehiclesPerNeighborhood.features.forEach((station) => {
-          totalBikeCapacity += station.properties.capacity;
-          totalBikesAvailable += station.properties.bikesAvailable;
-        });
-        map.setFeatureState(
-          {
-            source: "dc-neighborhoods-source",
-            id: neighborhood.id,
-          },
-          {
-            totalBikeCapacity,
-            totalBikesAvailable,
-          }
-        );
-      } else {
-        const totalVehicles = vehiclesPerNeighborhood.features.length;
-        const { featureStateName } = vehicleGeoJSON.properties;
-        map.setFeatureState(
-          {
-            source: "dc-neighborhoods-source",
-            id: neighborhood.id,
-          },
-          {
-            [featureStateName]: totalVehicles,
-          }
-        );
-      }
+      setMapFeatureState(
+        neighborhood.id,
+        vehiclesPerNeighborhood,
+        vehicleGeoJSON
+      );
     });
     resolve(neighborhoods);
   });
