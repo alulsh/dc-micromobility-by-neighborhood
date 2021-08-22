@@ -58,10 +58,10 @@ function createMenuLink(service) {
 
 function createMenu() {
   const micromobilityServices = [
-    ["Capital Bikeshare availability", "cabi-bikes-availability", "default"],
-    ["Capital Bikeshare capacity", "cabi-bikes-capacity", "hidden"],
-    ["Lime bikes", "total-lime-bikes", "hidden"],
+    ["Lime bikes", "total-lime-bikes", "default"],
     ["Spin scooters", "total-spin-scooters", "hidden"],
+    ["Capital Bikeshare availability", "cabi-bikes-availability", "hidden"],
+    ["Capital Bikeshare capacity", "cabi-bikes-capacity", "hidden"],
   ];
 
   micromobilityServices.forEach((service) => {

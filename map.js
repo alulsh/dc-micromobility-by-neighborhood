@@ -63,6 +63,9 @@ function createPointLayer(properties) {
   if (properties.service === "Capital Bikeshare") {
     // regionId 42 is for Washington, D.C.
     layer.filter = ["==", "regionId", "42"];
+  }
+
+  if (properties.pointLayerId === "lime-bikes-points") {
     layer.layout.visibility = "visible";
   }
 
@@ -84,7 +87,7 @@ function createPolygonLayer(properties) {
     },
   };
 
-  if (properties.polygonLayerId === "cabi-bikes-availability") {
+  if (properties.polygonLayerId === "total-lime-bikes") {
     polygonLayer.layout.visibility = "visible";
   }
 
@@ -95,7 +98,6 @@ function addLayers(geoJSON) {
   return new Promise((resolve) => {
     const { properties } = geoJSON;
     addSource(geoJSON);
-    createPointLayer(properties);
 
     if (properties.service === "Capital Bikeshare") {
       createPolygonLayer(properties.availability);
@@ -103,6 +105,8 @@ function addLayers(geoJSON) {
     } else {
       createPolygonLayer(properties);
     }
+
+    createPointLayer(properties);
 
     map.on("sourcedata", function sourceLoaded(e) {
       if (
