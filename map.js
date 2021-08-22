@@ -4,6 +4,12 @@ import {
   getCabiStationStatus,
   mergeCabiStationJSON,
 } from "./cabi.js";
+import {
+  spinLayer,
+  cabiAvailabilityLayer,
+  cabiCapacityLayer,
+  limeLayer,
+} from "./colors.js";
 import { getLimeBikes } from "./lime.js";
 import { getSpinScooters } from "./spin.js";
 
@@ -72,6 +78,28 @@ function createPointLayer(service, color) {
   map.addLayer(layer);
 }
 
+function createPolygonLayer(layer) {
+  const polygonLayer = {
+    id: layer.id,
+    type: "fill",
+    source: "dc-neighborhoods-source",
+    layout: {
+      visibility: "none",
+    },
+    paint: {
+      "fill-color": layer.fillColor,
+      "fill-opacity": 0.6,
+      "fill-outline-color": layer.fillOutlineColor,
+    },
+  };
+
+  if (layer.id === "cabi-bikes-availability") {
+    polygonLayer.layout.visibility = "visible";
+  }
+
+  map.addLayer(polygonLayer);
+}
+
 function addLimeBikeLayer(limeBikeGeojson) {
   return new Promise((resolve) => {
     map.addSource("lime-bikes-source", {
@@ -79,37 +107,8 @@ function addLimeBikeLayer(limeBikeGeojson) {
       data: limeBikeGeojson,
     });
     createPointLayer("lime-bikes", "#50C878");
-    map.addLayer({
-      id: "total-lime-bikes",
-      type: "fill",
-      source: "dc-neighborhoods-source",
-      layout: {
-        visibility: "none",
-      },
-      paint: {
-        "fill-color": [
-          "interpolate",
-          ["linear"],
-          ["feature-state", "totalLimeBikes"],
-          0,
-          ["to-color", "rgb(255, 255, 255)"],
-          5,
-          ["to-color", "rgb(244, 255, 212)"],
-          10,
-          ["to-color", "rgb(233, 255, 170)"],
-          15,
-          ["to-color", "rgb(223, 255, 127)"],
-          20,
-          ["to-color", "rgb(212, 255, 85)"],
-          25,
-          ["to-color", "rgb(201, 255, 42)"],
-          30,
-          ["to-color", "rgb(191, 255, 0)"],
-        ],
-        "fill-opacity": 0.6,
-        "fill-outline-color": "#DCDCDC",
-      },
-    });
+    createPolygonLayer(limeLayer);
+
     map.on("sourcedata", function sourceLoaded(e) {
       if (
         e.sourceId === "dc-neighborhoods-source" &&
@@ -129,37 +128,7 @@ function addSpinScootersLayer(spinScootersGeoJSON) {
       data: spinScootersGeoJSON,
     });
     createPointLayer("spin-scooters", "#EE4B2B");
-    map.addLayer({
-      id: "total-spin-scooters",
-      type: "fill",
-      source: "dc-neighborhoods-source",
-      layout: {
-        visibility: "none",
-      },
-      paint: {
-        "fill-color": [
-          "interpolate",
-          ["linear"],
-          ["feature-state", "totalSpinScooters"],
-          0,
-          ["to-color", "rgb(255, 255, 255)"],
-          25,
-          ["to-color", "#ffa600"],
-          50,
-          ["to-color", "#ff970c"],
-          75,
-          ["to-color", "#ff8718"],
-          100,
-          ["to-color", "#ff7723"],
-          125,
-          ["to-color", "#ff662c"],
-          150,
-          ["to-color", "#ff5435"],
-        ],
-        "fill-opacity": 0.6,
-        "fill-outline-color": "#DCDCDC",
-      },
-    });
+    createPolygonLayer(spinLayer);
     map.on("sourcedata", function sourceLoaded(e) {
       if (
         e.sourceId === "dc-neighborhoods-source" &&
@@ -174,78 +143,8 @@ function addSpinScootersLayer(spinScootersGeoJSON) {
 
 function addCabiLayers(stationGeoJSON) {
   return new Promise((resolve) => {
-    map.addLayer({
-      id: "cabi-bikes-availability",
-      type: "fill",
-      source: "dc-neighborhoods-source",
-      layout: {
-        visibility: "visible",
-      },
-      paint: {
-        "fill-color": [
-          "interpolate",
-          ["linear"],
-          ["feature-state", "totalBikesAvailable"],
-          0,
-          ["to-color", "#F2F12D"],
-          10,
-          ["to-color", "#EED322"],
-          20,
-          ["to-color", "#E6B71E"],
-          50,
-          ["to-color", "#DA9C20"],
-          100,
-          ["to-color", "#CA8323"],
-          200,
-          ["to-color", "#B86B25"],
-          300,
-          ["to-color", "#A25626"],
-          400,
-          ["to-color", "#8B4225"],
-          500,
-          ["to-color", "#723122"],
-        ],
-        "fill-opacity": 0.6,
-        "fill-outline-color": "#FFF",
-      },
-    });
-
-    map.addLayer({
-      id: "cabi-bikes-capacity",
-      type: "fill",
-      source: "dc-neighborhoods-source",
-      layout: {
-        visibility: "none",
-      },
-      paint: {
-        "fill-color": [
-          "interpolate",
-          ["linear"],
-          ["feature-state", "totalBikeCapacity"],
-          0,
-          ["to-color", "#F2F12D"],
-          10,
-          ["to-color", "#EED322"],
-          20,
-          ["to-color", "#E6B71E"],
-          50,
-          ["to-color", "#DA9C20"],
-          100,
-          ["to-color", "#CA8323"],
-          200,
-          ["to-color", "#B86B25"],
-          300,
-          ["to-color", "#A25626"],
-          400,
-          ["to-color", "#8B4225"],
-          500,
-          ["to-color", "#723122"],
-        ],
-        "fill-opacity": 0.6,
-        "fill-outline-color": "#FFF",
-      },
-    });
-
+    createPolygonLayer(cabiAvailabilityLayer);
+    createPolygonLayer(cabiCapacityLayer);
     createPointLayer("cabi-stations", "#363636");
 
     map.on("sourcedata", function sourceLoaded(e) {
