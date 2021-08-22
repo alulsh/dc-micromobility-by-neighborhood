@@ -91,37 +91,18 @@ function createPolygonLayer(properties) {
   map.addLayer(polygonLayer);
 }
 
-function addLimeBikeLayer(limeBikeGeojson) {
+function addLayers(geoJSON) {
   return new Promise((resolve) => {
-    addSource(limeBikeGeojson);
-    createPointLayer(limeBikeGeojson.properties);
-    createPolygonLayer(limeBikeGeojson.properties);
-
+    addSource(geoJSON);
+    createPointLayer(geoJSON.properties);
+    createPolygonLayer(geoJSON.properties);
     map.on("sourcedata", function sourceLoaded(e) {
       if (
         e.sourceId === "dc-neighborhoods-source" &&
         e.isSourceLoaded &&
         e.coord
       ) {
-        resolve(limeBikeGeojson);
-      }
-    });
-  });
-}
-
-function addSpinScootersLayer(spinScootersGeoJSON) {
-  return new Promise((resolve) => {
-    const { properties } = spinScootersGeoJSON;
-    addSource(spinScootersGeoJSON);
-    createPointLayer(properties);
-    createPolygonLayer(properties);
-    map.on("sourcedata", function sourceLoaded(e) {
-      if (
-        e.sourceId === "dc-neighborhoods-source" &&
-        e.isSourceLoaded &&
-        e.coord
-      ) {
-        resolve(spinScootersGeoJSON);
+        resolve(geoJSON);
       }
     });
   });
@@ -214,10 +195,8 @@ function getCapitalBikeshareBikes() {
 }
 
 function fetchBikeData() {
-  getLimeBikes().then(addLimeBikeLayer).then(calculateVehiclesPerNeighborhood);
-  getSpinScooters()
-    .then(addSpinScootersLayer)
-    .then(calculateVehiclesPerNeighborhood);
+  getLimeBikes().then(addLayers).then(calculateVehiclesPerNeighborhood);
+  getSpinScooters().then(addLayers).then(calculateVehiclesPerNeighborhood);
 
   getCapitalBikeshareBikes()
     .then(addCabiLayers)
