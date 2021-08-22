@@ -36,6 +36,13 @@ function addNeighborhoodPolygons() {
   });
 }
 
+function addSource(geoJSON) {
+  map.addSource(geoJSON.properties.sourceId, {
+    type: "geojson",
+    data: geoJSON,
+  });
+}
+
 function createPointLayer(properties) {
   const layer = {
     id: properties.pointLayerId,
@@ -86,10 +93,7 @@ function createPolygonLayer(properties) {
 
 function addLimeBikeLayer(limeBikeGeojson) {
   return new Promise((resolve) => {
-    map.addSource(limeBikeGeojson.properties.sourceId, {
-      type: "geojson",
-      data: limeBikeGeojson,
-    });
+    addSource(limeBikeGeojson);
     createPointLayer(limeBikeGeojson.properties);
     createPolygonLayer(limeBikeGeojson.properties);
 
@@ -108,10 +112,7 @@ function addLimeBikeLayer(limeBikeGeojson) {
 function addSpinScootersLayer(spinScootersGeoJSON) {
   return new Promise((resolve) => {
     const { properties } = spinScootersGeoJSON;
-    map.addSource(properties.sourceId, {
-      type: "geojson",
-      data: spinScootersGeoJSON,
-    });
+    addSource(spinScootersGeoJSON);
     createPointLayer(properties);
     createPolygonLayer(properties);
     map.on("sourcedata", function sourceLoaded(e) {
@@ -128,10 +129,7 @@ function addSpinScootersLayer(spinScootersGeoJSON) {
 
 function addCabiLayers(stationGeoJSON) {
   return new Promise((resolve) => {
-    map.addSource(stationGeoJSON.properties.sourceId, {
-      type: "geojson",
-      data: stationGeoJSON,
-    });
+    addSource(stationGeoJSON);
     createPolygonLayer(stationGeoJSON.properties.availability);
     createPolygonLayer(stationGeoJSON.properties.capacity);
     createPointLayer(stationGeoJSON.properties);
