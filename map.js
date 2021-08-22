@@ -207,20 +207,30 @@ function calculateVehiclesPerNeighborhood(vehicleGeoJSON) {
   });
 }
 
+function getCapitalBikeshareBikes() {
+  return new Promise((resolve) => {
+    const cabiStationInformation = getCabiStationInformation();
+    const cabiStationStatus = getCabiStationStatus();
+
+    Promise.all([cabiStationInformation, cabiStationStatus]).then(
+      (promises) => {
+        const mergedData = mergeCabiStationJSON(promises[0], promises[1]);
+        resolve(mergedData);
+      }
+    );
+  });
+}
+
 function fetchBikeData() {
-  const cabiStationInformation = getCabiStationInformation();
-  const cabiStationStatus = getCabiStationStatus();
   getLimeBikes().then(addLimeBikeLayer).then(calculateVehiclesPerNeighborhood);
   getSpinScooters()
     .then(addSpinScootersLayer)
     .then(calculateVehiclesPerNeighborhood);
 
-  Promise.all([cabiStationInformation, cabiStationStatus]).then((promises) => {
-    const mergedData = mergeCabiStationJSON(promises[0], promises[1]);
-    addCabiSource(mergedData)
-      .then(addCabiLayers)
-      .then(calculateVehiclesPerNeighborhood);
-  });
+  getCapitalBikeshareBikes()
+    .then(addCabiSource)
+    .then(addCabiLayers)
+    .then(calculateVehiclesPerNeighborhood);
 }
 
 map.on("load", () => {
