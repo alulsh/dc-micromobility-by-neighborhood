@@ -226,25 +226,7 @@ function calculateLimeBikesPerPolygon(limeBikeGeojson) {
 function calculateSpinScootersPerPolygon(spinScootersGeoJSON) {
   return new Promise((resolve) => {
     const dcPolygons = getNeighborhoodPolygons();
-    dcPolygons.forEach((feature) => {
-      const polygon = turf.polygon(feature.geometry.coordinates);
-      const spinScootersWithin = turf.pointsWithinPolygon(
-        spinScootersGeoJSON,
-        polygon
-      );
-
-      const totalSpinScooters = spinScootersWithin.features.length;
-
-      map.setFeatureState(
-        {
-          source: "dc-neighborhoods-source",
-          id: feature.id,
-        },
-        {
-          totalSpinScooters,
-        }
-      );
-    });
+    calculateVehiclesPerNeighborhood(spinScootersGeoJSON, dcPolygons);
     resolve(dcPolygons);
   });
 }

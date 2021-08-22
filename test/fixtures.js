@@ -471,6 +471,7 @@ const spinApi = {
 
 const spinScootersGeoJSON = {
   type: "FeatureCollection",
+  featureStateName: "totalSpinScooters",
   features: [
     {
       type: "Feature",

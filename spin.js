@@ -17,6 +17,7 @@ function convertToGeoJSON(spinScooters) {
 
   return {
     type: "FeatureCollection",
+    featureStateName: "totalSpinScooters",
     features: scooterFeatures,
   };
 }
