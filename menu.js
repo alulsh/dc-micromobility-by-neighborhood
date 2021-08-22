@@ -1,5 +1,6 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable import/extensions */
+import { spin, capitalBikeshare, limeBikes } from "./constants.js";
 import { map } from "./map.js";
 
 function clearMenuItems(menuItem, activeLayer) {
@@ -23,21 +24,31 @@ function clearLegends(clickedLayer) {
   }
 }
 
-function togglePointLayers(clickedLayer, visibility) {
+function removeAllPointLayers() {
+  const pointLayers = [
+    spin.pointLayerId,
+    capitalBikeshare.pointLayerId,
+    limeBikes.pointLayerId,
+  ];
+
+  pointLayers.forEach((layer) => {
+    map.setLayoutProperty(layer, "visibility", "none");
+  });
+}
+
+function togglePointLayers(clickedLayer) {
+  removeAllPointLayers();
+
   switch (clickedLayer) {
     case "total-lime-bikes":
-      map.moveLayer("total-lime-bikes", "lime-bikes-points");
-      map.setLayoutProperty("lime-bikes-points", "visibility", visibility);
+      map.setLayoutProperty("lime-bikes-points", "visibility", "visible");
       break;
     case "total-spin-scooters":
-      map.moveLayer("total-spin-scooters", "spin-scooters-points");
-      map.setLayoutProperty("spin-scooters-points", "visibility", visibility);
+      map.setLayoutProperty("spin-scooters-points", "visibility", "visible");
       break;
     case "cabi-bikes-availability":
     case "cabi-bikes-capacity":
-      map.moveLayer("cabi-bikes-availability", "cabi-stations-points");
-      map.moveLayer("cabi-bikes-capacity", "cabi-stations-points");
-      map.setLayoutProperty("cabi-stations-points", "visibility", visibility);
+      map.setLayoutProperty("cabi-stations-points", "visibility", "visible");
       break;
     default:
       break;
@@ -82,14 +93,13 @@ function createMenu() {
         legend.style.display = "none";
         this.className = "";
         map.setLayoutProperty(`${clickedLayer}`, "visibility", "none");
-        togglePointLayers(clickedLayer, "none");
       } else {
         clearMenuItems(this, clickedLayer);
         clearLegends(clickedLayer);
         legend.style.display = "";
         this.className = "active";
         map.setLayoutProperty(`${clickedLayer}`, "visibility", "visible");
-        togglePointLayers(clickedLayer, "visible");
+        togglePointLayers(clickedLayer);
       }
     };
   });
