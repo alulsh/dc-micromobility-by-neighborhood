@@ -12,6 +12,7 @@ function BikeShareStation(lon, lat, name, regionId, capacity, stationId) {
 
 function FeatureCollection(features) {
   this.type = "FeatureCollection";
+  this.service = "Capital Bikeshare";
   this.features = features;
 }
 

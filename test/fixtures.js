@@ -72,6 +72,7 @@ const cabiStationInformationMock = {
 
 const cabiStationGeoJSON = {
   type: "FeatureCollection",
+  service: "Capital Bikeshare",
   features: [
     {
       type: "Feature",
@@ -171,6 +172,7 @@ const cabiStationStatus = {
 
 const mergedCabiGeoJSON = {
   type: "FeatureCollection",
+  service: "Capital Bikeshare",
   features: [
     {
       type: "Feature",

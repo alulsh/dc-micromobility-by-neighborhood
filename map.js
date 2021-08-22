@@ -165,35 +165,6 @@ function getNeighborhoodPolygons() {
   });
 }
 
-function calculateCabiBikesPerPolygon(stationGeoJSON) {
-  return new Promise((resolve) => {
-    const dcPolygons = getNeighborhoodPolygons();
-    dcPolygons.forEach((feature) => {
-      const polygon = turf.polygon(feature.geometry.coordinates);
-      const cabiWithin = turf.pointsWithinPolygon(stationGeoJSON, polygon);
-
-      let totalBikeCapacity = 0;
-      let totalBikesAvailable = 0;
-      cabiWithin.features.forEach((station) => {
-        totalBikeCapacity += station.properties.capacity;
-        totalBikesAvailable += station.properties.bikesAvailable;
-      });
-
-      map.setFeatureState(
-        {
-          source: "dc-neighborhoods-source",
-          id: feature.id,
-        },
-        {
-          totalBikeCapacity,
-          totalBikesAvailable,
-        }
-      );
-    });
-    resolve(dcPolygons);
-  });
-}
-
 function calculateVehiclesPerNeighborhood(vehicleGeoJSON, neighborhoods) {
   neighborhoods.forEach((neighborhood) => {
     const neighborhoodPolygon = turf.polygon(neighborhood.geometry.coordinates);
@@ -201,17 +172,45 @@ function calculateVehiclesPerNeighborhood(vehicleGeoJSON, neighborhoods) {
       vehicleGeoJSON,
       neighborhoodPolygon
     );
-    const totalVehicles = vehiclesPerNeighborhood.features.length;
-    const { featureStateName } = vehicleGeoJSON;
-    map.setFeatureState(
-      {
-        source: "dc-neighborhoods-source",
-        id: neighborhood.id,
-      },
-      {
-        [featureStateName]: totalVehicles,
-      }
-    );
+
+    if (vehicleGeoJSON.service === "Capital Bikeshare") {
+      let totalBikeCapacity = 0;
+      let totalBikesAvailable = 0;
+      vehiclesPerNeighborhood.features.forEach((station) => {
+        totalBikeCapacity += station.properties.capacity;
+        totalBikesAvailable += station.properties.bikesAvailable;
+      });
+      map.setFeatureState(
+        {
+          source: "dc-neighborhoods-source",
+          id: neighborhood.id,
+        },
+        {
+          totalBikeCapacity,
+          totalBikesAvailable,
+        }
+      );
+    } else {
+      const totalVehicles = vehiclesPerNeighborhood.features.length;
+      const { featureStateName } = vehicleGeoJSON;
+      map.setFeatureState(
+        {
+          source: "dc-neighborhoods-source",
+          id: neighborhood.id,
+        },
+        {
+          [featureStateName]: totalVehicles,
+        }
+      );
+    }
+  });
+}
+
+function calculateCabiBikesPerPolygon(stationGeoJSON) {
+  return new Promise((resolve) => {
+    const dcPolygons = getNeighborhoodPolygons();
+    calculateVehiclesPerNeighborhood(stationGeoJSON, dcPolygons);
+    resolve(dcPolygons);
   });
 }
 
