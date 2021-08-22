@@ -1,5 +1,5 @@
-const spinLayer = {
-  id: "total-spin-scooters",
+const spin = {
+  layerId: "total-spin-scooters",
   fillOutlineColor: "#DCDCDC",
   fillColor: [
     "interpolate",
@@ -22,8 +22,8 @@ const spinLayer = {
   ],
 };
 
-const cabiAvailabilityLayer = {
-  id: "cabi-bikes-availability",
+const cabiAvailability = {
+  layerId: "cabi-bikes-availability",
   fillOutlineColor: "#FFF",
   fillColor: [
     "interpolate",
@@ -50,8 +50,8 @@ const cabiAvailabilityLayer = {
   ],
 };
 
-const cabiCapacityLayer = {
-  id: "cabi-bikes-capacity",
+const cabiCapacity = {
+  layerId: "cabi-bikes-capacity",
   fillOutlineColor: "#FFF",
   fillColor: [
     "interpolate",
@@ -78,8 +78,8 @@ const cabiCapacityLayer = {
   ],
 };
 
-const limeLayer = {
-  id: "total-lime-bikes",
+const limeBikes = {
+  layerId: "total-lime-bikes",
   fillOutlineColor: "#DCDCDC",
   fillColor: [
     "interpolate",
@@ -102,4 +102,4 @@ const limeLayer = {
   ],
 };
 
-export { spinLayer, cabiAvailabilityLayer, cabiCapacityLayer, limeLayer };
+export { spin, cabiAvailability, cabiCapacity, limeBikes };

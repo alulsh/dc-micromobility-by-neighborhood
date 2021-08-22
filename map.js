@@ -5,11 +5,11 @@ import {
   mergeCabiStationJSON,
 } from "./cabi.js";
 import {
-  spinLayer,
-  cabiAvailabilityLayer,
-  cabiCapacityLayer,
-  limeLayer,
-} from "./colors.js";
+  spin,
+  cabiAvailability,
+  cabiCapacity,
+  limeBikes,
+} from "./constants.js";
 import { getLimeBikes } from "./lime.js";
 import { getSpinScooters } from "./spin.js";
 
@@ -80,7 +80,7 @@ function createPointLayer(service, color) {
 
 function createPolygonLayer(layer) {
   const polygonLayer = {
-    id: layer.id,
+    id: layer.layerId,
     type: "fill",
     source: "dc-neighborhoods-source",
     layout: {
@@ -93,7 +93,7 @@ function createPolygonLayer(layer) {
     },
   };
 
-  if (layer.id === "cabi-bikes-availability") {
+  if (layer.layerId === "cabi-bikes-availability") {
     polygonLayer.layout.visibility = "visible";
   }
 
@@ -107,7 +107,7 @@ function addLimeBikeLayer(limeBikeGeojson) {
       data: limeBikeGeojson,
     });
     createPointLayer("lime-bikes", "#50C878");
-    createPolygonLayer(limeLayer);
+    createPolygonLayer(limeBikes);
 
     map.on("sourcedata", function sourceLoaded(e) {
       if (
@@ -128,7 +128,7 @@ function addSpinScootersLayer(spinScootersGeoJSON) {
       data: spinScootersGeoJSON,
     });
     createPointLayer("spin-scooters", "#EE4B2B");
-    createPolygonLayer(spinLayer);
+    createPolygonLayer(spin);
     map.on("sourcedata", function sourceLoaded(e) {
       if (
         e.sourceId === "dc-neighborhoods-source" &&
@@ -143,8 +143,8 @@ function addSpinScootersLayer(spinScootersGeoJSON) {
 
 function addCabiLayers(stationGeoJSON) {
   return new Promise((resolve) => {
-    createPolygonLayer(cabiAvailabilityLayer);
-    createPolygonLayer(cabiCapacityLayer);
+    createPolygonLayer(cabiAvailability);
+    createPolygonLayer(cabiCapacity);
     createPointLayer("cabi-stations", "#363636");
 
     map.on("sourcedata", function sourceLoaded(e) {
