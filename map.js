@@ -159,11 +159,15 @@ function addCabiLayers(stationGeoJSON) {
   });
 }
 
+function getNeighborhoodPolygons() {
+  return map.queryRenderedFeatures({
+    layers: ["dc-neighborhoods-polygons"],
+  });
+}
+
 function calculateCabiBikesPerPolygon(stationGeoJSON) {
   return new Promise((resolve) => {
-    const dcPolygons = map.queryRenderedFeatures({
-      layers: ["dc-neighborhoods-polygons"],
-    });
+    const dcPolygons = getNeighborhoodPolygons();
     dcPolygons.forEach((feature) => {
       const polygon = turf.polygon(feature.geometry.coordinates);
       const cabiWithin = turf.pointsWithinPolygon(stationGeoJSON, polygon);
@@ -192,9 +196,7 @@ function calculateCabiBikesPerPolygon(stationGeoJSON) {
 
 function calculateLimeBikesPerPolygon(limeBikeGeojson) {
   return new Promise((resolve) => {
-    const dcPolygons = map.queryRenderedFeatures({
-      layers: ["dc-neighborhoods-polygons"],
-    });
+    const dcPolygons = getNeighborhoodPolygons();
     dcPolygons.forEach((feature) => {
       const polygon = turf.polygon(feature.geometry.coordinates);
       const limeBikesWithin = turf.pointsWithinPolygon(
@@ -220,9 +222,7 @@ function calculateLimeBikesPerPolygon(limeBikeGeojson) {
 
 function calculateSpinScootersPerPolygon(spinScootersGeoJSON) {
   return new Promise((resolve) => {
-    const dcPolygons = map.queryRenderedFeatures({
-      layers: ["dc-neighborhoods-polygons"],
-    });
+    const dcPolygons = getNeighborhoodPolygons();
     dcPolygons.forEach((feature) => {
       const polygon = turf.polygon(feature.geometry.coordinates);
       const spinScootersWithin = turf.pointsWithinPolygon(
