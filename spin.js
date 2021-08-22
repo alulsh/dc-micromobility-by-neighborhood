@@ -1,3 +1,6 @@
+/* eslint-disable import/extensions */
+import { spin } from "./constants.js";
+
 function convertToGeoJSON(spinScooters) {
   const scooterFeatures = spinScooters.map((scooter) => {
     const scooterFeature = {
@@ -17,7 +20,7 @@ function convertToGeoJSON(spinScooters) {
 
   return {
     type: "FeatureCollection",
-    featureStateName: "totalSpinScooters",
+    properties: spin,
     features: scooterFeatures,
   };
 }

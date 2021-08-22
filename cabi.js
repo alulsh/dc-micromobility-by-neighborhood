@@ -1,3 +1,6 @@
+/* eslint-disable import/extensions */
+import { capitalBikeshare } from "./constants.js";
+
 function BikeShareStation(lon, lat, name, regionId, capacity, stationId) {
   this.type = "Feature";
   this.geometry = {};
@@ -12,7 +15,7 @@ function BikeShareStation(lon, lat, name, regionId, capacity, stationId) {
 
 function FeatureCollection(features) {
   this.type = "FeatureCollection";
-  this.service = "Capital Bikeshare";
+  this.properties = capitalBikeshare;
   this.features = features;
 }
 

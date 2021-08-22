@@ -4,12 +4,6 @@ import {
   getCabiStationStatus,
   mergeCabiStationJSON,
 } from "./cabi.js";
-import {
-  spin,
-  cabiAvailability,
-  cabiCapacity,
-  limeBikes,
-} from "./constants.js";
 import { getLimeBikes } from "./lime.js";
 import { getSpinScooters } from "./spin.js";
 
@@ -25,7 +19,7 @@ export const map = new mapboxgl.Map({
 
 function addCabiSource(stationGeoJSON) {
   return new Promise((resolve) => {
-    map.addSource("cabi-stations-source", {
+    map.addSource(stationGeoJSON.properties.sourceId, {
       type: "geojson",
       data: stationGeoJSON,
     });
@@ -52,24 +46,24 @@ function addNeighborhoodPolygons() {
   });
 }
 
-function createPointLayer(service, color) {
+function createPointLayer(properties) {
   const layer = {
-    id: `${service}-points`,
+    id: properties.pointLayerId,
     type: "circle",
-    source: `${service}-source`,
+    source: properties.sourceId,
     layout: {
       visibility: "none",
     },
     minzoom: 12,
     paint: {
-      "circle-color": color,
+      "circle-color": properties.pointCircleColor,
       "circle-radius": 4,
       "circle-stroke-width": 1,
       "circle-stroke-color": "#fff",
     },
   };
 
-  if (service === "cabi-stations") {
+  if (properties.service === "Capital Bikeshare") {
     // regionId 42 is for Washington, D.C.
     layer.filter = ["==", "regionId", "42"];
     layer.layout.visibility = "visible";
@@ -78,22 +72,22 @@ function createPointLayer(service, color) {
   map.addLayer(layer);
 }
 
-function createPolygonLayer(layer) {
+function createPolygonLayer(properties) {
   const polygonLayer = {
-    id: layer.layerId,
+    id: properties.polygonLayerId,
     type: "fill",
     source: "dc-neighborhoods-source",
     layout: {
       visibility: "none",
     },
     paint: {
-      "fill-color": layer.fillColor,
+      "fill-color": properties.polygonFillColor,
       "fill-opacity": 0.6,
-      "fill-outline-color": layer.fillOutlineColor,
+      "fill-outline-color": properties.polygonFillOutlineColor,
     },
   };
 
-  if (layer.layerId === "cabi-bikes-availability") {
+  if (properties.polygonLayerId === "cabi-bikes-availability") {
     polygonLayer.layout.visibility = "visible";
   }
 
@@ -102,12 +96,12 @@ function createPolygonLayer(layer) {
 
 function addLimeBikeLayer(limeBikeGeojson) {
   return new Promise((resolve) => {
-    map.addSource("lime-bikes-source", {
+    map.addSource(limeBikeGeojson.properties.sourceId, {
       type: "geojson",
       data: limeBikeGeojson,
     });
-    createPointLayer("lime-bikes", "#50C878");
-    createPolygonLayer(limeBikes);
+    createPointLayer(limeBikeGeojson.properties);
+    createPolygonLayer(limeBikeGeojson.properties);
 
     map.on("sourcedata", function sourceLoaded(e) {
       if (
@@ -123,12 +117,13 @@ function addLimeBikeLayer(limeBikeGeojson) {
 
 function addSpinScootersLayer(spinScootersGeoJSON) {
   return new Promise((resolve) => {
-    map.addSource("spin-scooters-source", {
+    const { properties } = spinScootersGeoJSON;
+    map.addSource(properties.sourceId, {
       type: "geojson",
       data: spinScootersGeoJSON,
     });
-    createPointLayer("spin-scooters", "#EE4B2B");
-    createPolygonLayer(spin);
+    createPointLayer(properties);
+    createPolygonLayer(properties);
     map.on("sourcedata", function sourceLoaded(e) {
       if (
         e.sourceId === "dc-neighborhoods-source" &&
@@ -143,9 +138,9 @@ function addSpinScootersLayer(spinScootersGeoJSON) {
 
 function addCabiLayers(stationGeoJSON) {
   return new Promise((resolve) => {
-    createPolygonLayer(cabiAvailability);
-    createPolygonLayer(cabiCapacity);
-    createPointLayer("cabi-stations", "#363636");
+    createPolygonLayer(stationGeoJSON.properties.availability);
+    createPolygonLayer(stationGeoJSON.properties.capacity);
+    createPointLayer(stationGeoJSON.properties);
 
     map.on("sourcedata", function sourceLoaded(e) {
       if (
@@ -177,7 +172,7 @@ function calculateVehiclesPerNeighborhood(vehicleGeoJSON) {
         neighborhoodPolygon
       );
 
-      if (vehicleGeoJSON.service === "Capital Bikeshare") {
+      if (vehicleGeoJSON.properties.service === "Capital Bikeshare") {
         let totalBikeCapacity = 0;
         let totalBikesAvailable = 0;
         vehiclesPerNeighborhood.features.forEach((station) => {
@@ -196,7 +191,7 @@ function calculateVehiclesPerNeighborhood(vehicleGeoJSON) {
         );
       } else {
         const totalVehicles = vehiclesPerNeighborhood.features.length;
-        const { featureStateName } = vehicleGeoJSON;
+        const { featureStateName } = vehicleGeoJSON.properties;
         map.setFeatureState(
           {
             source: "dc-neighborhoods-source",

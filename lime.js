@@ -1,3 +1,6 @@
+/* eslint-disable import/extensions */
+import { limeBikes } from "./constants.js";
+
 function filterLimeBikes(limeVehicles) {
   const bikesOnly = limeVehicles.filter(
     (vehicle) => vehicle.vehicle_type === "bike"
@@ -5,8 +8,8 @@ function filterLimeBikes(limeVehicles) {
   return bikesOnly;
 }
 
-function convertToGeoJSON(limeBikes) {
-  const newLimeBikes = limeBikes.map((bike) => {
+function convertToGeoJSON(limeApi) {
+  const newLimeBikes = limeApi.map((bike) => {
     const bikeFeature = {
       type: "Feature",
       geometry: {
@@ -24,7 +27,7 @@ function convertToGeoJSON(limeBikes) {
 
   return {
     type: "FeatureCollection",
-    featureStateName: "totalLimeBikes",
+    properties: limeBikes,
     features: newLimeBikes,
   };
 }

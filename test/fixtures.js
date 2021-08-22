@@ -1,3 +1,5 @@
+import { spin, capitalBikeshare, limeBikes } from "../constants";
+
 const cabiStationInformationMock = {
   data: {
     stations: [
@@ -72,7 +74,7 @@ const cabiStationInformationMock = {
 
 const cabiStationGeoJSON = {
   type: "FeatureCollection",
-  service: "Capital Bikeshare",
+  properties: capitalBikeshare,
   features: [
     {
       type: "Feature",
@@ -172,7 +174,7 @@ const cabiStationStatus = {
 
 const mergedCabiGeoJSON = {
   type: "FeatureCollection",
-  service: "Capital Bikeshare",
+  properties: capitalBikeshare,
   features: [
     {
       type: "Feature",
@@ -369,7 +371,7 @@ const limeBikesOnly = [
 
 const limeBikesGeoJSON = {
   type: "FeatureCollection",
-  featureStateName: "totalLimeBikes",
+  properties: limeBikes,
   features: [
     {
       type: "Feature",
@@ -473,7 +475,7 @@ const spinApi = {
 
 const spinScootersGeoJSON = {
   type: "FeatureCollection",
-  featureStateName: "totalSpinScooters",
+  properties: spin,
   features: [
     {
       type: "Feature",
