@@ -31,8 +31,15 @@ function generatePopupHTML(layerName, eventFeatures) {
       header = "";
       paragraph = `<p>Spin ${eventFeatures.properties.vehicleType}</p>`;
       break;
+    case "bird-scooters-points":
+      header = "";
+      paragraph = `<p>Bird ${eventFeatures.properties.vehicleType}</p>`;
+      break;
     case "total-spin-scooters":
       paragraph = `<p>${eventFeatures.state.totalSpinScooters} Spin scooters</p>`;
+      break;
+    case "total-bird-scooters":
+      paragraph = `<p>${eventFeatures.state.totalBirdScooters} Bird scooters</p>`;
       break;
     case "cabi-stations-points":
       header = `<h4>${eventFeatures.properties.name}</h4>`;
@@ -119,6 +126,7 @@ function removePopup(layerName) {
 
 const popupLayers = [
   "spin-scooters-points",
+  "bird-scooters-points",
   "lime-bikes-points",
   "cabi-stations-points",
 ];

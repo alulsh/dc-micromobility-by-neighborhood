@@ -1,6 +1,6 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable import/extensions */
-import { spin, capitalBikeshare, limeBikes } from "./constants.js";
+import { spin, capitalBikeshare, limeBikes, bird } from "./constants.js";
 import { map } from "./map.js";
 
 function clearMenuItems(menuItem, activeLayer) {
@@ -27,6 +27,7 @@ function clearLegends(clickedLayer) {
 function removeAllPointLayers() {
   const pointLayers = [
     spin.pointLayerId,
+    bird.pointLayerId,
     capitalBikeshare.pointLayerId,
     limeBikes.pointLayerId,
   ];
@@ -45,6 +46,9 @@ function togglePointLayers(clickedLayer) {
       break;
     case "total-spin-scooters":
       map.setLayoutProperty("spin-scooters-points", "visibility", "visible");
+      break;
+    case "total-bird-scooters":
+      map.setLayoutProperty("bird-scooters-points", "visibility", "visible");
       break;
     case "cabi-bikes-availability":
     case "cabi-bikes-capacity":
@@ -71,6 +75,7 @@ function createMenu() {
   const micromobilityServices = [
     ["Lime bikes", "total-lime-bikes", "default"],
     ["Spin scooters", "total-spin-scooters", "hidden"],
+    ["Bird scooters", "total-bird-scooters", "hidden"],
     ["Capital Bikeshare availability", "cabi-bikes-availability", "hidden"],
     ["Capital Bikeshare capacity", "cabi-bikes-capacity", "hidden"],
   ];
