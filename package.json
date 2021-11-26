@@ -23,15 +23,15 @@
     "start": "serve"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.14.5",
-    "@jest/globals": "^27.0.3",
-    "eslint": "^7.28.0",
-    "eslint-config-airbnb-base": "^14.2.1",
+    "@babel/preset-env": "^7.16.4",
+    "@jest/globals": "^27.3.1",
+    "eslint": "^8.3.0",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.23.4",
-    "eslint-plugin-prettier": "^3.4.0",
-    "jest": "^27.0.4",
-    "prettier": "^2.3.1",
-    "serve": "^12.0.0"
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.3.1",
+    "prettier": "^2.5.0",
+    "serve": "^13.0.0"
   }
 }
