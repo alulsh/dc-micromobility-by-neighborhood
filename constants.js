@@ -122,4 +122,34 @@ const limeBikes = {
   featureStateName: "totalLimeBikes",
 };
 
-export { spin, capitalBikeshare, limeBikes };
+const bird = {
+  service: "Bird",
+  vehicleType: "scooters",
+  sourceId: "bird-scooters-source",
+  pointLayerId: "bird-scooters-points",
+  pointCircleColor: "#EE4B2B",
+  polygonLayerId: "total-bird-scooters",
+  polygonFillOutlineColor: "#DCDCDC",
+  polygonFillColor: [
+    "interpolate",
+    ["linear"],
+    ["feature-state", "totalBirdScooters"],
+    0,
+    ["to-color", "rgb(255, 255, 255)"],
+    25,
+    ["to-color", "#ffa600"],
+    50,
+    ["to-color", "#ff970c"],
+    75,
+    ["to-color", "#ff8718"],
+    100,
+    ["to-color", "#ff7723"],
+    125,
+    ["to-color", "#ff662c"],
+    150,
+    ["to-color", "#ff5435"],
+  ],
+  featureStateName: "totalBirdScooters",
+};
+
+export { spin, capitalBikeshare, limeBikes, bird };
