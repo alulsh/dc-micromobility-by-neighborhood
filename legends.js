@@ -56,4 +56,5 @@ services.forEach((service) => {
   }
 });
 
-export { extractColorStops as default };
+// eslint-disable-next-line import/prefer-default-export
+export { extractColorStops };

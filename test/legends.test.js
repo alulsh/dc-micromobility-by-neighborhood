@@ -3,7 +3,7 @@
  */
 
 import { expect, test } from "@jest/globals";
-import extractColorStops from "../legends";
+import { extractColorStops } from "../legends";
 import { spin } from "../constants";
 
 test("Extract color stops from GL JS data expression", () => {
