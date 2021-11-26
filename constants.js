@@ -1,6 +1,7 @@
 const spin = {
+  default: false,
   service: "Spin",
-  vehicleType: "scooters",
+  vehicleType: "Scooters",
   sourceId: "spin-scooters-source",
   pointLayerId: "spin-scooters-points",
   pointCircleColor: "#EE4B2B",
@@ -30,11 +31,13 @@ const spin = {
 
 const capitalBikeshare = {
   service: "Capital Bikeshare",
-  vehicleType: "bikes",
+  vehicleType: "Bikes",
   sourceId: "cabi-stations-source",
   pointLayerId: "cabi-stations-points",
   pointCircleColor: "#363636",
   availability: {
+    default: false,
+    vehicleType: "Bikes",
     polygonLayerId: "cabi-bikes-availability",
     polygonFillOutlineColor: "#FFF",
     polygonFillColor: [
@@ -63,6 +66,8 @@ const capitalBikeshare = {
     featureStateName: "totalBikeAvailability",
   },
   capacity: {
+    default: false,
+    vehicleType: "Bikes",
     polygonLayerId: "cabi-bikes-capacity",
     polygonFillOutlineColor: "#FFF",
     polygonFillColor: [
@@ -93,8 +98,9 @@ const capitalBikeshare = {
 };
 
 const limeBikes = {
+  default: true,
   service: "Lime",
-  vehicleType: "bikes",
+  vehicleType: "Bikes",
   sourceId: "lime-bikes-source",
   pointLayerId: "lime-bikes-points",
   pointCircleColor: "#50C878",
@@ -123,8 +129,9 @@ const limeBikes = {
 };
 
 const bird = {
+  default: false,
   service: "Bird",
-  vehicleType: "scooters",
+  vehicleType: "Scooters",
   sourceId: "bird-scooters-source",
   pointLayerId: "bird-scooters-points",
   pointCircleColor: "#EE4B2B",
@@ -152,4 +159,6 @@ const bird = {
   featureStateName: "totalBirdScooters",
 };
 
-export { spin, capitalBikeshare, limeBikes, bird };
+const services = [spin, capitalBikeshare, limeBikes, bird];
+
+export { services, spin, capitalBikeshare, limeBikes, bird };
