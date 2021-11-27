@@ -25,18 +25,13 @@ function convertToGeoJSON(birdScooters) {
   };
 }
 
-function getBirdScooters() {
-  return new Promise((resolve) => {
-    fetch("https://gbfs.bird.co/dc")
-      .then((response) => response.json())
-      .then((jsonData) => {
-        const scootersGeoJSON = convertToGeoJSON(jsonData.data.bikes);
-        resolve(scootersGeoJSON);
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
-  });
+async function getBirdScooters() {
+  const response = await fetch("https://gbfs.bird.co/dc");
+
+  const jsonData = await response.json();
+  const scootersGeoJSON = convertToGeoJSON(jsonData.data.bikes);
+
+  return scootersGeoJSON;
 }
 
 export { getBirdScooters, convertToGeoJSON };
