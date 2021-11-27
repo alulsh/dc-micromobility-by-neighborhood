@@ -32,19 +32,16 @@ function convertToGeoJSON(limeApi) {
   };
 }
 
-function getLimeBikes() {
-  return new Promise((resolve) => {
-    fetch("https://vercel-cors-proxy.vercel.app/api/proxy?service=lime")
-      .then((response) => response.json())
-      .then((jsonData) => {
-        const bikesOnly = filterLimeBikes(jsonData.data.bikes);
-        const bikesGeoJSON = convertToGeoJSON(bikesOnly);
-        resolve(bikesGeoJSON);
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
-  });
+async function getLimeBikes() {
+  const response = await fetch(
+    "https://vercel-cors-proxy.vercel.app/api/proxy?service=lime"
+  );
+
+  const jsonData = await response.json();
+  const bikesOnly = filterLimeBikes(jsonData.data.bikes);
+  const bikesGeoJSON = convertToGeoJSON(bikesOnly);
+
+  return bikesGeoJSON;
 }
 
 export { getLimeBikes, filterLimeBikes, convertToGeoJSON };
