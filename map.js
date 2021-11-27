@@ -19,21 +19,33 @@ export const map = new mapboxgl.Map({
 });
 
 function addNeighborhoodPolygons() {
-  map.addSource("dc-neighborhoods-source", {
-    type: "geojson",
-    data: "https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson",
-    generateId: true,
-  });
-  map.addLayer({
-    id: "dc-neighborhoods-polygons",
-    type: "fill",
-    source: "dc-neighborhoods-source",
-    layout: {
-      visibility: "visible",
-    },
-    paint: {
-      "fill-opacity": 0,
-    },
+  return new Promise((resolve) => {
+    map.addSource("dc-neighborhoods-source", {
+      type: "geojson",
+      data: "https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson",
+      generateId: true,
+    });
+    map.addLayer({
+      id: "dc-neighborhoods-polygons",
+      type: "fill",
+      source: "dc-neighborhoods-source",
+      layout: {
+        visibility: "visible",
+      },
+      paint: {
+        "fill-opacity": 0,
+      },
+    });
+
+    map.on("sourcedata", (e) => {
+      if (
+        e.sourceId === "dc-neighborhoods-source" &&
+        e.isSourceLoaded &&
+        e.coord
+      ) {
+        resolve("Neighborhood polygon source loaded");
+      }
+    });
   });
 }
 
@@ -95,30 +107,20 @@ function createPolygonLayer(properties) {
   map.addLayer(polygonLayer);
 }
 
-function addLayers(geoJSON) {
-  return new Promise((resolve) => {
-    const { properties } = geoJSON;
-    addSource(geoJSON);
+async function addLayers(geoJSON) {
+  const { properties } = geoJSON;
+  addSource(geoJSON);
 
-    if (properties.service === "Capital Bikeshare") {
-      createPolygonLayer(properties.availability);
-      createPolygonLayer(properties.capacity);
-    } else {
-      createPolygonLayer(properties);
-    }
+  if (properties.service === "Capital Bikeshare") {
+    createPolygonLayer(properties.availability);
+    createPolygonLayer(properties.capacity);
+  } else {
+    createPolygonLayer(properties);
+  }
 
-    createPointLayer(properties);
+  createPointLayer(properties);
 
-    map.on("sourcedata", function sourceLoaded(e) {
-      if (
-        e.sourceId === "dc-neighborhoods-source" &&
-        e.isSourceLoaded &&
-        e.coord
-      ) {
-        resolve(geoJSON);
-      }
-    });
-  });
+  return geoJSON;
 }
 
 function getNeighborhoodPolygons() {
@@ -160,25 +162,20 @@ function setMapFeatureState(id, vehiclesPerNeighborhood, geoJSON) {
   }
 }
 
-function calculateVehiclesPerNeighborhood(vehicleGeoJSON) {
-  return new Promise((resolve) => {
-    const neighborhoods = getNeighborhoodPolygons();
-    neighborhoods.forEach((neighborhood) => {
-      const neighborhoodPolygon = turf.polygon(
-        neighborhood.geometry.coordinates
-      );
-      const vehiclesPerNeighborhood = turf.pointsWithinPolygon(
-        vehicleGeoJSON,
-        neighborhoodPolygon
-      );
+async function calculateVehiclesPerNeighborhood(vehicleGeoJSON) {
+  const neighborhoods = await getNeighborhoodPolygons();
+  neighborhoods.forEach((neighborhood) => {
+    const neighborhoodPolygon = turf.polygon(neighborhood.geometry.coordinates);
+    const vehiclesPerNeighborhood = turf.pointsWithinPolygon(
+      vehicleGeoJSON,
+      neighborhoodPolygon
+    );
 
-      setMapFeatureState(
-        neighborhood.id,
-        vehiclesPerNeighborhood,
-        vehicleGeoJSON
-      );
-    });
-    resolve(neighborhoods);
+    setMapFeatureState(
+      neighborhood.id,
+      vehiclesPerNeighborhood,
+      vehicleGeoJSON
+    );
   });
 }
 
@@ -205,8 +202,7 @@ function fetchBikeData() {
 }
 
 map.on("load", () => {
-  addNeighborhoodPolygons();
-  fetchBikeData();
+  addNeighborhoodPolygons().then(fetchBikeData);
 });
 
 export { fetchBikeData };
