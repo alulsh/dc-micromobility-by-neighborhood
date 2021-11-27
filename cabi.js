@@ -37,31 +37,23 @@ function convertToGeoJSON(bikeshareJSON) {
   return new FeatureCollection(newStationArray);
 }
 
-function getCabiStationInformation() {
-  return new Promise((resolve) => {
-    fetch("https://gbfs.capitalbikeshare.com/gbfs/en/station_information.json")
-      .then((response) => response.json())
-      .then((jsonData) => {
-        const stationGeoJSON = convertToGeoJSON(jsonData.data.stations);
-        resolve(stationGeoJSON);
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
-  });
+async function getCabiStationInformation() {
+  const response = await fetch(
+    "https://gbfs.capitalbikeshare.com/gbfs/en/station_information.json"
+  );
+  const jsonData = await response.json();
+  const stationGeoJSON = convertToGeoJSON(jsonData.data.stations);
+
+  return stationGeoJSON;
 }
 
-function getCabiStationStatus() {
-  return new Promise((resolve) => {
-    fetch("https://gbfs.capitalbikeshare.com/gbfs/en/station_status.json")
-      .then((response) => response.json())
-      .then((jsonData) => {
-        resolve(jsonData.data.stations);
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
-  });
+async function getCabiStationStatus() {
+  const response = await fetch(
+    "https://gbfs.capitalbikeshare.com/gbfs/en/station_status.json"
+  );
+  const jsonData = await response.json();
+
+  return jsonData.data.stations;
 }
 
 function mergeCabiStationJSON(stationGeoJSON, stationStatus) {
