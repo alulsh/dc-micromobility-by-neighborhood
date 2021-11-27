@@ -1,5 +1,5 @@
 import { expect, test, jest, afterEach } from "@jest/globals";
-import { getScooters, convertToGeoJSON, filterVehicles } from "../scooters";
+import { getVehicles, convertToGeoJSON, filterVehicles } from "../vehicles";
 import { spin, bird, limeBikes } from "../constants";
 import {
   spinApi,
@@ -22,7 +22,7 @@ test("Fetch Spin API", () => {
     })
   );
 
-  return getScooters(spin).then((data) => {
+  return getVehicles(spin).then((data) => {
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(
       "https://gbfs.spin.pm/api/gbfs/v1/washington_dc/free_bike_status"
@@ -44,7 +44,7 @@ test("Fetch Bird API", () => {
     })
   );
 
-  return getScooters(bird).then((data) => {
+  return getVehicles(bird).then((data) => {
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith("https://gbfs.bird.co/dc");
     expect(data).toEqual(birdScootersGeoJSON);
@@ -64,7 +64,7 @@ test("Fetch Lime API", () => {
     })
   );
 
-  return getScooters(limeBikes).then((data) => {
+  return getVehicles(limeBikes).then((data) => {
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(
       "https://vercel-cors-proxy.vercel.app/api/proxy?service=lime"

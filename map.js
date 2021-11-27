@@ -5,7 +5,7 @@ import {
   mergeCabiStationJSON,
 } from "./cabi.js";
 import { spin, bird, limeBikes } from "./constants.js";
-import { getScooters } from "./scooters.js";
+import { getVehicles } from "./vehicles.js";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYWx1bHNoIiwiYSI6ImY0NDBjYTQ1NjU4OGJmMDFiMWQ1Y2RmYjRlMGI1ZjIzIn0.pngboKEPsfuC4j54XDT3VA";
@@ -195,9 +195,9 @@ async function getCapitalBikeshareBikes() {
 }
 
 function fetchBikeData() {
-  getScooters(limeBikes).then(addLayers).then(calculateVehiclesPerNeighborhood);
-  getScooters(spin).then(addLayers).then(calculateVehiclesPerNeighborhood);
-  getScooters(bird).then(addLayers).then(calculateVehiclesPerNeighborhood);
+  getVehicles(limeBikes).then(addLayers).then(calculateVehiclesPerNeighborhood);
+  getVehicles(spin).then(addLayers).then(calculateVehiclesPerNeighborhood);
+  getVehicles(bird).then(addLayers).then(calculateVehiclesPerNeighborhood);
 
   getCapitalBikeshareBikes()
     .then(addLayers)
