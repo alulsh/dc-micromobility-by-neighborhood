@@ -101,6 +101,7 @@ const capitalBikeshare = {
 const limeBikes = {
   default: true,
   service: "Lime",
+  url: "https://vercel-cors-proxy.vercel.app/api/proxy?service=lime",
   vehicleType: "Bikes",
   sourceId: "lime-bikes-source",
   pointLayerId: "lime-bikes-points",

@@ -1,3 +1,7 @@
+function filterVehicles(vehicles, type) {
+  return vehicles.filter((vehicle) => vehicle.vehicle_type === type);
+}
+
 function convertToGeoJSON(service, scooters) {
   const scooterFeatures = scooters.map((scooter) => {
     const scooterFeature = {
@@ -23,11 +27,19 @@ function convertToGeoJSON(service, scooters) {
 }
 
 async function getScooters(service) {
+  let vehicleJSON;
   const response = await fetch(service.url);
   const jsonData = await response.json();
-  const scootersGeoJSON = convertToGeoJSON(service, jsonData.data.bikes);
+
+  if (service.service === "Lime") {
+    vehicleJSON = filterVehicles(jsonData.data.bikes, "bike");
+  } else {
+    vehicleJSON = jsonData.data.bikes;
+  }
+
+  const scootersGeoJSON = convertToGeoJSON(service, vehicleJSON);
 
   return scootersGeoJSON;
 }
 
-export { getScooters, convertToGeoJSON };
+export { getScooters, convertToGeoJSON, filterVehicles };

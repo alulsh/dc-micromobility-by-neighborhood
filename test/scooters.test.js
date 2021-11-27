@@ -1,11 +1,14 @@
 import { expect, test, jest, afterEach } from "@jest/globals";
-import { getScooters, convertToGeoJSON } from "../scooters";
-import { spin, bird } from "../constants";
+import { getScooters, convertToGeoJSON, filterVehicles } from "../scooters";
+import { spin, bird, limeBikes } from "../constants";
 import {
   spinApi,
   spinScootersGeoJSON,
   birdApi,
   birdScootersGeoJSON,
+  limeApi,
+  limeBikesOnly,
+  limeBikesGeoJSON,
 } from "./fixtures";
 
 afterEach(() => {
@@ -52,4 +55,28 @@ test("Converts Bird scooter data to GeoJSON", () => {
   expect(convertToGeoJSON(bird, birdApi.data.bikes)).toEqual(
     birdScootersGeoJSON
   );
+});
+
+test("Fetch Lime API", () => {
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      json: () => Promise.resolve(limeApi),
+    })
+  );
+
+  return getScooters(limeBikes).then((data) => {
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(
+      "https://vercel-cors-proxy.vercel.app/api/proxy?service=lime"
+    );
+    expect(data).toEqual(limeBikesGeoJSON);
+  });
+});
+
+test("Filters out scooter and mopeds from Lime API response", () => {
+  expect(filterVehicles(limeApi.data.bikes, "bike")).toEqual(limeBikesOnly);
+});
+
+test("Converts filtered Lime bike data to GeoJSON", () => {
+  expect(convertToGeoJSON(limeBikes, limeBikesOnly)).toEqual(limeBikesGeoJSON);
 });
