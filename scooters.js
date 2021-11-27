@@ -1,8 +1,5 @@
-/* eslint-disable import/extensions */
-import { spin } from "./constants.js";
-
-function convertToGeoJSON(spinScooters) {
-  const scooterFeatures = spinScooters.map((scooter) => {
+function convertToGeoJSON(service, scooters) {
+  const scooterFeatures = scooters.map((scooter) => {
     const scooterFeature = {
       type: "Feature",
       geometry: {
@@ -20,20 +17,17 @@ function convertToGeoJSON(spinScooters) {
 
   return {
     type: "FeatureCollection",
-    properties: spin,
+    properties: service,
     features: scooterFeatures,
   };
 }
 
-async function getSpinScooters() {
-  const response = await fetch(
-    "https://gbfs.spin.pm/api/gbfs/v1/washington_dc/free_bike_status"
-  );
-
+async function getScooters(service) {
+  const response = await fetch(service.url);
   const jsonData = await response.json();
-  const scootersGeoJSON = convertToGeoJSON(jsonData.data.bikes);
+  const scootersGeoJSON = convertToGeoJSON(service, jsonData.data.bikes);
 
   return scootersGeoJSON;
 }
 
-export { getSpinScooters, convertToGeoJSON };
+export { getScooters, convertToGeoJSON };

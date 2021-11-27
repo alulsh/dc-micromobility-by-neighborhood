@@ -1,6 +1,7 @@
 const spin = {
   default: false,
   service: "Spin",
+  url: "https://gbfs.spin.pm/api/gbfs/v1/washington_dc/free_bike_status",
   vehicleType: "Scooters",
   sourceId: "spin-scooters-source",
   pointLayerId: "spin-scooters-points",
@@ -130,6 +131,7 @@ const limeBikes = {
 
 const bird = {
   default: false,
+  url: "https://gbfs.bird.co/dc",
   service: "Bird",
   vehicleType: "Scooters",
   sourceId: "bird-scooters-source",
