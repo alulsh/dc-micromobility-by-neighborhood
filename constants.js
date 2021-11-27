@@ -134,7 +134,7 @@ const bird = {
   vehicleType: "Scooters",
   sourceId: "bird-scooters-source",
   pointLayerId: "bird-scooters-points",
-  pointCircleColor: "#EE4B2B",
+  pointCircleColor: "#27ccf0",
   polygonLayerId: "total-bird-scooters",
   polygonFillOutlineColor: "#DCDCDC",
   polygonFillColor: [
