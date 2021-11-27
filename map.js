@@ -163,7 +163,7 @@ function setMapFeatureState(id, vehiclesPerNeighborhood, geoJSON) {
 }
 
 async function calculateVehiclesPerNeighborhood(vehicleGeoJSON) {
-  const neighborhoods = await getNeighborhoodPolygons();
+  const neighborhoods = getNeighborhoodPolygons();
   neighborhoods.forEach((neighborhood) => {
     const neighborhoodPolygon = turf.polygon(neighborhood.geometry.coordinates);
     const vehiclesPerNeighborhood = turf.pointsWithinPolygon(
