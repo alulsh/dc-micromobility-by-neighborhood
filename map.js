@@ -10,6 +10,7 @@ import { getVehicles } from "./vehicles.js";
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYWx1bHNoIiwiYSI6ImY0NDBjYTQ1NjU4OGJmMDFiMWQ1Y2RmYjRlMGI1ZjIzIn0.pngboKEPsfuC4j54XDT3VA";
 
+// eslint-disable-next-line import/prefer-default-export
 export const map = new mapboxgl.Map({
   container: "map",
   style: "mapbox://styles/mapbox/light-v10",
@@ -194,7 +195,7 @@ async function getCapitalBikeshareBikes() {
   return mergedData;
 }
 
-function fetchBikeData() {
+function fetchVehicleData() {
   getVehicles(limeBikes).then(addLayers).then(calculateVehiclesPerNeighborhood);
   getVehicles(spin).then(addLayers).then(calculateVehiclesPerNeighborhood);
   getVehicles(bird).then(addLayers).then(calculateVehiclesPerNeighborhood);
@@ -205,7 +206,5 @@ function fetchBikeData() {
 }
 
 map.on("load", () => {
-  addNeighborhoodPolygons().then(fetchBikeData);
+  addNeighborhoodPolygons().then(fetchVehicleData);
 });
-
-export { fetchBikeData };
