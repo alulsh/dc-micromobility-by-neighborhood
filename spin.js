@@ -25,18 +25,15 @@ function convertToGeoJSON(spinScooters) {
   };
 }
 
-function getSpinScooters() {
-  return new Promise((resolve) => {
-    fetch("https://gbfs.spin.pm/api/gbfs/v1/washington_dc/free_bike_status")
-      .then((response) => response.json())
-      .then((jsonData) => {
-        const scootersGeoJSON = convertToGeoJSON(jsonData.data.bikes);
-        resolve(scootersGeoJSON);
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
-  });
+async function getSpinScooters() {
+  const response = await fetch(
+    "https://gbfs.spin.pm/api/gbfs/v1/washington_dc/free_bike_status"
+  );
+
+  const jsonData = await response.json();
+  const scootersGeoJSON = convertToGeoJSON(jsonData.data.bikes);
+
+  return scootersGeoJSON;
 }
 
 export { getSpinScooters, convertToGeoJSON };
