@@ -182,18 +182,16 @@ function calculateVehiclesPerNeighborhood(vehicleGeoJSON) {
   });
 }
 
-function getCapitalBikeshareBikes() {
-  return new Promise((resolve) => {
-    const cabiStationInformation = getCabiStationInformation();
-    const cabiStationStatus = getCabiStationStatus();
+async function getCapitalBikeshareBikes() {
+  const cabiStationInformation = await getCabiStationInformation();
+  const cabiStationStatus = await getCabiStationStatus();
 
-    Promise.all([cabiStationInformation, cabiStationStatus]).then(
-      (promises) => {
-        const mergedData = mergeCabiStationJSON(promises[0], promises[1]);
-        resolve(mergedData);
-      }
-    );
-  });
+  const mergedData = mergeCabiStationJSON(
+    cabiStationInformation,
+    cabiStationStatus
+  );
+
+  return mergedData;
 }
 
 function fetchBikeData() {
