@@ -18,25 +18,8 @@ export const map = new mapboxgl.Map({
   zoom: 10.6,
 });
 
-function addNeighborhoodPolygons() {
+function checkSourceLoaded() {
   return new Promise((resolve) => {
-    map.addSource("dc-neighborhoods-source", {
-      type: "geojson",
-      data: "https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson",
-      generateId: true,
-    });
-    map.addLayer({
-      id: "dc-neighborhoods-polygons",
-      type: "fill",
-      source: "dc-neighborhoods-source",
-      layout: {
-        visibility: "visible",
-      },
-      paint: {
-        "fill-opacity": 0,
-      },
-    });
-
     map.on("sourcedata", (e) => {
       if (
         e.sourceId === "dc-neighborhoods-source" &&
@@ -47,6 +30,27 @@ function addNeighborhoodPolygons() {
       }
     });
   });
+}
+
+async function addNeighborhoodPolygons() {
+  map.addSource("dc-neighborhoods-source", {
+    type: "geojson",
+    data: "https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson",
+    generateId: true,
+  });
+  map.addLayer({
+    id: "dc-neighborhoods-polygons",
+    type: "fill",
+    source: "dc-neighborhoods-source",
+    layout: {
+      visibility: "visible",
+    },
+    paint: {
+      "fill-opacity": 0,
+    },
+  });
+
+  await checkSourceLoaded();
 }
 
 function addSource(geoJSON) {
