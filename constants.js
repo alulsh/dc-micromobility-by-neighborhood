@@ -132,7 +132,7 @@ const limeBikes = {
 
 const bird = {
   default: false,
-  url: "https://gbfs.bird.co/dc",
+  url: "https://vercel-cors-proxy.vercel.app/api/proxy?service=bird",
   service: "Bird",
   vehicleType: "Scooters",
   sourceId: "bird-scooters-source",

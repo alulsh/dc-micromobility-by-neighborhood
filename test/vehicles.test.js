@@ -46,7 +46,9 @@ test("Fetch Bird API", () => {
 
   return getVehicles(bird).then((data) => {
     expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith("https://gbfs.bird.co/dc");
+    expect(fetch).toHaveBeenCalledWith(
+      "https://vercel-cors-proxy.vercel.app/api/proxy?service=bird"
+    );
     expect(data).toEqual(birdScootersGeoJSON);
   });
 });
