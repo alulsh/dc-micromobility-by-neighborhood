@@ -18,23 +18,6 @@ function removeAllPointLayers() {
   });
 }
 
-function displayPointLayer(clickedLayer) {
-  switch (clickedLayer) {
-    case "total-spin-scooters":
-      map.setLayoutProperty("spin-scooters-points", "visibility", "visible");
-      break;
-    case "total-helbiz-scooters":
-      map.setLayoutProperty("helbiz-scooters-points", "visibility", "visible");
-      break;
-    case "cabi-bikes-availability":
-    case "cabi-bikes-capacity":
-      map.setLayoutProperty("cabi-stations-points", "visibility", "visible");
-      break;
-    default:
-      break;
-  }
-}
-
 function toggleLegend(clickedLayer, visible) {
   const legend = document.getElementById(`${clickedLayer}-legend`);
   if (visible) {
@@ -44,12 +27,9 @@ function toggleLegend(clickedLayer, visible) {
   }
 }
 
-function clickMenuEvent(link) {
+function clickMenuEvent(link, service) {
   const clickedLayer = link.id;
-  const layerVisibility = map.getLayoutProperty(
-    `${clickedLayer}`,
-    "visibility"
-  );
+  const layerVisibility = map.getLayoutProperty(clickedLayer, "visibility");
 
   clearMenuAndLayers(clickedLayer);
   removeAllPointLayers();
@@ -62,7 +42,7 @@ function clickMenuEvent(link) {
     link.classList.add("active");
     map.setLayoutProperty(clickedLayer, "visibility", "visible");
     toggleLegend(clickedLayer, true);
-    displayPointLayer(clickedLayer);
+    map.setLayoutProperty(service.pointLayerId, "visibility", "visible");
   }
 }
 
@@ -80,7 +60,7 @@ function createMenuItem(service) {
   menuDiv.appendChild(link);
 
   link.onclick = function click() {
-    clickMenuEvent(this);
+    clickMenuEvent(this, service);
   };
 }
 
