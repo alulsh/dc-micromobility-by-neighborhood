@@ -31,13 +31,10 @@ async function getVehicles(service) {
   const response = await fetch(service.url);
   const jsonData = await response.json();
 
-  switch (service.service) {
-    case "Helbiz":
-      vehicleJSON = filterVehicles(jsonData.data.bikes, "scooter");
-      break;
-    default:
-      vehicleJSON = jsonData.data.bikes;
-      break;
+  if (service.service === "Helbiz") {
+    vehicleJSON = filterVehicles(jsonData.data.bikes, "scooter");
+  } else {
+    vehicleJSON = jsonData.data.bikes;
   }
 
   const vehiclesGeoJSON = convertToGeoJSON(service, vehicleJSON);
