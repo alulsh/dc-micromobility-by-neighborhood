@@ -28,21 +28,23 @@ function toggleLegend(clickedLayer, visible) {
 }
 
 function clickMenuEvent(link, service) {
-  const clickedLayer = link.id;
-  const layerVisibility = map.getLayoutProperty(clickedLayer, "visibility");
+  const layerVisibility = map.getLayoutProperty(
+    service.polygonLayerId,
+    "visibility"
+  );
 
-  clearMenuAndLayers(clickedLayer);
+  clearMenuAndLayers(service.polygonLayerId);
   removeAllPointLayers();
 
   if (layerVisibility === "visible") {
     link.classList.remove("active");
-    map.setLayoutProperty(clickedLayer, "visibility", "none");
-    toggleLegend(clickedLayer, false);
+    map.setLayoutProperty(service.polygonLayerId, "visibility", "none");
+    toggleLegend(service.polygonLayerId, false);
   } else {
     link.classList.add("active");
-    map.setLayoutProperty(clickedLayer, "visibility", "visible");
-    toggleLegend(clickedLayer, true);
+    map.setLayoutProperty(service.polygonLayerId, "visibility", "visible");
     map.setLayoutProperty(service.pointLayerId, "visibility", "visible");
+    toggleLegend(service.polygonLayerId, true);
   }
 }
 
