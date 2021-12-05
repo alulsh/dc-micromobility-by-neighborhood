@@ -162,6 +162,38 @@ const bird = {
   featureStateName: "totalBirdScooters",
 };
 
-const services = [spin, capitalBikeshare, limeBikes, bird];
+const helbiz = {
+  default: false,
+  url: "https://api.helbiz.com/admin/reporting/washington/gbfs/free_bike_status.json",
+  service: "Helbiz",
+  vehicleType: "Scooters",
+  sourceId: "helbiz-scooters-source",
+  pointLayerId: "helbiz-scooters-points",
+  pointCircleColor: "#000000",
+  polygonLayerId: "total-helbiz-scooters",
+  polygonFillOutlineColor: "#DCDCDC",
+  polygonFillColor: [
+    "interpolate",
+    ["linear"],
+    ["feature-state", "totalHelbizScooters"],
+    0,
+    ["to-color", "#fdfffd"],
+    25,
+    ["to-color", "#d6ffe1"],
+    50,
+    ["to-color", "#b1ffd3"],
+    75,
+    ["to-color", "#8dfdd2"],
+    100,
+    ["to-color", "#6af9de"],
+    125,
+    ["to-color", "#48f5f4"],
+    150,
+    ["to-color", "#27ccf0"],
+  ],
+  featureStateName: "totalHelbizScooters",
+};
 
-export { services, spin, capitalBikeshare, limeBikes, bird };
+const services = [spin, capitalBikeshare, limeBikes, bird, helbiz];
+
+export { services, spin, capitalBikeshare, limeBikes, bird, helbiz };

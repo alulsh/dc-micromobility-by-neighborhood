@@ -1,6 +1,6 @@
 import { expect, test, jest, afterEach } from "@jest/globals";
 import { getVehicles, convertToGeoJSON, filterVehicles } from "../vehicles";
-import { spin, bird, limeBikes } from "../constants";
+import { spin, bird, limeBikes, helbiz } from "../constants";
 import {
   spinApi,
   spinScootersGeoJSON,
@@ -9,6 +9,9 @@ import {
   limeApi,
   limeBikesOnly,
   limeBikesGeoJSON,
+  helbizApi,
+  helbizScootersOnly,
+  helbizScootersGeoJSON,
 } from "./fixtures";
 
 afterEach(() => {
@@ -81,4 +84,32 @@ test("Filters out scooter and mopeds from Lime API response", () => {
 
 test("Converts filtered Lime bike data to GeoJSON", () => {
   expect(convertToGeoJSON(limeBikes, limeBikesOnly)).toEqual(limeBikesGeoJSON);
+});
+
+test("Fetch Helbiz API", () => {
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      json: () => Promise.resolve(helbizApi),
+    })
+  );
+
+  return getVehicles(helbiz).then((data) => {
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(
+      "https://api.helbiz.com/admin/reporting/washington/gbfs/free_bike_status.json"
+    );
+    expect(data).toEqual(helbizScootersGeoJSON);
+  });
+});
+
+test("Filters out mopeds from Helbiz API response", () => {
+  expect(filterVehicles(helbizApi.data.bikes, "scooter")).toEqual(
+    helbizScootersOnly
+  );
+});
+
+test("Converts filtered Helbiz scooters data to GeoJSON", () => {
+  expect(convertToGeoJSON(helbiz, helbizScootersOnly)).toEqual(
+    helbizScootersGeoJSON
+  );
 });

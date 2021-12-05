@@ -1,4 +1,4 @@
-import { spin, capitalBikeshare, limeBikes, bird } from "../constants";
+import { spin, capitalBikeshare, limeBikes, bird, helbiz } from "../constants";
 
 const cabiStationInformationMock = {
   data: {
@@ -617,6 +617,161 @@ const birdScootersGeoJSON = {
   ],
 };
 
+const helbizApi = {
+  data: {
+    bikes: [
+      {
+        bike_id: "000290",
+        lat: 38.81724,
+        lon: -77.058626,
+        is_reserved: 0,
+        is_disabled: 0,
+        vehicle_type: "scooter",
+        android: "https://deeplink.helbiz.com/startRide?code=000290",
+        ios: "https://deeplink.helbiz.com/startRide?code=000290",
+      },
+      {
+        bike_id: "UFFZ7L",
+        lat: 38.892335,
+        lon: -77.033586,
+        is_reserved: 0,
+        is_disabled: 0,
+        vehicle_type: "scooter",
+        android: "https://deeplink.helbiz.com/startRide?code=UFFZ7L",
+        ios: "https://deeplink.helbiz.com/startRide?code=UFFZ7L",
+      },
+      {
+        bike_id: "UFFZYY",
+        lat: 38.938297,
+        lon: -77.024772,
+        is_reserved: 0,
+        is_disabled: 1,
+        vehicle_type: "scooter",
+        android: "https://deeplink.helbiz.com/startRide?code=UFFZYY",
+        ios: "https://deeplink.helbiz.com/startRide?code=UFFZYY",
+      },
+      {
+        bike_id: "C6B8",
+        lat: 38.8622932434082,
+        lon: -76.99549865722656,
+        is_reserved: 0,
+        is_disabled: 1,
+        vehicle_type: "bicycle",
+        android: "https://deeplink.helbiz.com/startRide?code=C6B8",
+        ios: "https://deeplink.helbiz.com/startRide?code=C6B8",
+      },
+      {
+        bike_id: "BROKENIOT",
+        lat: 38.8756,
+        lon: -77.234328,
+        is_reserved: 1,
+        is_disabled: 1,
+        vehicle_type: "scooter",
+        android: "https://deeplink.helbiz.com/startRide?code=BROKENIOT",
+        ios: "https://deeplink.helbiz.com/startRide?code=BROKENIOT",
+      },
+    ],
+  },
+};
+
+const helbizScootersOnly = [
+  {
+    bike_id: "000290",
+    lat: 38.81724,
+    lon: -77.058626,
+    is_reserved: 0,
+    is_disabled: 0,
+    vehicle_type: "scooter",
+    android: "https://deeplink.helbiz.com/startRide?code=000290",
+    ios: "https://deeplink.helbiz.com/startRide?code=000290",
+  },
+  {
+    bike_id: "UFFZ7L",
+    lat: 38.892335,
+    lon: -77.033586,
+    is_reserved: 0,
+    is_disabled: 0,
+    vehicle_type: "scooter",
+    android: "https://deeplink.helbiz.com/startRide?code=UFFZ7L",
+    ios: "https://deeplink.helbiz.com/startRide?code=UFFZ7L",
+  },
+  {
+    bike_id: "UFFZYY",
+    lat: 38.938297,
+    lon: -77.024772,
+    is_reserved: 0,
+    is_disabled: 1,
+    vehicle_type: "scooter",
+    android: "https://deeplink.helbiz.com/startRide?code=UFFZYY",
+    ios: "https://deeplink.helbiz.com/startRide?code=UFFZYY",
+  },
+  {
+    bike_id: "BROKENIOT",
+    lat: 38.8756,
+    lon: -77.234328,
+    is_reserved: 1,
+    is_disabled: 1,
+    vehicle_type: "scooter",
+    android: "https://deeplink.helbiz.com/startRide?code=BROKENIOT",
+    ios: "https://deeplink.helbiz.com/startRide?code=BROKENIOT",
+  },
+];
+
+const helbizScootersGeoJSON = {
+  type: "FeatureCollection",
+  properties: helbiz,
+  features: [
+    {
+      type: "Feature",
+      geometry: {
+        coordinates: [-77.058626, 38.81724],
+        type: "Point",
+      },
+      properties: {
+        isReserved: 0,
+        isDisabled: 0,
+        vehicleType: "scooter",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        coordinates: [-77.033586, 38.892335],
+        type: "Point",
+      },
+      properties: {
+        isReserved: 0,
+        isDisabled: 0,
+        vehicleType: "scooter",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        coordinates: [-77.024772, 38.938297],
+        type: "Point",
+      },
+      properties: {
+        isReserved: 0,
+        isDisabled: 1,
+        vehicleType: "scooter",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        coordinates: [-77.234328, 38.8756],
+        type: "Point",
+      },
+      properties: {
+        isReserved: 1,
+        isDisabled: 1,
+        vehicleType: "scooter",
+      },
+    },
+  ],
+};
+
 export {
   cabiStationInformationMock,
   cabiStationGeoJSON,
@@ -629,4 +784,7 @@ export {
   spinScootersGeoJSON,
   birdApi,
   birdScootersGeoJSON,
+  helbizApi,
+  helbizScootersOnly,
+  helbizScootersGeoJSON,
 };

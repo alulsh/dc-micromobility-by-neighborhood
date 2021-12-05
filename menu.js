@@ -50,6 +50,9 @@ function togglePointLayers(clickedLayer) {
     case "total-bird-scooters":
       map.setLayoutProperty("bird-scooters-points", "visibility", "visible");
       break;
+    case "total-helbiz-scooters":
+      map.setLayoutProperty("helbiz-scooters-points", "visibility", "visible");
+      break;
     case "cabi-bikes-availability":
     case "cabi-bikes-capacity":
       map.setLayoutProperty("cabi-stations-points", "visibility", "visible");
@@ -76,6 +79,7 @@ function createMenu() {
     ["Lime bikes", "total-lime-bikes", "default"],
     ["Spin scooters", "total-spin-scooters", "hidden"],
     ["Bird scooters", "total-bird-scooters", "hidden"],
+    ["Helbiz scooters", "total-helbiz-scooters", "hidden"],
     ["Capital Bikeshare availability", "cabi-bikes-availability", "hidden"],
     ["Capital Bikeshare capacity", "cabi-bikes-capacity", "hidden"],
   ];
