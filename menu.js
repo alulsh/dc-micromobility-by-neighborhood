@@ -1,6 +1,6 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable import/extensions */
-import { spin, capitalBikeshare, helbiz } from "./constants.js";
+import { spin, capitalBikeshare, helbiz, services } from "./constants.js";
 import { map } from "./map.js";
 
 function clearMenuItems(menuItem, activeLayer) {
@@ -58,9 +58,10 @@ function togglePointLayers(clickedLayer) {
 function createMenuLink(service) {
   const link = document.createElement("a");
   link.href = "#";
-  link.id = service[1];
-  link.textContent = service[0];
-  if (service[2] === "default") {
+  link.id = service.polygonLayerId;
+  link.textContent = service.menuName;
+
+  if (service.default) {
     link.className = "active";
   }
 
@@ -68,14 +69,7 @@ function createMenuLink(service) {
 }
 
 function createMenu() {
-  const micromobilityServices = [
-    ["Spin scooters", "total-spin-scooters", "default"],
-    ["Helbiz scooters", "total-helbiz-scooters", "hidden"],
-    ["Capital Bikeshare availability", "cabi-bikes-availability", "hidden"],
-    ["Capital Bikeshare capacity", "cabi-bikes-capacity", "hidden"],
-  ];
-
-  micromobilityServices.forEach((service) => {
+  services.forEach((service) => {
     const menuLink = createMenuLink(service);
     const menuDiv = document.getElementById("menu");
     menuDiv.appendChild(menuLink);

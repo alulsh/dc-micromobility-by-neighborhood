@@ -1,6 +1,7 @@
 const spin = {
   default: true,
   service: "Spin",
+  menuName: "Spin scooters",
   url: "https://gbfs.spin.pm/api/gbfs/v1/washington_dc/free_bike_status",
   vehicleType: "Scooters",
   sourceId: "spin-scooters-source",
@@ -38,6 +39,7 @@ const capitalBikeshare = {
   pointCircleColor: "#363636",
   availability: {
     default: false,
+    menuName: "Capital Bikeshare availability",
     vehicleType: "Bikes",
     polygonLayerId: "cabi-bikes-availability",
     polygonFillOutlineColor: "#FFF",
@@ -68,6 +70,7 @@ const capitalBikeshare = {
   },
   capacity: {
     default: false,
+    menuName: "Capital Bikeshare capacity",
     vehicleType: "Bikes",
     polygonLayerId: "cabi-bikes-capacity",
     polygonFillOutlineColor: "#FFF",
@@ -102,6 +105,7 @@ const helbiz = {
   default: false,
   url: "https://api.helbiz.com/admin/reporting/washington/gbfs/free_bike_status.json",
   service: "Helbiz",
+  menuName: "Helbiz scooters",
   vehicleType: "Scooters",
   sourceId: "helbiz-scooters-source",
   pointLayerId: "helbiz-scooters-points",
@@ -130,6 +134,11 @@ const helbiz = {
   featureStateName: "totalHelbizScooters",
 };
 
-const services = [spin, capitalBikeshare, helbiz];
+const services = [
+  spin,
+  capitalBikeshare.availability,
+  capitalBikeshare.capacity,
+  helbiz,
+];
 
 export { services, spin, capitalBikeshare, helbiz };

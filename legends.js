@@ -48,12 +48,7 @@ function createLegend(service) {
 }
 
 services.forEach((service) => {
-  if (service.service === "Capital Bikeshare") {
-    createLegend(service.availability);
-    createLegend(service.capacity);
-  } else {
-    createLegend(service);
-  }
+  createLegend(service);
 });
 
 // eslint-disable-next-line import/prefer-default-export
