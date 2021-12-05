@@ -101,7 +101,7 @@ const capitalBikeshare = {
 const limeBikes = {
   default: true,
   service: "Lime",
-  url: "https://vercel-cors-proxy.vercel.app/api/proxy?service=lime",
+  url: "https://data.lime.bike/api/partners/v1/gbfs/washington_dc/free_bike_status.json",
   vehicleType: "Bikes",
   sourceId: "lime-bikes-source",
   pointLayerId: "lime-bikes-points",
@@ -132,7 +132,7 @@ const limeBikes = {
 
 const bird = {
   default: false,
-  url: "https://vercel-cors-proxy.vercel.app/api/proxy?service=bird",
+  url: "https://gbfs.bird.co/dc",
   service: "Bird",
   vehicleType: "Scooters",
   sourceId: "bird-scooters-source",

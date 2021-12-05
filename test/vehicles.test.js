@@ -49,9 +49,7 @@ test("Fetch Bird API", () => {
 
   return getVehicles(bird).then((data) => {
     expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(
-      "https://vercel-cors-proxy.vercel.app/api/proxy?service=bird"
-    );
+    expect(fetch).toHaveBeenCalledWith("https://gbfs.bird.co/dc");
     expect(data).toEqual(birdScootersGeoJSON);
   });
 });
@@ -72,7 +70,7 @@ test("Fetch Lime API", () => {
   return getVehicles(limeBikes).then((data) => {
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(
-      "https://vercel-cors-proxy.vercel.app/api/proxy?service=lime"
+      "https://data.lime.bike/api/partners/v1/gbfs/washington_dc/free_bike_status.json"
     );
     expect(data).toEqual(limeBikesGeoJSON);
   });
