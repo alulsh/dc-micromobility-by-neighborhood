@@ -41,6 +41,7 @@ const capitalBikeshare = {
     default: false,
     menuName: "Capital Bikeshare availability",
     vehicleType: "Bikes",
+    pointLayerId: "cabi-stations-points",
     polygonLayerId: "cabi-bikes-availability",
     polygonFillOutlineColor: "#FFF",
     polygonFillColor: [
@@ -72,6 +73,7 @@ const capitalBikeshare = {
     default: false,
     menuName: "Capital Bikeshare capacity",
     vehicleType: "Bikes",
+    pointLayerId: "cabi-stations-points",
     polygonLayerId: "cabi-bikes-capacity",
     polygonFillOutlineColor: "#FFF",
     polygonFillColor: [
