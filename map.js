@@ -4,7 +4,7 @@ import {
   getCabiStationStatus,
   mergeCabiStationJSON,
 } from "./cabi.js";
-import { spin, bird, limeBikes, helbiz } from "./constants.js";
+import { spin, limeBikes, helbiz } from "./constants.js";
 import { getVehicles } from "./vehicles.js";
 
 mapboxgl.accessToken =
@@ -82,7 +82,7 @@ function createPointLayer(properties) {
     layer.filter = ["==", "regionId", "42"];
   }
 
-  if (properties.pointLayerId === "lime-bikes-points") {
+  if (properties.pointLayerId === "spin-scooters-points") {
     layer.layout.visibility = "visible";
   }
 
@@ -104,7 +104,7 @@ function createPolygonLayer(properties) {
     },
   };
 
-  if (properties.polygonLayerId === "total-lime-bikes") {
+  if (properties.polygonLayerId === "total-spin-scooters") {
     polygonLayer.layout.visibility = "visible";
   }
 
@@ -198,7 +198,6 @@ async function getCapitalBikeshareBikes() {
 function fetchVehicleData() {
   getVehicles(limeBikes).then(addLayers).then(calculateVehiclesPerNeighborhood);
   getVehicles(spin).then(addLayers).then(calculateVehiclesPerNeighborhood);
-  getVehicles(bird).then(addLayers).then(calculateVehiclesPerNeighborhood);
   getVehicles(helbiz).then(addLayers).then(calculateVehiclesPerNeighborhood);
 
   getCapitalBikeshareBikes()

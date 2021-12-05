@@ -1,11 +1,9 @@
 import { expect, test, jest, afterEach } from "@jest/globals";
 import { getVehicles, convertToGeoJSON, filterVehicles } from "../vehicles";
-import { spin, bird, limeBikes, helbiz } from "../constants";
+import { spin, limeBikes, helbiz } from "../constants";
 import {
   spinApi,
   spinScootersGeoJSON,
-  birdApi,
-  birdScootersGeoJSON,
   limeApi,
   limeBikesOnly,
   limeBikesGeoJSON,
@@ -37,26 +35,6 @@ test("Fetch Spin API", () => {
 test("Converts Spin scooter data to GeoJSON", () => {
   expect(convertToGeoJSON(spin, spinApi.data.bikes)).toEqual(
     spinScootersGeoJSON
-  );
-});
-
-test("Fetch Bird API", () => {
-  global.fetch = jest.fn(() =>
-    Promise.resolve({
-      json: () => Promise.resolve(birdApi),
-    })
-  );
-
-  return getVehicles(bird).then((data) => {
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith("https://gbfs.bird.co/dc");
-    expect(data).toEqual(birdScootersGeoJSON);
-  });
-});
-
-test("Converts Bird scooter data to GeoJSON", () => {
-  expect(convertToGeoJSON(bird, birdApi.data.bikes)).toEqual(
-    birdScootersGeoJSON
   );
 });
 

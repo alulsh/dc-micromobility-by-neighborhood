@@ -1,6 +1,6 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable import/extensions */
-import { spin, capitalBikeshare, limeBikes, bird } from "./constants.js";
+import { spin, capitalBikeshare, limeBikes } from "./constants.js";
 import { map } from "./map.js";
 
 function clearMenuItems(menuItem, activeLayer) {
@@ -27,7 +27,6 @@ function clearLegends(clickedLayer) {
 function removeAllPointLayers() {
   const pointLayers = [
     spin.pointLayerId,
-    bird.pointLayerId,
     capitalBikeshare.pointLayerId,
     limeBikes.pointLayerId,
   ];
@@ -46,9 +45,6 @@ function togglePointLayers(clickedLayer) {
       break;
     case "total-spin-scooters":
       map.setLayoutProperty("spin-scooters-points", "visibility", "visible");
-      break;
-    case "total-bird-scooters":
-      map.setLayoutProperty("bird-scooters-points", "visibility", "visible");
       break;
     case "total-helbiz-scooters":
       map.setLayoutProperty("helbiz-scooters-points", "visibility", "visible");
@@ -76,9 +72,8 @@ function createMenuLink(service) {
 
 function createMenu() {
   const micromobilityServices = [
-    ["Lime bikes", "total-lime-bikes", "default"],
-    ["Spin scooters", "total-spin-scooters", "hidden"],
-    ["Bird scooters", "total-bird-scooters", "hidden"],
+    ["Spin scooters", "total-spin-scooters", "default"],
+    ["Lime bikes", "total-lime-bikes", "hidden"],
     ["Helbiz scooters", "total-helbiz-scooters", "hidden"],
     ["Capital Bikeshare availability", "cabi-bikes-availability", "hidden"],
     ["Capital Bikeshare capacity", "cabi-bikes-capacity", "hidden"],

@@ -1,4 +1,4 @@
-import { spin, capitalBikeshare, limeBikes, bird, helbiz } from "../constants";
+import { spin, capitalBikeshare, limeBikes, helbiz } from "../constants";
 
 const cabiStationInformationMock = {
   data: {
@@ -540,83 +540,6 @@ const spinScootersGeoJSON = {
   ],
 };
 
-const birdApi = {
-  data: {
-    bikes: [
-      {
-        bike_id: "8ea24da7-1476-4bc4-b3bf-618a2fe6da6c",
-        lat: 38.88559,
-        lon: -77.019799,
-        battery_level: 85,
-        vehicle_type: "scooter",
-        is_reserved: false,
-        is_disabled: false,
-      },
-      {
-        bike_id: "a84b3293-5aee-4e88-a292-d809c5e362ce",
-        lat: 38.915626,
-        lon: -77.029259,
-        battery_level: 87,
-        vehicle_type: "scooter",
-        is_reserved: false,
-        is_disabled: false,
-      },
-      {
-        bike_id: "19904a40-e459-4595-bcdd-eab4d51a83b5",
-        lat: 38.925006,
-        lon: -77.057595,
-        battery_level: 64,
-        vehicle_type: "scooter",
-        is_reserved: false,
-        is_disabled: false,
-      },
-    ],
-  },
-};
-
-const birdScootersGeoJSON = {
-  type: "FeatureCollection",
-  properties: bird,
-  features: [
-    {
-      type: "Feature",
-      geometry: {
-        coordinates: [-77.019799, 38.88559],
-        type: "Point",
-      },
-      properties: {
-        isReserved: false,
-        isDisabled: false,
-        vehicleType: "scooter",
-      },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        coordinates: [-77.029259, 38.915626],
-        type: "Point",
-      },
-      properties: {
-        isReserved: false,
-        isDisabled: false,
-        vehicleType: "scooter",
-      },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        coordinates: [-77.057595, 38.925006],
-        type: "Point",
-      },
-      properties: {
-        isReserved: false,
-        isDisabled: false,
-        vehicleType: "scooter",
-      },
-    },
-  ],
-};
-
 const helbizApi = {
   data: {
     bikes: [
@@ -782,8 +705,6 @@ export {
   limeBikesGeoJSON,
   spinApi,
   spinScootersGeoJSON,
-  birdApi,
-  birdScootersGeoJSON,
   helbizApi,
   helbizScootersOnly,
   helbizScootersGeoJSON,
