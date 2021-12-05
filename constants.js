@@ -98,38 +98,6 @@ const capitalBikeshare = {
   },
 };
 
-const limeBikes = {
-  default: true,
-  service: "Lime",
-  url: "https://data.lime.bike/api/partners/v1/gbfs/washington_dc/free_bike_status.json",
-  vehicleType: "Bikes",
-  sourceId: "lime-bikes-source",
-  pointLayerId: "lime-bikes-points",
-  pointCircleColor: "#50C878",
-  polygonLayerId: "total-lime-bikes",
-  polygonFillOutlineColor: "#DCDCDC",
-  polygonFillColor: [
-    "interpolate",
-    ["linear"],
-    ["feature-state", "totalLimeBikes"],
-    0,
-    ["to-color", "rgb(255, 255, 255)"],
-    5,
-    ["to-color", "rgb(244, 255, 212)"],
-    10,
-    ["to-color", "rgb(233, 255, 170)"],
-    15,
-    ["to-color", "rgb(223, 255, 127)"],
-    20,
-    ["to-color", "rgb(212, 255, 85)"],
-    25,
-    ["to-color", "rgb(201, 255, 42)"],
-    30,
-    ["to-color", "rgb(191, 255, 0)"],
-  ],
-  featureStateName: "totalLimeBikes",
-};
-
 const helbiz = {
   default: false,
   url: "https://api.helbiz.com/admin/reporting/washington/gbfs/free_bike_status.json",
@@ -162,6 +130,6 @@ const helbiz = {
   featureStateName: "totalHelbizScooters",
 };
 
-const services = [spin, capitalBikeshare, limeBikes, helbiz];
+const services = [spin, capitalBikeshare, helbiz];
 
-export { services, spin, capitalBikeshare, limeBikes, helbiz };
+export { services, spin, capitalBikeshare, helbiz };

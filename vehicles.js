@@ -32,9 +32,6 @@ async function getVehicles(service) {
   const jsonData = await response.json();
 
   switch (service.service) {
-    case "Lime":
-      vehicleJSON = filterVehicles(jsonData.data.bikes, "bike");
-      break;
     case "Helbiz":
       vehicleJSON = filterVehicles(jsonData.data.bikes, "scooter");
       break;

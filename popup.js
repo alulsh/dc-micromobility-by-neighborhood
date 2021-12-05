@@ -20,13 +20,6 @@ function generatePopupHTML(layerName, eventFeatures) {
   let percentageAvailable;
 
   switch (layerName) {
-    case "lime-bikes-points":
-      header = "";
-      paragraph = `<p>Lime ${eventFeatures.properties.vehicleType}</p>`;
-      break;
-    case "total-lime-bikes":
-      paragraph = `<p>${eventFeatures.state.totalLimeBikes} electric Lime bikes</p>`;
-      break;
     case "spin-scooters-points":
       header = "";
       paragraph = `<p>Spin ${eventFeatures.properties.vehicleType}</p>`;
@@ -135,7 +128,6 @@ const popupLayers = [
   "spin-scooters-points",
   "bird-scooters-points",
   "helbiz-scooters-points",
-  "lime-bikes-points",
   "cabi-stations-points",
 ];
 
