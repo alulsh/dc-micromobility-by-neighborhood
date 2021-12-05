@@ -1,6 +1,6 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable import/extensions */
-import { spin, capitalBikeshare } from "./constants.js";
+import { spin, capitalBikeshare, helbiz } from "./constants.js";
 import { map } from "./map.js";
 
 function clearMenuItems(menuItem, activeLayer) {
@@ -25,7 +25,11 @@ function clearLegends(clickedLayer) {
 }
 
 function removeAllPointLayers() {
-  const pointLayers = [spin.pointLayerId, capitalBikeshare.pointLayerId];
+  const pointLayers = [
+    spin.pointLayerId,
+    capitalBikeshare.pointLayerId,
+    helbiz.pointLayerId,
+  ];
 
   pointLayers.forEach((layer) => {
     map.setLayoutProperty(layer, "visibility", "none");
