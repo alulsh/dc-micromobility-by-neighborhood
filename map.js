@@ -35,7 +35,7 @@ function checkSourceLoaded() {
 async function addNeighborhoodPolygons() {
   map.addSource("dc-neighborhoods-source", {
     type: "geojson",
-    data: "https://opendata.arcgis.com/datasets/f6c703ebe2534fc3800609a07bad8f5b_17.geojson",
+    data: "dc-neighborhoods.geojson",
     generateId: true,
   });
   map.addLayer({
