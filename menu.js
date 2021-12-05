@@ -1,27 +1,15 @@
-/* eslint-disable prefer-destructuring */
 /* eslint-disable import/extensions */
 import { services } from "./constants.js";
 import { map } from "./map.js";
 
-function clearMenuItems(menuItem, activeLayer) {
-  const navMenu = menuItem.parentElement;
-  navMenu.childNodes.forEach((node) => {
-    if (node.id !== activeLayer) {
-      // eslint-disable-next-line no-param-reassign
-      node.className = "";
+function clearMenuAndLayers(clickedLayer) {
+  const menuDiv = document.getElementById("menu");
+  menuDiv.childNodes.forEach((node) => {
+    if (node.id !== clickedLayer) {
+      node.classList.remove("active");
       map.setLayoutProperty(node.id, "visibility", "none");
     }
   });
-}
-
-function clearLegends(clickedLayer) {
-  const legends = document.getElementsByClassName("legend");
-  let i;
-  for (i = 0; i < legends.length; i++) {
-    if (legends[i].id !== clickedLayer) {
-      legends[i].style.display = "none";
-    }
-  }
 }
 
 function removeAllPointLayers() {
@@ -30,9 +18,7 @@ function removeAllPointLayers() {
   });
 }
 
-function togglePointLayers(clickedLayer) {
-  removeAllPointLayers();
-
+function displayPointLayer(clickedLayer) {
   switch (clickedLayer) {
     case "total-spin-scooters":
       map.setLayoutProperty("spin-scooters-points", "visibility", "visible");
@@ -49,7 +35,38 @@ function togglePointLayers(clickedLayer) {
   }
 }
 
-function createMenuLink(service) {
+function toggleLegend(clickedLayer, visible) {
+  const legend = document.getElementById(`${clickedLayer}-legend`);
+  if (visible) {
+    legend.style.display = "";
+  } else {
+    legend.style.display = "none";
+  }
+}
+
+function clickMenuEvent(link) {
+  const clickedLayer = link.id;
+  const layerVisibility = map.getLayoutProperty(
+    `${clickedLayer}`,
+    "visibility"
+  );
+
+  clearMenuAndLayers(clickedLayer);
+  removeAllPointLayers();
+
+  if (layerVisibility === "visible") {
+    link.classList.remove("active");
+    map.setLayoutProperty(clickedLayer, "visibility", "none");
+    toggleLegend(clickedLayer, false);
+  } else {
+    link.classList.add("active");
+    map.setLayoutProperty(clickedLayer, "visibility", "visible");
+    toggleLegend(clickedLayer, true);
+    displayPointLayer(clickedLayer);
+  }
+}
+
+function createMenuItem(service) {
   const link = document.createElement("a");
   link.href = "#";
   link.id = service.polygonLayerId;
@@ -59,37 +76,17 @@ function createMenuLink(service) {
     link.className = "active";
   }
 
-  return link;
+  const menuDiv = document.getElementById("menu");
+  menuDiv.appendChild(link);
+
+  link.onclick = function click() {
+    clickMenuEvent(this);
+  };
 }
 
 function createMenu() {
   services.forEach((service) => {
-    const menuLink = createMenuLink(service);
-    const menuDiv = document.getElementById("menu");
-    menuDiv.appendChild(menuLink);
-
-    menuLink.onclick = function toggleLayers(event) {
-      const clickedLayer = this.id;
-      event.preventDefault();
-      event.stopPropagation();
-
-      const legend = document.getElementById(`${clickedLayer}-legend`);
-      const visibility = map.getLayoutProperty(`${clickedLayer}`, "visibility");
-
-      if (visibility === "visible") {
-        clearMenuItems(this, clickedLayer);
-        legend.style.display = "none";
-        this.className = "";
-        map.setLayoutProperty(`${clickedLayer}`, "visibility", "none");
-      } else {
-        clearMenuItems(this, clickedLayer);
-        clearLegends(clickedLayer);
-        legend.style.display = "";
-        this.className = "active";
-        map.setLayoutProperty(`${clickedLayer}`, "visibility", "visible");
-        togglePointLayers(clickedLayer);
-      }
-    };
+    createMenuItem(service);
   });
 }
 
