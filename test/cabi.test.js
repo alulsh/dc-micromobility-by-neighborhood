@@ -4,7 +4,7 @@ import {
   getCabiStationInformation,
   getCabiStationStatus,
   mergeCabiStationJSON,
-} from "../cabi";
+} from "../src/cabi";
 import {
   cabiStationInformationMock,
   cabiStationGeoJSON,

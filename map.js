@@ -3,7 +3,7 @@ import {
   getCabiStationInformation,
   getCabiStationStatus,
   mergeCabiStationJSON,
-} from "./cabi.js";
+} from "./dist/cabi.js";
 import { spin, helbiz } from "./dist/constants.js";
 import { getVehicles } from "./vehicles.js";
 
