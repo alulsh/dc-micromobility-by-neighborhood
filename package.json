@@ -33,8 +33,9 @@
     ]
   },
   "scripts": {
-    "test": "eslint '*.js' '*/*.js' && jest --coverage",
-    "start": "serve"
+    "test": "tsc --noemit & eslint '*/*.ts' && jest --coverage",
+    "dev": "tsc --watch",
+    "start": "tsc --watch & serve"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.4",
