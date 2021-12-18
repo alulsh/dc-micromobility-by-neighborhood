@@ -1,5 +1,5 @@
 /* eslint-disable import/extensions */
-import { services } from "./dist/constants.js";
+import { services } from "../dist/constants.js";
 
 function extractColorStops(expression) {
   return [
