@@ -5,7 +5,7 @@ import {
   mergeCabiStationJSON,
 } from "./dist/cabi.js";
 import { spin, helbiz } from "./dist/constants.js";
-import { getVehicles } from "./vehicles.js";
+import { getVehicles } from "./dist/vehicles.js";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYWx1bHNoIiwiYSI6ImY0NDBjYTQ1NjU4OGJmMDFiMWQ1Y2RmYjRlMGI1ZjIzIn0.pngboKEPsfuC4j54XDT3VA";
