@@ -1,6 +1,6 @@
 import { expect, test, jest, afterEach } from "@jest/globals";
 import { getVehicles, convertToGeoJSON, filterVehicles } from "../vehicles";
-import { spin, helbiz } from "../constants";
+import { spin, helbiz } from "../src/constants";
 import {
   spinApi,
   spinScootersGeoJSON,

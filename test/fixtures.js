@@ -1,4 +1,4 @@
-import { spin, capitalBikeshare, helbiz } from "../constants";
+import { spin, capitalBikeshare, helbiz } from "../src/constants";
 
 const cabiStationInformationMock = {
   data: {
