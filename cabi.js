@@ -1,5 +1,5 @@
 /* eslint-disable import/extensions */
-import { capitalBikeshare } from "./src/constants";
+import { capitalBikeshare } from "./dist/constants.js";
 
 function convertToGeoJSON(bikeshareJSON) {
   const newStationArray = [];

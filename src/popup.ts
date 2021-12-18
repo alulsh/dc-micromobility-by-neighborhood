@@ -1,17 +1,19 @@
 /* eslint-disable import/extensions */
-import { map } from "./map.js";
+import { map } from "../map.js";
 
-function calculatePercentageAvailable(totalBikesAvailable, totalBikeCapacity) {
-  let percentageAvailable = (
-    (totalBikesAvailable / totalBikeCapacity) *
-    100
-  ).toFixed(2);
+function calculatePercentageAvailable(
+  totalBikesAvailable: number,
+  totalBikeCapacity: number
+) {
+  let percentageAvailable: number;
 
-  if (percentageAvailable === "NaN") {
+  if (totalBikesAvailable === 0) {
     percentageAvailable = 0;
+  } else {
+    percentageAvailable = (totalBikesAvailable / totalBikeCapacity) * 100;
   }
 
-  return percentageAvailable;
+  return percentageAvailable.toFixed(2);
 }
 
 function generatePopupHTML(layerName, eventFeatures) {
@@ -75,7 +77,7 @@ function getActiveMenuLayer() {
   const navMenu = document.getElementById("menu");
   let activeLayer;
 
-  navMenu.childNodes.forEach((item) => {
+  navMenu.childNodes.forEach((item: HTMLElement) => {
     if (item.className === "active") {
       activeLayer = item.id;
     }
