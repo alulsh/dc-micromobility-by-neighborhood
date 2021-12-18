@@ -1,11 +1,13 @@
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable import/extensions */
+
 import {
   getCabiStationInformation,
   getCabiStationStatus,
   mergeCabiStationJSON,
-} from "./dist/cabi.js";
-import { spin, helbiz } from "./dist/constants.js";
-import { getVehicles } from "./dist/vehicles.js";
+} from "../dist/cabi.js";
+import { spin, helbiz } from "../dist/constants.js";
+import { getVehicles } from "../dist/vehicles.js";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYWx1bHNoIiwiYSI6ImY0NDBjYTQ1NjU4OGJmMDFiMWQ1Y2RmYjRlMGI1ZjIzIn0.pngboKEPsfuC4j54XDT3VA";
@@ -61,7 +63,7 @@ function addSource(geoJSON) {
 }
 
 function createPointLayer(properties) {
-  const layer = {
+  const layer: mapboxgl.AnyLayer = {
     id: properties.pointLayerId,
     type: "circle",
     source: properties.sourceId,
@@ -90,7 +92,7 @@ function createPointLayer(properties) {
 }
 
 function createPolygonLayer(properties) {
-  const polygonLayer = {
+  const polygonLayer: mapboxgl.AnyLayer = {
     id: properties.polygonLayerId,
     type: "fill",
     source: "dc-neighborhoods-source",
@@ -128,7 +130,9 @@ async function addLayers(geoJSON) {
 }
 
 function getNeighborhoodPolygons() {
-  return map.queryRenderedFeatures({
+  // needed for TypeScript bug when omitting the viewport bbox
+  let viewport: mapboxgl.PointLike;
+  return map.queryRenderedFeatures(viewport, {
     layers: ["dc-neighborhoods-polygons"],
   });
 }
@@ -169,17 +173,22 @@ function setMapFeatureState(id, vehiclesPerNeighborhood, geoJSON) {
 async function calculateVehiclesPerNeighborhood(vehicleGeoJSON) {
   const neighborhoods = getNeighborhoodPolygons();
   neighborhoods.forEach((neighborhood) => {
-    const neighborhoodPolygon = turf.polygon(neighborhood.geometry.coordinates);
-    const vehiclesPerNeighborhood = turf.pointsWithinPolygon(
-      vehicleGeoJSON,
-      neighborhoodPolygon
-    );
+    if (neighborhood.geometry.type === "Polygon") {
+      const neighborhoodPolygon = turf.polygon(
+        neighborhood.geometry.coordinates
+      );
 
-    setMapFeatureState(
-      neighborhood.id,
-      vehiclesPerNeighborhood,
-      vehicleGeoJSON
-    );
+      const vehiclesPerNeighborhood = turf.pointsWithinPolygon(
+        vehicleGeoJSON,
+        neighborhoodPolygon
+      );
+
+      setMapFeatureState(
+        neighborhood.id,
+        vehiclesPerNeighborhood,
+        vehicleGeoJSON
+      );
+    }
   });
 }
 

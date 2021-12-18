@@ -1,5 +1,5 @@
 /* eslint-disable import/extensions */
-import { map } from "../map.js";
+import { map } from "../dist/map.js";
 function calculatePercentageAvailable(totalBikesAvailable, totalBikeCapacity) {
     let percentageAvailable;
     if (totalBikesAvailable === 0) {
