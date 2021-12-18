@@ -1,10 +1,10 @@
 /* eslint-disable import/extensions */
-import { services } from "./dist/constants.js";
-import { map } from "./map.js";
+import { services } from "../dist/constants.js";
+import { map } from "../map.js";
 
 function clearMenuAndLayers(clickedLayer) {
   const menuDiv = document.getElementById("menu");
-  menuDiv.childNodes.forEach((node) => {
+  menuDiv.childNodes.forEach((node: HTMLElement) => {
     if (node.id !== clickedLayer) {
       node.classList.remove("active");
       map.setLayoutProperty(node.id, "visibility", "none");
