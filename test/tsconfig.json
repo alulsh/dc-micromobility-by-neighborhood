@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "allowUmdGlobalAccess": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node"
+  },
+  "include": ["*.ts", "*.test.ts"]
+}

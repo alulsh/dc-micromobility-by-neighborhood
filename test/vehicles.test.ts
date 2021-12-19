@@ -13,6 +13,10 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
+// https://stackoverflow.com/questions/44180693/jest-mock-and-typescript/60376517#comment78899968_44180693
+// eslint-disable-next-line @typescript-eslint/ban-types
+declare let global: { fetch: {} };
+
 test("Fetch Spin API", () => {
   global.fetch = jest.fn(() =>
     Promise.resolve({
