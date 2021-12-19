@@ -1,7 +1,13 @@
 /* eslint-disable import/extensions */
+import type { Service, ColorStopExpression } from "services";
 import { services } from "../dist/constants.js";
 
-function extractColorStops(expression) {
+declare interface ColorStop {
+  interval: string | number;
+  color: string | number;
+}
+
+function extractColorStops(expression: ColorStopExpression) {
   return [
     [expression[15], expression[16][1]],
     [expression[13], expression[14][1]],
@@ -13,29 +19,29 @@ function extractColorStops(expression) {
   ];
 }
 
-function createHeader(legend, vehicleType) {
+function createHeader(legend: HTMLElement, vehicleType: string) {
   const header = document.createElement("h4");
   header.innerText = vehicleType;
   legend.appendChild(header);
 }
 
-function createColorStop(legend, colorStop) {
+function createColorStop(legend: HTMLElement, colorStop: ColorStop) {
   const div = document.createElement("div");
-  div.innerText = colorStop.interval;
+  div.innerText = <string>colorStop.interval;
   const span = document.createElement("span");
-  span.style.backgroundColor = colorStop.color;
+  span.style.backgroundColor = <string>colorStop.color;
   div.insertAdjacentHTML("afterbegin", span.outerHTML);
   legend.appendChild(div);
 }
 
-function createColorStops(service, legend) {
+function createColorStops(service: Service, legend: HTMLElement) {
   const colorStops = extractColorStops(service.polygonFillColor);
   colorStops.forEach((colorStop) => {
     createColorStop(legend, { interval: colorStop[0], color: colorStop[1] });
   });
 }
 
-function createLegend(service) {
+function createLegend(service: Service) {
   const legend = document.createElement("div");
   legend.className = "legend";
   legend.id = `${service.polygonLayerId}-legend`;
@@ -47,7 +53,7 @@ function createLegend(service) {
   document.body.appendChild(legend);
 }
 
-services.forEach((service) => {
+services.forEach((service: Service) => {
   createLegend(service);
 });
 

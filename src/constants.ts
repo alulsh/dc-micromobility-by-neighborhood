@@ -1,3 +1,5 @@
+import type { Service, CabiService, Services } from "services";
+
 const spin = {
   default: true,
   service: "Spin",
@@ -29,7 +31,7 @@ const spin = {
     ["to-color", "#ff5435"],
   ],
   featureStateName: "totalSpinScooters",
-};
+} as Service;
 
 const capitalBikeshare = {
   service: "Capital Bikeshare",
@@ -101,7 +103,7 @@ const capitalBikeshare = {
     ],
     featureStateName: "totalBikeCapacity",
   },
-};
+} as CabiService;
 
 const helbiz = {
   default: false,
@@ -134,13 +136,13 @@ const helbiz = {
     ["to-color", "#27ccf0"],
   ],
   featureStateName: "totalHelbizScooters",
-};
+} as Service;
 
 const services = [
   spin,
   capitalBikeshare.availability,
   capitalBikeshare.capacity,
   helbiz,
-];
+] as Services;
 
 export { services, spin, capitalBikeshare, helbiz };

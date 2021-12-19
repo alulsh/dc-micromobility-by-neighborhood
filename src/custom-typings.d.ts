@@ -1,39 +1,78 @@
-import {
-  Position,
-  BBox,
-  Feature,
-  Polygon,
-  Point,
-  MultiPoint,
-  MultiPolygon,
-  FeatureCollection,
-} from "geojson";
-
-export as namespace turf;
-
-export declare type Properties = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [name: string]: any;
-} | null;
-
-export declare type Id = string | number;
-
-export declare function polygon<P = Properties>(
-  coordinates: Position[][],
-  properties?: P,
-  options?: {
-    bbox?: BBox;
-    id?: Id;
+declare module "services" {
+  export type ColorStopExpression = [
+    string,
+    string[],
+    string[],
+    number,
+    string[],
+    number,
+    string[],
+    number,
+    string[],
+    number,
+    string[],
+    number,
+    string[],
+    number,
+    string[],
+    number,
+    string[]
+  ];
+  export interface Service {
+    default: boolean;
+    service: string;
+    menuName: string;
+    url: string;
+    vehicleType: string;
+    sourceId: string;
+    pointLayerId: string;
+    pointCircleColor: string;
+    polygonLayerId: string;
+    polygonFillOutlineColor: string;
+    polygonFillColor: ColorStopExpression;
+    featureStateName: string;
   }
-): Feature<Polygon, P>;
+  export interface CabiService {
+    service: string;
+    vehicleType: string;
+    sourceId: string;
+    pointLayerId: string;
+    pointCircleColor: string;
+    availability: CabiSubService;
+    capacity: CabiSubService;
+  }
 
-export declare function pointsWithinPolygon<
-  F extends Point | MultiPoint,
-  G extends Polygon | MultiPolygon,
-  P = Properties
->(
-  points: Feature<F, P> | FeatureCollection<F, P>,
-  polygons: Feature<G> | FeatureCollection<G> | G
-): FeatureCollection<F, P>;
+  export interface CabiSubService {
+    default: boolean;
+    menuName: string;
+    vehicleType: string;
+    polygonLayerId: string;
+    polygonFillOutlineColor: string;
+    polygonFillColor: [
+      string,
+      string[],
+      string[],
+      number,
+      string[],
+      number,
+      string[],
+      number,
+      string[],
+      number,
+      string[],
+      number,
+      string[],
+      number,
+      string[],
+      number,
+      string[],
+      number,
+      string[],
+      number,
+      string[]
+    ];
+    featureStateName: string;
+  }
 
-export default turf;
+  export type Services = [Service, CabiSubService, CabiSubService, Service];
+}
