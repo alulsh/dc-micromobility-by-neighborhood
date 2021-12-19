@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { capitalBikeshare } from "../dist/constants.js";
+import { capitalBikeshare } from "./constants.js";
 function convertToGeoJSON(bikeshareJSON) {
     const newStationArray = [];
     bikeshareJSON.forEach((station) => {

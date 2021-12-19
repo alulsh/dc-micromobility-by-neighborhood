@@ -1,22 +1,3 @@
-// declare type ColorStopExpression = [
-//   string,
-//   string[],
-//   string[],
-//   number,
-//   string[],
-//   number,
-//   string[],
-//   number,
-//   string[],
-//   number,
-//   string[],
-//   number,
-//   string[],
-//   number,
-//   string[],
-//   number,
-//   string[]
-// ];
 const spin = {
     default: true,
     service: "Spin",

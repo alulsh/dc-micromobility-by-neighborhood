@@ -1,13 +1,13 @@
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable import/extensions */
 
-import { spin, helbiz } from "constants";
+import { spin, helbiz } from "./constants.js";
 import {
   getCabiStationInformation,
   getCabiStationStatus,
   mergeCabiStationJSON,
-} from "../dist/cabi.js";
-import { getVehicles } from "../dist/vehicles.js";
+} from "./cabi.js";
+import { getVehicles } from "./vehicles.js";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYWx1bHNoIiwiYSI6ImY0NDBjYTQ1NjU4OGJmMDFiMWQ1Y2RmYjRlMGI1ZjIzIn0.pngboKEPsfuC4j54XDT3VA";

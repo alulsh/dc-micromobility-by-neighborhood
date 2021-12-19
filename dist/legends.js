@@ -1,4 +1,4 @@
-import { services } from "../dist/constants.js";
+import { services } from "./constants.js";
 function extractColorStops(expression) {
     return [
         [expression[15], expression[16][1]],
@@ -43,5 +43,4 @@ function createLegend(service) {
 services.forEach((service) => {
     createLegend(service);
 });
-// eslint-disable-next-line import/prefer-default-export
-export { extractColorStops };
+export default extractColorStops;

@@ -1,6 +1,6 @@
 /* eslint-disable import/extensions */
-import { services } from "../dist/constants.js";
-import { map } from "../dist/map.js";
+import { services } from "./constants.js";
+import { map } from "./map.js";
 function clearMenuAndLayers(clickedLayer) {
     const menuDiv = document.getElementById("menu");
     menuDiv.childNodes.forEach((node) => {

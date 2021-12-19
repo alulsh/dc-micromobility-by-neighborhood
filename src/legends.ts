@@ -4,7 +4,7 @@ import type {
   CabiSubService,
   CabiColorStopExpression,
 } from "services";
-import { services } from "./constants";
+import { services } from "./constants.js";
 
 declare interface ColorStop {
   interval: string | number;

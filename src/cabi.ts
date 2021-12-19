@@ -1,6 +1,6 @@
 /* eslint-disable import/extensions */
 import type { Feature, FeatureCollection } from "geojson";
-import { capitalBikeshare } from "../dist/constants.js";
+import { capitalBikeshare } from "./constants.js";
 
 function convertToGeoJSON(bikeshareJSON: []) {
   const newStationArray: Feature[] = [];
