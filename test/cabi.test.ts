@@ -1,4 +1,5 @@
 import { expect, test, jest, afterEach } from "@jest/globals";
+import type { FeatureCollection } from "geojson";
 import {
   convertToGeoJSON,
   getCabiStationInformation,
@@ -21,9 +22,9 @@ afterEach(() => {
 declare let global: { fetch: {} };
 
 test("Converts Capital Bikeshare JSON to valid GeoJSON", () => {
-  expect(convertToGeoJSON(cabiStationInformationMock.data.stations)).toEqual(
-    cabiStationGeoJSON
-  );
+  expect(
+    convertToGeoJSON(<[]>cabiStationInformationMock.data.stations)
+  ).toEqual(cabiStationGeoJSON);
 });
 
 test("Requests Capital Bikeshare station information", () => {
@@ -60,6 +61,9 @@ test("Requests Capital Bikeshare station status", () => {
 
 test("Merges Capital Bikeshare station GeoJSON and live station status", () => {
   expect(
-    mergeCabiStationJSON(cabiStationGeoJSON, cabiStationStatus.data.stations)
+    mergeCabiStationJSON(
+      <FeatureCollection>cabiStationGeoJSON,
+      <[]>cabiStationStatus.data.stations
+    )
   ).toEqual(mergedCabiGeoJSON);
 });

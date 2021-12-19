@@ -7,12 +7,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-/* eslint-disable import/extensions */
 import { capitalBikeshare } from "../dist/constants.js";
 function convertToGeoJSON(bikeshareJSON) {
     const newStationArray = [];
-    const stationArray = bikeshareJSON;
-    stationArray.forEach((station) => {
+    bikeshareJSON.forEach((station) => {
         const newStation = {
             type: "Feature",
             geometry: {
@@ -50,7 +48,7 @@ function getCabiStationStatus() {
     });
 }
 function mergeCabiStationJSON(stationGeoJSON, stationStatus) {
-    const mergedArray = stationGeoJSON.features.map((feature) => (Object.assign(Object.assign({}, feature), stationStatus.find((station) => feature.properties.stationId === station.station_id))));
+    const mergedArray = stationGeoJSON.features.map((feature) => (Object.assign(Object.assign({}, feature), stationStatus.find((station) => { var _a; return ((_a = feature === null || feature === void 0 ? void 0 : feature.properties) === null || _a === void 0 ? void 0 : _a.stationId) === station.station_id; }))));
     const cleanedArray = mergedArray.map((item) => {
         const cleanedItem = item;
         delete cleanedItem.eightd_has_available_keys;

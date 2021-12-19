@@ -8,5 +8,6 @@
     "strict": true,
     "esModuleInterop": true
   },
-  "include": ["*"]
+  "include": ["*", "../typings/custom-typings.d.ts"],
+  "exclude": ["node_modules"]
 }

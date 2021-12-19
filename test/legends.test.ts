@@ -3,7 +3,8 @@
  */
 
 import { expect, test } from "@jest/globals";
-import { extractColorStops } from "../src/legends";
+import { ColorStopExpression } from "services";
+import extractColorStops from "../src/legends";
 import { spin } from "../src/constants";
 
 test("Extract color stops from GL JS data expression", () => {
@@ -17,5 +18,7 @@ test("Extract color stops from GL JS data expression", () => {
     [0, "rgb(255, 255, 255)"],
   ];
 
-  expect(extractColorStops(spin.polygonFillColor)).toEqual(expectedArray);
+  expect(extractColorStops(<ColorStopExpression>spin.polygonFillColor)).toEqual(
+    expectedArray
+  );
 });

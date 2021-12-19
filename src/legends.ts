@@ -1,13 +1,19 @@
-/* eslint-disable import/extensions */
-import type { Service, ColorStopExpression } from "services";
-import { services } from "../dist/constants.js";
+import type {
+  Service,
+  ColorStopExpression,
+  CabiSubService,
+  CabiColorStopExpression,
+} from "services";
+import { services } from "./constants";
 
 declare interface ColorStop {
   interval: string | number;
   color: string | number;
 }
 
-function extractColorStops(expression: ColorStopExpression) {
+function extractColorStops(
+  expression: ColorStopExpression | CabiColorStopExpression
+) {
   return [
     [expression[15], expression[16][1]],
     [expression[13], expression[14][1]],
@@ -34,14 +40,17 @@ function createColorStop(legend: HTMLElement, colorStop: ColorStop) {
   legend.appendChild(div);
 }
 
-function createColorStops(service: Service, legend: HTMLElement) {
+function createColorStops(
+  service: Service | CabiSubService,
+  legend: HTMLElement
+) {
   const colorStops = extractColorStops(service.polygonFillColor);
   colorStops.forEach((colorStop) => {
     createColorStop(legend, { interval: colorStop[0], color: colorStop[1] });
   });
 }
 
-function createLegend(service: Service) {
+function createLegend(service: Service | CabiSubService) {
   const legend = document.createElement("div");
   legend.className = "legend";
   legend.id = `${service.polygonLayerId}-legend`;
@@ -53,9 +62,8 @@ function createLegend(service: Service) {
   document.body.appendChild(legend);
 }
 
-services.forEach((service: Service) => {
-  createLegend(service);
+services.forEach((service) => {
+  createLegend(<Service | CabiSubService>service);
 });
 
-// eslint-disable-next-line import/prefer-default-export
-export { extractColorStops };
+export default extractColorStops;

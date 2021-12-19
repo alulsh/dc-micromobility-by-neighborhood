@@ -1,16 +1,16 @@
 /* eslint-disable import/extensions */
+import type { Feature, FeatureCollection } from "geojson";
 import { capitalBikeshare } from "../dist/constants.js";
 
-function convertToGeoJSON(bikeshareJSON) {
-  const newStationArray = [];
-  const stationArray = bikeshareJSON;
+function convertToGeoJSON(bikeshareJSON: []) {
+  const newStationArray: Feature[] = [];
 
-  stationArray.forEach((station) => {
-    const newStation = {
+  bikeshareJSON.forEach((station: Record<string, string | number>) => {
+    const newStation: Feature = {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [station.lon, station.lat],
+        coordinates: [<number>station.lon, <number>station.lat],
       },
       properties: {
         name: station.name,
@@ -26,7 +26,7 @@ function convertToGeoJSON(bikeshareJSON) {
     type: "FeatureCollection",
     properties: capitalBikeshare,
     features: newStationArray,
-  };
+  } as FeatureCollection;
 }
 
 async function getCabiStationInformation() {
@@ -48,11 +48,14 @@ async function getCabiStationStatus() {
   return jsonData.data.stations;
 }
 
-function mergeCabiStationJSON(stationGeoJSON, stationStatus) {
-  const mergedArray = stationGeoJSON.features.map((feature) => ({
+function mergeCabiStationJSON(
+  stationGeoJSON: FeatureCollection,
+  stationStatus: Record<string, string | number>[]
+) {
+  const mergedArray: any[] = stationGeoJSON.features.map((feature) => ({
     ...feature,
     ...stationStatus.find(
-      (station) => feature.properties.stationId === station.station_id
+      (station) => feature?.properties?.stationId === station.station_id
     ),
   }));
 
@@ -84,7 +87,7 @@ function mergeCabiStationJSON(stationGeoJSON, stationStatus) {
     type: "FeatureCollection",
     properties: capitalBikeshare,
     features: cleanedArray,
-  };
+  } as FeatureCollection;
 }
 
 export {

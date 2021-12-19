@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { spin, helbiz } from "constants";
 import { getCabiStationInformation, getCabiStationStatus, mergeCabiStationJSON, } from "../dist/cabi.js";
-import { spin, helbiz } from "../dist/constants.js";
 import { getVehicles } from "../dist/vehicles.js";
 mapboxgl.accessToken =
     "pk.eyJ1IjoiYWx1bHNoIiwiYSI6ImY0NDBjYTQ1NjU4OGJmMDFiMWQ1Y2RmYjRlMGI1ZjIzIn0.pngboKEPsfuC4j54XDT3VA";

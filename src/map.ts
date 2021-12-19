@@ -1,12 +1,12 @@
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable import/extensions */
 
+import { spin, helbiz } from "constants";
 import {
   getCabiStationInformation,
   getCabiStationStatus,
   mergeCabiStationJSON,
 } from "../dist/cabi.js";
-import { spin, helbiz } from "../dist/constants.js";
 import { getVehicles } from "../dist/vehicles.js";
 
 mapboxgl.accessToken =
