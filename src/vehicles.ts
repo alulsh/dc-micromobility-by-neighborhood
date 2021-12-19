@@ -1,10 +1,16 @@
-function filterVehicles(vehicles, type) {
+import { Feature, FeatureCollection } from "geojson";
+import type { Service } from "services";
+
+function filterVehicles(
+  vehicles: Record<string, string | number>[],
+  type: string
+) {
   return vehicles.filter((vehicle) => vehicle.vehicle_type === type);
 }
 
-function convertToGeoJSON(service, vehicles) {
+function convertToGeoJSON(service: Service, vehicles: any[]) {
   const vehicleFeatures = vehicles.map((vehicle) => {
-    const vehicleFeature = {
+    const vehicleFeature: Feature = {
       type: "Feature",
       geometry: {
         coordinates: [parseFloat(vehicle.lon), parseFloat(vehicle.lat)],
@@ -23,10 +29,10 @@ function convertToGeoJSON(service, vehicles) {
     type: "FeatureCollection",
     properties: service,
     features: vehicleFeatures,
-  };
+  } as FeatureCollection;
 }
 
-async function getVehicles(service) {
+async function getVehicles(service: Service) {
   let vehicleJSON;
   const response = await fetch(service.url);
   const jsonData = await response.json();

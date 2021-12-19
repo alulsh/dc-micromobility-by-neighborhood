@@ -1,4 +1,5 @@
 import { expect, test, jest, afterEach } from "@jest/globals";
+import type { Service } from "services";
 import { getVehicles, convertToGeoJSON, filterVehicles } from "../src/vehicles";
 import { spin, helbiz } from "../src/constants";
 import {
@@ -24,7 +25,7 @@ test("Fetch Spin API", () => {
     })
   );
 
-  return getVehicles(spin).then((data) => {
+  return getVehicles(<Service>spin).then((data) => {
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(
       "https://gbfs.spin.pm/api/gbfs/v1/washington_dc/free_bike_status"
@@ -34,7 +35,7 @@ test("Fetch Spin API", () => {
 });
 
 test("Converts Spin scooter data to GeoJSON", () => {
-  expect(convertToGeoJSON(spin, spinApi.data.bikes)).toEqual(
+  expect(convertToGeoJSON(<Service>spin, spinApi.data.bikes)).toEqual(
     spinScootersGeoJSON
   );
 });
@@ -46,7 +47,7 @@ test("Fetch Helbiz API", () => {
     })
   );
 
-  return getVehicles(helbiz).then((data) => {
+  return getVehicles(<Service>helbiz).then((data) => {
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(
       "https://api.helbiz.com/admin/reporting/washington/gbfs/free_bike_status.json"
@@ -62,7 +63,7 @@ test("Filters out mopeds from Helbiz API response", () => {
 });
 
 test("Converts filtered Helbiz scooters data to GeoJSON", () => {
-  expect(convertToGeoJSON(helbiz, helbizScootersOnly)).toEqual(
+  expect(convertToGeoJSON(<Service>helbiz, helbizScootersOnly)).toEqual(
     helbizScootersGeoJSON
   );
 });
