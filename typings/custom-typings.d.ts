@@ -73,6 +73,7 @@ declare module "services" {
     menuName: string;
     vehicleType: string;
     polygonLayerId: string;
+    pointLayerId: string;
     polygonFillOutlineColor: string;
     polygonFillColor: CabiColorStopExpression;
     featureStateName: string;

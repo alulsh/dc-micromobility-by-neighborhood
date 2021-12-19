@@ -48,7 +48,7 @@ function createMenuItem(service) {
         link.className = "active";
     }
     const menuDiv = document.getElementById("menu");
-    menuDiv.appendChild(link);
+    menuDiv === null || menuDiv === void 0 ? void 0 : menuDiv.appendChild(link);
     link.onclick = function click() {
         clickMenuEvent(this, service);
     };

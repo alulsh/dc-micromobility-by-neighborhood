@@ -1,9 +1,10 @@
+import type { Service, CabiSubService } from "services";
 import { services } from "./constants.js";
 import { map } from "./map.js";
 
-function clearMenuAndLayers(clickedLayer) {
-  const menuDiv = document.getElementById("menu");
-  menuDiv.childNodes.forEach((node: HTMLElement) => {
+function clearMenuAndLayers(clickedLayer: string) {
+  const menuDiv = <HTMLElement>document.getElementById("menu");
+  menuDiv.childNodes.forEach((node: any) => {
     if (node.id !== clickedLayer) {
       node.classList.remove("active");
       map.setLayoutProperty(node.id, "visibility", "none");
@@ -17,8 +18,8 @@ function removeAllPointLayers() {
   });
 }
 
-function toggleLegend(clickedLayer, visible) {
-  const legend = document.getElementById(`${clickedLayer}-legend`);
+function toggleLegend(clickedLayer: string, visible: boolean) {
+  const legend = <HTMLElement>document.getElementById(`${clickedLayer}-legend`);
   if (visible) {
     legend.style.display = "";
   } else {
@@ -26,7 +27,7 @@ function toggleLegend(clickedLayer, visible) {
   }
 }
 
-function clickMenuEvent(link, service) {
+function clickMenuEvent(link: HTMLElement, service: Service | CabiSubService) {
   const layerVisibility = map.getLayoutProperty(
     service.polygonLayerId,
     "visibility"
@@ -47,7 +48,7 @@ function clickMenuEvent(link, service) {
   }
 }
 
-function createMenuItem(service) {
+function createMenuItem(service: Service | CabiSubService) {
   const link = document.createElement("a");
   link.href = "#";
   link.id = service.polygonLayerId;
@@ -58,16 +59,16 @@ function createMenuItem(service) {
   }
 
   const menuDiv = document.getElementById("menu");
-  menuDiv.appendChild(link);
+  menuDiv?.appendChild(link);
 
   link.onclick = function click() {
-    clickMenuEvent(this, service);
+    clickMenuEvent(<HTMLElement>this, service);
   };
 }
 
 function createMenu() {
   services.forEach((service) => {
-    createMenuItem(service);
+    createMenuItem(<Service | CabiSubService>service);
   });
 }
 
