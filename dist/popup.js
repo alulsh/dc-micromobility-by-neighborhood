@@ -62,7 +62,7 @@ function generatePopupHTML(layerName, eventFeatures) {
 function getActiveMenuLayer() {
     const navMenu = document.getElementById("menu");
     let activeLayer;
-    navMenu.childNodes.forEach((item) => {
+    navMenu === null || navMenu === void 0 ? void 0 : navMenu.childNodes.forEach((item) => {
         if (item.className === "active") {
             activeLayer = item.id;
         }
@@ -78,17 +78,21 @@ const popup = new mapboxgl.Popup({
   or else the point layer popups will not load
 */
 map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
-    const activeLayer = getActiveMenuLayer();
-    const popupHTML = generatePopupHTML(activeLayer, event.features[0]);
-    popup.setLngLat(event.lngLat).setHTML(popupHTML).addTo(map);
+    if (event.features) {
+        const activeLayer = getActiveMenuLayer();
+        const popupHTML = generatePopupHTML(activeLayer, event.features[0]);
+        popup.setLngLat(event.lngLat).setHTML(popupHTML).addTo(map);
+    }
 });
 map.on("mouseleave", "dc-neighborhoods-polygons", () => {
     popup.remove();
 });
 function createLayerPopup(layerName) {
     map.on("mousemove", layerName, (event) => {
-        const popupHTML = generatePopupHTML(layerName, event.features[0]);
-        popup.setLngLat(event.lngLat).setHTML(popupHTML).addTo(map);
+        if (event.features) {
+            const popupHTML = generatePopupHTML(layerName, event.features[0]);
+            popup.setLngLat(event.lngLat).setHTML(popupHTML).addTo(map);
+        }
     });
 }
 function removePopup(layerName) {
