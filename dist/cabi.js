@@ -7,6 +7,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+// The dirname is /Users/alexandraulsh/dc-bikeshare-by-neighborhood/test
+// eslint-disable-next-line import/no-absolute-path
+// import { capitalBikeshare } from "/Users/alexandraulsh/dc-bikeshare-by-neighborhood/src/constants";
 import { capitalBikeshare } from "./constants.js";
 function convertToGeoJSON(bikeshareJSON) {
     const newStationArray = [];

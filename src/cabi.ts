@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import type { Feature, FeatureCollection } from "geojson";
 import { capitalBikeshare } from "./constants.js";
 

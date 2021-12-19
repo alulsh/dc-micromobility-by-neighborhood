@@ -5,7 +5,7 @@
 import { expect, test } from "@jest/globals";
 import { ColorStopExpression } from "services";
 import extractColorStops from "../src/legends";
-import { spin } from "../src/constants";
+import { spin } from "../src/constants.js";
 
 test("Extract color stops from GL JS data expression", () => {
   const expectedArray = [

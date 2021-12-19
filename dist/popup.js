@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import { map } from "./map.js";
 function calculatePercentageAvailable(totalBikesAvailable, totalBikeCapacity) {
     let percentageAvailable;

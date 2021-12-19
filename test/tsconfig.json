@@ -3,7 +3,8 @@
     "target": "ES2015",
     "allowUmdGlobalAccess": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "esModuleInterop": true
   },
   "include": ["*.ts", "*.test.ts", "../typings/custom-typings.d.ts"],
   "exclude": ["node_modules"]

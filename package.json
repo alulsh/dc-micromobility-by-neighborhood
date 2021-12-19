@@ -31,7 +31,10 @@
     ],
     "coveragePathIgnorePatterns": [
       "test"
-    ]
+    ],
+    "moduleNameMapper": {
+      "./constants.js": "<rootDir>/src/constants.ts"
+    }
   },
   "scripts": {
     "test": "tsc -p test/tsconfig.json --noemit & eslint */*.ts && jest",

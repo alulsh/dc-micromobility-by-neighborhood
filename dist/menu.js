@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import { services } from "./constants.js";
 import { map } from "./map.js";
 function clearMenuAndLayers(clickedLayer) {
