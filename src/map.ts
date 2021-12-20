@@ -1,4 +1,3 @@
-/* eslint-disable import/no-named-as-default-member */
 import type { CabiSubService, Service, CabiService } from "services";
 import type { FeatureCollection } from "geojson";
 import type { AnyLayer } from "mapbox-gl";
@@ -13,7 +12,6 @@ import { getVehicles } from "./vehicles.js";
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYWx1bHNoIiwiYSI6ImY0NDBjYTQ1NjU4OGJmMDFiMWQ1Y2RmYjRlMGI1ZjIzIn0.pngboKEPsfuC4j54XDT3VA";
 
-// eslint-disable-next-line import/prefer-default-export
 export const map = new mapboxgl.Map({
   container: "map",
   style: "mapbox://styles/mapbox/light-v10",
