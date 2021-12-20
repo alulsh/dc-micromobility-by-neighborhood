@@ -6,11 +6,6 @@
     "moduleResolution": "node",
     "esModuleInterop": true
   },
-  "include": [
-    "*.ts",
-    "*.test.ts",
-    "../typings/custom-typings.d.ts",
-    "../typings/turf-typings.d.ts"
-  ],
+  "include": ["*.ts", "*.test.ts", "../typings/*.d.ts"],
   "exclude": ["node_modules"]
 }
