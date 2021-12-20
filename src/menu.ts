@@ -18,6 +18,15 @@ function removeAllPointLayers() {
   });
 }
 
+function removeAllLegends() {
+  services.forEach((service) => {
+    const legend = <HTMLElement>(
+      document.getElementById(`${service.polygonLayerId}-legend`)
+    );
+    legend.style.display = "none";
+  });
+}
+
 function toggleLegend(clickedLayer: string, visible: boolean) {
   const legend = <HTMLElement>document.getElementById(`${clickedLayer}-legend`);
   if (visible) {
@@ -39,11 +48,13 @@ function clickMenuEvent(link: HTMLElement, service: Service | CabiSubService) {
   if (layerVisibility === "visible") {
     link.classList.remove("active");
     map.setLayoutProperty(service.polygonLayerId, "visibility", "none");
+    removeAllLegends();
     toggleLegend(service.polygonLayerId, false);
   } else {
     link.classList.add("active");
     map.setLayoutProperty(service.polygonLayerId, "visibility", "visible");
     map.setLayoutProperty(service.pointLayerId, "visibility", "visible");
+    removeAllLegends();
     toggleLegend(service.polygonLayerId, true);
   }
 }

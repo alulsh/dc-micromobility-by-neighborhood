@@ -14,6 +14,12 @@ function removeAllPointLayers() {
         map.setLayoutProperty(service.pointLayerId, "visibility", "none");
     });
 }
+function removeAllLegends() {
+    services.forEach((service) => {
+        const legend = (document.getElementById(`${service.polygonLayerId}-legend`));
+        legend.style.display = "none";
+    });
+}
 function toggleLegend(clickedLayer, visible) {
     const legend = document.getElementById(`${clickedLayer}-legend`);
     if (visible) {
@@ -30,12 +36,15 @@ function clickMenuEvent(link, service) {
     if (layerVisibility === "visible") {
         link.classList.remove("active");
         map.setLayoutProperty(service.polygonLayerId, "visibility", "none");
+        // add some code to detect and remove an existing legend HTML
+        removeAllLegends();
         toggleLegend(service.polygonLayerId, false);
     }
     else {
         link.classList.add("active");
         map.setLayoutProperty(service.polygonLayerId, "visibility", "visible");
         map.setLayoutProperty(service.pointLayerId, "visibility", "visible");
+        removeAllLegends();
         toggleLegend(service.polygonLayerId, true);
     }
 }
