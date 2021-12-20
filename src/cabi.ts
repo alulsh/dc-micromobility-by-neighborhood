@@ -1,4 +1,5 @@
 import type { Feature, FeatureCollection } from "geojson";
+import type { FeatureCollectionWithProperties } from "./map";
 import { capitalBikeshare } from "./constants.js";
 
 function convertToGeoJSON(bikeshareJSON: []) {
@@ -25,7 +26,7 @@ function convertToGeoJSON(bikeshareJSON: []) {
     type: "FeatureCollection",
     properties: capitalBikeshare,
     features: newStationArray,
-  } as FeatureCollection;
+  } as FeatureCollectionWithProperties;
 }
 
 async function getCabiStationInformation() {
@@ -86,7 +87,7 @@ function mergeCabiStationJSON(
     type: "FeatureCollection",
     properties: capitalBikeshare,
     features: cleanedArray,
-  } as FeatureCollection;
+  } as FeatureCollectionWithProperties;
 }
 
 export {

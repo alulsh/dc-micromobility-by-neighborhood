@@ -8,6 +8,7 @@ import {
   MultiPolygon,
   FeatureCollection,
 } from "geojson";
+import { FeatureCollectionWithProperties } from "../src/map";
 
 export as namespace turf;
 
@@ -32,7 +33,10 @@ export declare function pointsWithinPolygon<
   G extends Polygon | MultiPolygon,
   P = Properties
 >(
-  points: Feature<F, P> | FeatureCollection<F, P>,
+  points:
+    | Feature<F, P>
+    | FeatureCollection<F, P>
+    | FeatureCollectionWithProperties,
   polygons: Feature<G> | FeatureCollection<G> | G
 ): FeatureCollection<F, P>;
 

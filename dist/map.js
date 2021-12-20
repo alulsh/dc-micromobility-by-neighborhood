@@ -1,4 +1,3 @@
-/* eslint-disable import/no-named-as-default-member */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -53,10 +52,12 @@ function addNeighborhoodPolygons() {
     });
 }
 function addSource(geoJSON) {
-    map.addSource(geoJSON.properties.sourceId, {
-        type: "geojson",
-        data: geoJSON,
-    });
+    if (geoJSON.properties) {
+        map.addSource(geoJSON.properties.sourceId, {
+            type: "geojson",
+            data: geoJSON,
+        });
+    }
 }
 function createPointLayer(properties) {
     const layer = {
@@ -79,7 +80,9 @@ function createPointLayer(properties) {
         layer.filter = ["==", "regionId", "42"];
     }
     if (properties.pointLayerId === "spin-scooters-points") {
-        layer.layout.visibility = "visible";
+        if (layer.layout) {
+            layer.layout.visibility = "visible";
+        }
     }
     map.addLayer(layer);
 }
@@ -106,7 +109,7 @@ function addLayers(geoJSON) {
     return __awaiter(this, void 0, void 0, function* () {
         const { properties } = geoJSON;
         addSource(geoJSON);
-        if (properties.service === "Capital Bikeshare") {
+        if ((properties === null || properties === void 0 ? void 0 : properties.service) === "Capital Bikeshare") {
             createPolygonLayer(properties.availability);
             createPolygonLayer(properties.capacity);
         }
@@ -118,9 +121,8 @@ function addLayers(geoJSON) {
     });
 }
 function getNeighborhoodPolygons() {
-    // needed for TypeScript bug when omitting the viewport bbox
-    let viewport;
-    return map.queryRenderedFeatures(viewport, {
+    // undefined is needed for TypeScript bug when omitting the viewport bbox
+    return map.queryRenderedFeatures(undefined, {
         layers: ["dc-neighborhoods-polygons"],
     });
 }
@@ -129,8 +131,10 @@ function setMapFeatureState(id, vehiclesPerNeighborhood, geoJSON) {
         let totalBikeCapacity = 0;
         let totalBikesAvailable = 0;
         vehiclesPerNeighborhood.features.forEach((station) => {
-            totalBikeCapacity += station.properties.capacity;
-            totalBikesAvailable += station.properties.bikesAvailable;
+            if (station.properties) {
+                totalBikeCapacity += station.properties.capacity;
+                totalBikesAvailable += station.properties.bikesAvailable;
+            }
         });
         map.setFeatureState({
             source: "dc-neighborhoods-source",
@@ -172,8 +176,12 @@ function getCapitalBikeshareBikes() {
     });
 }
 function fetchVehicleData() {
-    getVehicles(spin).then(addLayers).then(calculateVehiclesPerNeighborhood);
-    getVehicles(helbiz).then(addLayers).then(calculateVehiclesPerNeighborhood);
+    getVehicles(spin)
+        .then(addLayers)
+        .then(calculateVehiclesPerNeighborhood);
+    getVehicles(helbiz)
+        .then(addLayers)
+        .then(calculateVehiclesPerNeighborhood);
     getCapitalBikeshareBikes()
         .then(addLayers)
         .then(calculateVehiclesPerNeighborhood);

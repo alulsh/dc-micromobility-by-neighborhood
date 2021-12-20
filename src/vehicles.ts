@@ -1,5 +1,6 @@
-import { Feature, FeatureCollection } from "geojson";
+import type { Feature, FeatureCollection } from "geojson";
 import type { Service } from "services";
+import type { FeatureCollectionWithProperties } from "./map";
 
 function filterVehicles(
   vehicles: Record<string, string | number>[],
@@ -45,7 +46,7 @@ async function getVehicles(service: Service) {
 
   const vehiclesGeoJSON = convertToGeoJSON(service, vehicleJSON);
 
-  return vehiclesGeoJSON;
+  return <FeatureCollectionWithProperties>vehiclesGeoJSON;
 }
 
 export { getVehicles, convertToGeoJSON, filterVehicles };

@@ -1,5 +1,7 @@
 /* eslint-disable import/no-named-as-default-member */
-
+import type { CabiSubService, Service, CabiService } from "services";
+import type { FeatureCollection } from "geojson";
+import type { AnyLayer } from "mapbox-gl";
 import { spin, helbiz } from "./constants.js";
 import {
   getCabiStationInformation,
@@ -54,14 +56,20 @@ async function addNeighborhoodPolygons() {
   await checkSourceLoaded();
 }
 
-function addSource(geoJSON) {
-  map.addSource(geoJSON.properties.sourceId, {
-    type: "geojson",
-    data: geoJSON,
-  });
+export type FeatureCollectionWithProperties = FeatureCollection & {
+  properties: Service | CabiService;
+};
+
+function addSource(geoJSON: FeatureCollectionWithProperties) {
+  if (geoJSON.properties) {
+    map.addSource(geoJSON.properties.sourceId, {
+      type: "geojson",
+      data: geoJSON,
+    });
+  }
 }
 
-function createPointLayer(properties) {
+function createPointLayer(properties: Service) {
   const layer: mapboxgl.AnyLayer = {
     id: properties.pointLayerId,
     type: "circle",
@@ -84,14 +92,16 @@ function createPointLayer(properties) {
   }
 
   if (properties.pointLayerId === "spin-scooters-points") {
-    layer.layout.visibility = "visible";
+    if (layer.layout) {
+      layer.layout.visibility = "visible";
+    }
   }
 
   map.addLayer(layer);
 }
 
-function createPolygonLayer(properties) {
-  const polygonLayer: mapboxgl.AnyLayer = {
+function createPolygonLayer(properties: Service | CabiSubService) {
+  const polygonLayer = {
     id: properties.polygonLayerId,
     type: "fill",
     source: "dc-neighborhoods-source",
@@ -109,14 +119,14 @@ function createPolygonLayer(properties) {
     polygonLayer.layout.visibility = "visible";
   }
 
-  map.addLayer(polygonLayer);
+  map.addLayer(<AnyLayer>polygonLayer);
 }
 
-async function addLayers(geoJSON) {
+async function addLayers(geoJSON: any) {
   const { properties } = geoJSON;
   addSource(geoJSON);
 
-  if (properties.service === "Capital Bikeshare") {
+  if (properties?.service === "Capital Bikeshare") {
     createPolygonLayer(properties.availability);
     createPolygonLayer(properties.capacity);
   } else {
@@ -129,20 +139,25 @@ async function addLayers(geoJSON) {
 }
 
 function getNeighborhoodPolygons() {
-  // needed for TypeScript bug when omitting the viewport bbox
-  let viewport: mapboxgl.PointLike;
-  return map.queryRenderedFeatures(viewport, {
+  // undefined is needed for TypeScript bug when omitting the viewport bbox
+  return map.queryRenderedFeatures(undefined, {
     layers: ["dc-neighborhoods-polygons"],
   });
 }
 
-function setMapFeatureState(id, vehiclesPerNeighborhood, geoJSON) {
+function setMapFeatureState(
+  id: number,
+  vehiclesPerNeighborhood: FeatureCollectionWithProperties,
+  geoJSON: FeatureCollectionWithProperties
+) {
   if (geoJSON.properties.service === "Capital Bikeshare") {
     let totalBikeCapacity = 0;
     let totalBikesAvailable = 0;
     vehiclesPerNeighborhood.features.forEach((station) => {
-      totalBikeCapacity += station.properties.capacity;
-      totalBikesAvailable += station.properties.bikesAvailable;
+      if (station.properties) {
+        totalBikeCapacity += station.properties.capacity;
+        totalBikesAvailable += station.properties.bikesAvailable;
+      }
     });
     map.setFeatureState(
       {
@@ -156,7 +171,7 @@ function setMapFeatureState(id, vehiclesPerNeighborhood, geoJSON) {
     );
   } else {
     const totalVehicles = vehiclesPerNeighborhood.features.length;
-    const { featureStateName } = geoJSON.properties;
+    const { featureStateName } = <Service>geoJSON.properties;
     map.setFeatureState(
       {
         source: "dc-neighborhoods-source",
@@ -169,7 +184,9 @@ function setMapFeatureState(id, vehiclesPerNeighborhood, geoJSON) {
   }
 }
 
-async function calculateVehiclesPerNeighborhood(vehicleGeoJSON) {
+async function calculateVehiclesPerNeighborhood(
+  vehicleGeoJSON: FeatureCollectionWithProperties
+) {
   const neighborhoods = getNeighborhoodPolygons();
   neighborhoods.forEach((neighborhood) => {
     if (neighborhood.geometry.type === "Polygon") {
@@ -183,8 +200,8 @@ async function calculateVehiclesPerNeighborhood(vehicleGeoJSON) {
       );
 
       setMapFeatureState(
-        neighborhood.id,
-        vehiclesPerNeighborhood,
+        <number>neighborhood.id,
+        <FeatureCollectionWithProperties>vehiclesPerNeighborhood,
         vehicleGeoJSON
       );
     }
@@ -204,8 +221,12 @@ async function getCapitalBikeshareBikes() {
 }
 
 function fetchVehicleData() {
-  getVehicles(spin).then(addLayers).then(calculateVehiclesPerNeighborhood);
-  getVehicles(helbiz).then(addLayers).then(calculateVehiclesPerNeighborhood);
+  getVehicles(<Service>spin)
+    .then(addLayers)
+    .then(calculateVehiclesPerNeighborhood);
+  getVehicles(<Service>helbiz)
+    .then(addLayers)
+    .then(calculateVehiclesPerNeighborhood);
 
   getCapitalBikeshareBikes()
     .then(addLayers)
