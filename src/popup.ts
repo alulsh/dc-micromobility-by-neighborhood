@@ -40,54 +40,44 @@ function generatePointPopUpHTML(
   return html;
 }
 
-function generatePopupHTML(layerName: string | undefined, eventFeatures: any) {
-  let header = `<h4>${eventFeatures.properties.NBH_NAMES}</h4>`;
-  let paragraph;
-  let percentageAvailable;
+function generatePolygonPopupHTML(
+  service: Service | CabiSubService,
+  eventFeatures: any
+) {
+  let html = `<h4>${eventFeatures.properties.NBH_NAMES}</h4>`;
 
-  switch (layerName) {
-    case "total-spin-scooters":
-      paragraph = `<p>${eventFeatures.state.totalSpinScooters} Spin scooters</p>`;
-      break;
-    case "total-helbiz-scooters":
-      paragraph = `<p>${eventFeatures.state.totalHelbizScooters} Helbiz scooters</p>`;
-      break;
-    case "cabi-bikes-availability":
-    case "cabi-bikes-capacity":
-      percentageAvailable = calculatePercentageAvailable(
-        eventFeatures.state.totalBikesAvailable,
-        eventFeatures.state.totalBikeCapacity
-      );
-      paragraph = `
-        <p>
-          ${percentageAvailable}% available</br>
-          ${eventFeatures.state.totalBikesAvailable} bikes available</br>
-          ${eventFeatures.state.totalBikeCapacity} bike capacity</br>
-        </p>
-        `;
-      break;
-    default:
-      header = "";
-      paragraph = `<p>No data selected. Select a data source on the left hand menu.</p>`;
-      break;
+  if (service.service === "Capital Bikeshare") {
+    const percentageAvailable = calculatePercentageAvailable(
+      eventFeatures.state.totalBikesAvailable,
+      eventFeatures.state.totalBikeCapacity
+    );
+    html += `
+      <p>
+        ${percentageAvailable}% available</br>
+        ${eventFeatures.state.totalBikesAvailable} bikes available</br>
+        ${eventFeatures.state.totalBikeCapacity} bike capacity</br>
+      </p>
+      `;
+  } else {
+    html += `<p>${eventFeatures.state[service.featureStateName]} ${
+      service.service
+    } ${service.vehicleType}</p>`;
   }
-
-  const html = header + paragraph;
 
   return html;
 }
 
-function getActiveMenuLayer() {
-  const navMenu = document.getElementById("menu");
-  let activeLayer;
+function getActiveService() {
+  const activeElements = document.getElementsByClassName("active");
+  const { textContent } = activeElements[0];
+  const lastSpace = textContent?.lastIndexOf(" ");
+  const serviceName = textContent?.substring(0, lastSpace);
 
-  navMenu?.childNodes.forEach((item: any) => {
-    if (item.className === "active") {
-      activeLayer = <string>item.id;
-    }
-  });
+  const activeService = services.filter(
+    (service) => service.service === serviceName
+  );
 
-  return activeLayer;
+  return activeService[0];
 }
 
 const popup = new mapboxgl.Popup({
@@ -102,8 +92,11 @@ const popup = new mapboxgl.Popup({
 
 map.on("mousemove", "dc-neighborhoods-polygons", (event) => {
   if (event.features) {
-    const activeLayer = getActiveMenuLayer();
-    const popupHTML = generatePopupHTML(activeLayer, event.features[0]);
+    const activeService = getActiveService();
+    const popupHTML = generatePolygonPopupHTML(
+      activeService,
+      event.features[0]
+    );
     popup.setLngLat(event.lngLat).setHTML(popupHTML).addTo(map);
   }
 });
