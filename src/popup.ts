@@ -50,10 +50,7 @@ function generatePointPopUpHTML(
   return html;
 }
 
-function generatePolygonPopupHTML(
-  service: Service | CabiSubService,
-  eventFeatures: any
-) {
+function generatePolygonPopupHTML(service: any, eventFeatures: any) {
   let html = `<h4>${eventFeatures.properties.NBH_NAMES}</h4>`;
 
   if (service.service === "Capital Bikeshare") {
@@ -71,7 +68,11 @@ function generatePolygonPopupHTML(
   } else {
     html += `<p>${eventFeatures.state[service.featureStateName]} ${
       service.service
-    } ${service.vehicleType}</p>`;
+    } ${service.vehicleType}</br>
+    ${eventFeatures.state[service.featureStateDisabledName]} disabled ${
+      service.service
+    } ${service.vehicleType} 
+    </p>`;
   }
 
   return html;

@@ -48,7 +48,9 @@ function generatePolygonPopupHTML(service, eventFeatures) {
       `;
     }
     else {
-        html += `<p>${eventFeatures.state[service.featureStateName]} ${service.service} ${service.vehicleType}</p>`;
+        html += `<p>${eventFeatures.state[service.featureStateName]} ${service.service} ${service.vehicleType}</br>
+    ${eventFeatures.state[service.featureStateDisabledName]} disabled ${service.service} ${service.vehicleType} 
+    </p>`;
     }
     return html;
 }
