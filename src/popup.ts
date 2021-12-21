@@ -17,6 +17,14 @@ function calculatePercentageAvailable(
   return percentageAvailable.toFixed(2);
 }
 
+function checkIfDisabled(properties: any) {
+  let disabledText = "";
+  if (properties.isDisabled === 1) {
+    disabledText = "Disabled ";
+  }
+  return disabledText;
+}
+
 function generatePointPopUpHTML(
   service: Service | CabiSubService,
   eventFeatures: any
@@ -34,7 +42,9 @@ function generatePointPopUpHTML(
             </p>
           `;
   } else {
-    html = `<p>${service.service} ${eventFeatures.properties.vehicleType}</p>`;
+    html = `<p>${checkIfDisabled(eventFeatures.properties)} ${
+      service.service
+    } ${eventFeatures.properties.vehicleType}</p>`;
   }
 
   return html;

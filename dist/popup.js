@@ -10,6 +10,13 @@ function calculatePercentageAvailable(totalBikesAvailable, totalBikeCapacity) {
     }
     return percentageAvailable.toFixed(2);
 }
+function checkIfDisabled(properties) {
+    let disabledText = "";
+    if (properties.isDisabled === 1) {
+        disabledText = "Disabled ";
+    }
+    return disabledText;
+}
 function generatePointPopUpHTML(service, eventFeatures) {
     let html;
     if (service.service === "Capital Bikeshare") {
@@ -24,7 +31,7 @@ function generatePointPopUpHTML(service, eventFeatures) {
           `;
     }
     else {
-        html = `<p>${service.service} ${eventFeatures.properties.vehicleType}</p>`;
+        html = `<p>${checkIfDisabled(eventFeatures.properties)} ${service.service} ${eventFeatures.properties.vehicleType}</p>`;
     }
     return html;
 }
