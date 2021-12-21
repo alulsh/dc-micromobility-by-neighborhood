@@ -1,4 +1,4 @@
-import type { Service, CabiSubService, CabiService } from "services";
+import type { Service, CabiSubService } from "services";
 import { map } from "./map.js";
 import { services } from "./constants.js";
 
