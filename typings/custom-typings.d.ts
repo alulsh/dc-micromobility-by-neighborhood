@@ -54,7 +54,7 @@ declare module "services" {
     pointCircleColor: string;
     polygonLayerId: string;
     polygonFillOutlineColor: string;
-    polygonFillColor: ColorStopExpression;
+    polygonFillColor: any;
     featureStateName: string;
   }
 
@@ -70,12 +70,13 @@ declare module "services" {
 
   export interface CabiSubService {
     default: boolean;
+    service: string;
     menuName: string;
     vehicleType: string;
     polygonLayerId: string;
     pointLayerId: string;
     polygonFillOutlineColor: string;
-    polygonFillColor: CabiColorStopExpression;
+    polygonFillColor: any;
     featureStateName: string;
   }
 

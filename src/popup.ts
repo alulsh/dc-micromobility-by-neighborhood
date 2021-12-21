@@ -1,3 +1,4 @@
+import type { Service, CabiSubService, CabiService } from "services";
 import { map } from "./map.js";
 import { services } from "./constants.js";
 
@@ -16,29 +17,14 @@ function calculatePercentageAvailable(
   return percentageAvailable.toFixed(2);
 }
 
-function generatePopupHTML(layerName: string | undefined, eventFeatures: any) {
-  let header = `<h4>${eventFeatures.properties.NBH_NAMES}</h4>`;
-  let paragraph;
-  let percentageAvailable;
+function generatePointPopUpHTML(
+  service: Service | CabiSubService,
+  eventFeatures: any
+) {
+  let html;
 
-  switch (layerName) {
-    case "spin-scooters-points":
-      header = "";
-      paragraph = `<p>Spin ${eventFeatures.properties.vehicleType}</p>`;
-      break;
-    case "helbiz-scooters-points":
-      header = "";
-      paragraph = `<p>Helbiz ${eventFeatures.properties.vehicleType}</p>`;
-      break;
-    case "total-spin-scooters":
-      paragraph = `<p>${eventFeatures.state.totalSpinScooters} Spin scooters</p>`;
-      break;
-    case "total-helbiz-scooters":
-      paragraph = `<p>${eventFeatures.state.totalHelbizScooters} Helbiz scooters</p>`;
-      break;
-    case "cabi-stations-points":
-      header = `<h4>${eventFeatures.properties.name}</h4>`;
-      paragraph = `
+  if (service.service === "Capital Bikeshare") {
+    html = `<h4>${eventFeatures.properties.name}</h4>
             <p>
             ${eventFeatures.properties.bikesAvailable} bikes available<br/>
             ${eventFeatures.properties.docksAvailable} docks available<br/>
@@ -47,6 +33,24 @@ function generatePopupHTML(layerName: string | undefined, eventFeatures: any) {
             ${eventFeatures.properties.capacity} total bike capacity<br/>
             </p>
           `;
+  } else {
+    html = `<p>${service.service} ${eventFeatures.properties.vehicleType}</p>`;
+  }
+
+  return html;
+}
+
+function generatePopupHTML(layerName: string | undefined, eventFeatures: any) {
+  let header = `<h4>${eventFeatures.properties.NBH_NAMES}</h4>`;
+  let paragraph;
+  let percentageAvailable;
+
+  switch (layerName) {
+    case "total-spin-scooters":
+      paragraph = `<p>${eventFeatures.state.totalSpinScooters} Spin scooters</p>`;
+      break;
+    case "total-helbiz-scooters":
+      paragraph = `<p>${eventFeatures.state.totalHelbizScooters} Helbiz scooters</p>`;
       break;
     case "cabi-bikes-availability":
     case "cabi-bikes-capacity":
@@ -108,10 +112,10 @@ map.on("mouseleave", "dc-neighborhoods-polygons", () => {
   popup.remove();
 });
 
-function createLayerPopup(layerName: string) {
-  map.on("mousemove", layerName, (event) => {
+function createLayerPopup(service: Service | CabiSubService) {
+  map.on("mousemove", service.pointLayerId, (event) => {
     if (event.features) {
-      const popupHTML = generatePopupHTML(layerName, event.features[0]);
+      const popupHTML = generatePointPopUpHTML(service, event.features[0]);
       popup.setLngLat(event.lngLat).setHTML(popupHTML).addTo(map);
     }
   });
@@ -124,6 +128,6 @@ function removePopup(layerName: string) {
 }
 
 services.forEach((service) => {
-  createLayerPopup(service.pointLayerId);
+  createLayerPopup(service);
   removePopup(service.pointLayerId);
 });

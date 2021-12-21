@@ -39,6 +39,7 @@ const capitalBikeshare = {
   pointCircleColor: "#363636",
   availability: {
     default: false,
+    service: "Capital Bikeshare",
     menuName: "Capital Bikeshare availability",
     vehicleType: "Bikes",
     pointLayerId: "cabi-stations-points",
@@ -71,6 +72,7 @@ const capitalBikeshare = {
   },
   capacity: {
     default: false,
+    service: "Capital Bikeshare",
     menuName: "Capital Bikeshare capacity",
     vehicleType: "Bikes",
     pointLayerId: "cabi-stations-points",
