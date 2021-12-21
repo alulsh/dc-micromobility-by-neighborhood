@@ -56,6 +56,7 @@ declare module "services" {
     polygonFillOutlineColor: string;
     polygonFillColor: any;
     featureStateName: string;
+    featureStateDisabledName: string;
   }
 
   export interface CabiService {

@@ -29,6 +29,7 @@ const spin = {
         ["to-color", "#ff5435"],
     ],
     featureStateName: "totalSpinScooters",
+    featureStateDisabledName: "totalDisabledSpinScooters",
 };
 const capitalBikeshare = {
     service: "Capital Bikeshare",
@@ -134,6 +135,7 @@ const helbiz = {
         ["to-color", "#27ccf0"],
     ],
     featureStateName: "totalHelbizScooters",
+    featureStateDisabledName: "totalDisabledHelbizScooters",
 };
 const services = [
     spin,

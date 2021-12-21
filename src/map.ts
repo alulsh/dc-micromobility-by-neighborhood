@@ -1,5 +1,5 @@
 import type { CabiSubService, Service, CabiService } from "services";
-import type { FeatureCollection } from "geojson";
+import type { FeatureCollection, Feature } from "geojson";
 import type { AnyLayer } from "mapbox-gl";
 import { spin, helbiz } from "./constants.js";
 import {
@@ -154,6 +154,7 @@ function getNeighborhoodPolygons() {
 function setMapFeatureState(
   id: number,
   vehiclesPerNeighborhood: FeatureCollectionWithProperties,
+  disabledVehiclesPerNeighborhood: FeatureCollection,
   geoJSON: FeatureCollectionWithProperties
 ) {
   if (geoJSON.properties.service === "Capital Bikeshare") {
@@ -177,7 +178,10 @@ function setMapFeatureState(
     );
   } else {
     const totalVehicles = vehiclesPerNeighborhood.features.length;
+    const totalDisabledVehicles =
+      disabledVehiclesPerNeighborhood.features.length;
     const { featureStateName } = <Service>geoJSON.properties;
+    const { featureStateDisabledName } = <Service>geoJSON.properties;
     map.setFeatureState(
       {
         source: "dc-neighborhoods-source",
@@ -185,9 +189,16 @@ function setMapFeatureState(
       },
       {
         [featureStateName]: totalVehicles,
+        [featureStateDisabledName]: totalDisabledVehicles,
       }
     );
   }
+}
+
+function filterDisabledVehicles(vehicles: any) {
+  return vehicles.filter(
+    (vehicle: Feature) => vehicle?.properties?.isDisabled === 1
+  );
 }
 
 async function calculateVehiclesPerNeighborhood(
@@ -204,10 +215,16 @@ async function calculateVehiclesPerNeighborhood(
         vehicleGeoJSON,
         neighborhoodPolygon
       );
+      const disabledVehicles = filterDisabledVehicles(vehicleGeoJSON.features);
+      const disabledVehiclesPerNeighborhood = turf.pointsWithinPolygon(
+        { type: "FeatureCollection", features: disabledVehicles },
+        neighborhoodPolygon
+      );
 
       setMapFeatureState(
         <number>neighborhood.id,
         <FeatureCollectionWithProperties>vehiclesPerNeighborhood,
+        <FeatureCollection>disabledVehiclesPerNeighborhood,
         vehicleGeoJSON
       );
     }

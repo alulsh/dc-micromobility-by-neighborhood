@@ -133,7 +133,7 @@ function getNeighborhoodPolygons() {
         layers: ["dc-neighborhoods-polygons"],
     });
 }
-function setMapFeatureState(id, vehiclesPerNeighborhood, geoJSON) {
+function setMapFeatureState(id, vehiclesPerNeighborhood, disabledVehiclesPerNeighborhood, geoJSON) {
     if (geoJSON.properties.service === "Capital Bikeshare") {
         let totalBikeCapacity = 0;
         let totalBikesAvailable = 0;
@@ -153,14 +153,20 @@ function setMapFeatureState(id, vehiclesPerNeighborhood, geoJSON) {
     }
     else {
         const totalVehicles = vehiclesPerNeighborhood.features.length;
+        const totalDisabledVehicles = disabledVehiclesPerNeighborhood.features.length;
         const { featureStateName } = geoJSON.properties;
+        const { featureStateDisabledName } = geoJSON.properties;
         map.setFeatureState({
             source: "dc-neighborhoods-source",
             id,
         }, {
             [featureStateName]: totalVehicles,
+            [featureStateDisabledName]: totalDisabledVehicles,
         });
     }
+}
+function filterDisabledVehicles(vehicles) {
+    return vehicles.filter((vehicle) => { var _a; return ((_a = vehicle === null || vehicle === void 0 ? void 0 : vehicle.properties) === null || _a === void 0 ? void 0 : _a.isDisabled) === 1; });
 }
 function calculateVehiclesPerNeighborhood(vehicleGeoJSON) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -169,7 +175,9 @@ function calculateVehiclesPerNeighborhood(vehicleGeoJSON) {
             if (neighborhood.geometry.type === "Polygon") {
                 const neighborhoodPolygon = turf.polygon(neighborhood.geometry.coordinates);
                 const vehiclesPerNeighborhood = turf.pointsWithinPolygon(vehicleGeoJSON, neighborhoodPolygon);
-                setMapFeatureState(neighborhood.id, vehiclesPerNeighborhood, vehicleGeoJSON);
+                const disabledVehicles = filterDisabledVehicles(vehicleGeoJSON.features);
+                const disabledVehiclesPerNeighborhood = turf.pointsWithinPolygon({ type: "FeatureCollection", features: disabledVehicles }, neighborhoodPolygon);
+                setMapFeatureState(neighborhood.id, vehiclesPerNeighborhood, disabledVehiclesPerNeighborhood, vehicleGeoJSON);
             }
         });
     });
