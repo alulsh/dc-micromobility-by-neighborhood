@@ -77,10 +77,18 @@ function createPointLayer(properties: Service) {
     },
     minzoom: 12,
     paint: {
-      "circle-color": properties.pointCircleColor,
       "circle-radius": 4,
       "circle-stroke-width": 1,
       "circle-stroke-color": "#fff",
+      "circle-color": [
+        "match",
+        ["get", "isDisabled"],
+        0,
+        properties.pointCircleColor,
+        1,
+        "#ccc",
+        "#000",
+      ],
     },
   };
 
