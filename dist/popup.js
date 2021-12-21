@@ -1,4 +1,5 @@
 import { map } from "./map.js";
+import { services } from "./constants.js";
 function calculatePercentageAvailable(totalBikesAvailable, totalBikeCapacity) {
     let percentageAvailable;
     if (totalBikesAvailable === 0) {
@@ -100,12 +101,7 @@ function removePopup(layerName) {
         popup.remove();
     });
 }
-const popupLayers = [
-    "spin-scooters-points",
-    "helbiz-scooters-points",
-    "cabi-stations-points",
-];
-popupLayers.forEach((layer) => {
-    createLayerPopup(layer);
-    removePopup(layer);
+services.forEach((service) => {
+    createLayerPopup(service.pointLayerId);
+    removePopup(service.pointLayerId);
 });

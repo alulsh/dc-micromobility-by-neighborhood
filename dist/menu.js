@@ -36,7 +36,6 @@ function clickMenuEvent(link, service) {
     if (layerVisibility === "visible") {
         link.classList.remove("active");
         map.setLayoutProperty(service.polygonLayerId, "visibility", "none");
-        // add some code to detect and remove an existing legend HTML
         removeAllLegends();
         toggleLegend(service.polygonLayerId, false);
     }
