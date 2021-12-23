@@ -78,7 +78,7 @@ function createPointLayer(properties) {
                 properties.pointCircleColor,
                 1,
                 "#ccc",
-                "#000",
+                properties.pointCircleColor,
             ],
         },
     };
