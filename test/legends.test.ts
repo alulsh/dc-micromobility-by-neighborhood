@@ -9,13 +9,13 @@ import { spin } from "../src/constants.js";
 
 test("Extract color stops from GL JS data expression", () => {
   const expectedArray = [
-    [150, "#ff5435"],
-    [125, "#ff662c"],
-    [100, "#ff7723"],
-    [75, "#ff8718"],
-    [50, "#ff970c"],
-    [25, "#ffa600"],
-    [0, "rgb(255, 255, 255)"],
+    [200, "#ff6b4a"],
+    [150, "#ff6f4e"],
+    [100, "#ff8565"],
+    [75, "#ff9b7e"],
+    [50, "#ffaf97"],
+    [25, "#ffc3b0"],
+    [0, "#ffd7cb"],
   ];
 
   expect(extractColorStops(<ColorStopExpression>spin.polygonFillColor)).toEqual(
