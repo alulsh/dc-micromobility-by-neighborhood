@@ -97,7 +97,7 @@ function createPointLayer(properties: Service) {
     layer.filter = ["==", "regionId", "42"];
   }
 
-  if (properties.pointLayerId === "spin-scooters-points") {
+  if (properties.default) {
     if (layer.layout) {
       layer.layout.visibility = "visible";
     }
@@ -121,7 +121,7 @@ function createPolygonLayer(properties: Service | CabiSubService) {
     },
   };
 
-  if (properties.polygonLayerId === "total-spin-scooters") {
+  if (properties.default) {
     polygonLayer.layout.visibility = "visible";
   }
 
