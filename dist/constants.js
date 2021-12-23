@@ -1,5 +1,5 @@
 const spin = {
-    default: true,
+    default: false,
     service: "Spin",
     menuName: "Spin scooters",
     url: "https://gbfs.spin.pm/api/gbfs/v1/washington_dc/free_bike_status",
@@ -97,7 +97,7 @@ const capitalBikeshare = {
     },
 };
 const helbiz = {
-    default: false,
+    default: true,
     url: "https://api.helbiz.com/admin/reporting/washington/gbfs/free_bike_status.json",
     service: "Helbiz",
     menuName: "Helbiz scooters",
@@ -130,9 +130,9 @@ const helbiz = {
     featureStateDisabledName: "totalDisabledHelbizScooters",
 };
 const services = [
+    helbiz,
     spin,
     capitalBikeshare.availability,
     capitalBikeshare.capacity,
-    helbiz,
 ];
 export { services, spin, capitalBikeshare, helbiz };
