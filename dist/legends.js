@@ -10,9 +10,12 @@ function extractColorStops(expression) {
         [expression[3], expression[4][1]],
     ];
 }
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 function createHeader(legend, vehicleType) {
     const header = document.createElement("h4");
-    header.innerText = vehicleType;
+    header.innerText = capitalizeFirstLetter(vehicleType);
     legend.appendChild(header);
 }
 function createColorStop(legend, colorStop) {

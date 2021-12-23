@@ -25,9 +25,13 @@ function extractColorStops(
   ];
 }
 
+function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function createHeader(legend: HTMLElement, vehicleType: string) {
   const header = document.createElement("h4");
-  header.innerText = vehicleType;
+  header.innerText = capitalizeFirstLetter(vehicleType);
   legend.appendChild(header);
 }
 
