@@ -4,6 +4,7 @@ import { services } from "./constants.js";
 declare interface ColorStop {
   interval: string | number;
   color: string | number;
+  percent: boolean;
 }
 
 function extractColorStops(expression: ColorStopExpression) {
@@ -31,6 +32,9 @@ function createHeader(legend: HTMLElement, vehicleType: string) {
 function createColorStop(legend: HTMLElement, colorStop: ColorStop) {
   const div = document.createElement("div");
   div.innerText = <string>colorStop.interval;
+  if (colorStop.percent) {
+    div.innerText += "%";
+  }
   const span = document.createElement("span");
   span.style.backgroundColor = <string>colorStop.color;
   div.insertAdjacentHTML("afterbegin", span.outerHTML);
@@ -43,7 +47,20 @@ function createColorStops(
 ) {
   const colorStops = extractColorStops(service.polygonFillColor);
   colorStops.forEach((colorStop) => {
-    createColorStop(legend, { interval: colorStop[0], color: colorStop[1] });
+    if (service.polygonLayerId === "cabi-bikes-percent-available") {
+      createColorStop(legend, {
+        interval: colorStop[0],
+        color: colorStop[1],
+        percent: true,
+      });
+    } else {
+      createColorStop(legend, {
+        interval: colorStop[0],
+        color: colorStop[1],
+        percent: false,
+      });
+    }
+    // createColorStop(legend, { interval: colorStop[0], color: colorStop[1] });
   });
 }
 

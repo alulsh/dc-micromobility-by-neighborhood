@@ -21,6 +21,9 @@ function createHeader(legend, vehicleType) {
 function createColorStop(legend, colorStop) {
     const div = document.createElement("div");
     div.innerText = colorStop.interval;
+    if (colorStop.percent) {
+        div.innerText += "%";
+    }
     const span = document.createElement("span");
     span.style.backgroundColor = colorStop.color;
     div.insertAdjacentHTML("afterbegin", span.outerHTML);
@@ -29,7 +32,21 @@ function createColorStop(legend, colorStop) {
 function createColorStops(service, legend) {
     const colorStops = extractColorStops(service.polygonFillColor);
     colorStops.forEach((colorStop) => {
-        createColorStop(legend, { interval: colorStop[0], color: colorStop[1] });
+        if (service.polygonLayerId === "cabi-bikes-percent-available") {
+            createColorStop(legend, {
+                interval: colorStop[0],
+                color: colorStop[1],
+                percent: true,
+            });
+        }
+        else {
+            createColorStop(legend, {
+                interval: colorStop[0],
+                color: colorStop[1],
+                percent: false,
+            });
+        }
+        // createColorStop(legend, { interval: colorStop[0], color: colorStop[1] });
     });
 }
 function createLegend(service) {
