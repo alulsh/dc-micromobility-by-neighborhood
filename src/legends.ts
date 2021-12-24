@@ -60,7 +60,6 @@ function createColorStops(
         percent: false,
       });
     }
-    // createColorStop(legend, { interval: colorStop[0], color: colorStop[1] });
   });
 }
 

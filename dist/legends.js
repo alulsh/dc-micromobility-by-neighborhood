@@ -46,7 +46,6 @@ function createColorStops(service, legend) {
                 percent: false,
             });
         }
-        // createColorStop(legend, { interval: colorStop[0], color: colorStop[1] });
     });
 }
 function createLegend(service) {
