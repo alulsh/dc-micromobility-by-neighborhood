@@ -11,8 +11,8 @@ function filterVehicles(vehicles, type) {
     return vehicles.filter((vehicle) => vehicle.vehicle_type === type);
 }
 function convertToGeoJSON(service, vehicles) {
-    const vehicleFeatures = vehicles.map((vehicle) => {
-        const vehicleFeature = {
+    const features = vehicles.map((vehicle) => {
+        const feature = {
             type: "Feature",
             geometry: {
                 coordinates: [parseFloat(vehicle.lon), parseFloat(vehicle.lat)],
@@ -24,24 +24,24 @@ function convertToGeoJSON(service, vehicles) {
                 vehicleType: vehicle.vehicle_type,
             },
         };
-        return vehicleFeature;
+        return feature;
     });
     return {
         type: "FeatureCollection",
         properties: service,
-        features: vehicleFeatures,
+        features,
     };
 }
 function getVehicles(service) {
     return __awaiter(this, void 0, void 0, function* () {
         let vehicleJSON;
         const response = yield fetch(service.url);
-        const jsonData = yield response.json();
+        const json = yield response.json();
         if (service.name === "Helbiz") {
-            vehicleJSON = filterVehicles(jsonData.data.bikes, "scooter");
+            vehicleJSON = filterVehicles(json.data.bikes, "scooter");
         }
         else {
-            vehicleJSON = jsonData.data.bikes;
+            vehicleJSON = json.data.bikes;
         }
         const vehiclesGeoJSON = convertToGeoJSON(service, vehicleJSON);
         return vehiclesGeoJSON;

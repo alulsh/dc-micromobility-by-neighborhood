@@ -83,7 +83,6 @@ function getActiveService() {
   const { textContent } = activeElements[0];
   if (textContent) {
     const serviceName = extractServiceName(textContent);
-
     activeService = services.filter((service) => service.name === serviceName);
   }
 
