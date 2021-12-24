@@ -1,9 +1,4 @@
-import type {
-  Service,
-  ColorStopExpression,
-  CabiSubService,
-  CabiColorStopExpression,
-} from "services";
+import type { Service, ColorStopExpression, CabiSubService } from "services";
 import { services } from "./constants.js";
 
 declare interface ColorStop {
@@ -11,9 +6,7 @@ declare interface ColorStop {
   color: string | number;
 }
 
-function extractColorStops(
-  expression: ColorStopExpression | CabiColorStopExpression
-) {
+function extractColorStops(expression: ColorStopExpression) {
   return [
     [expression[15], expression[16][1]],
     [expression[13], expression[14][1]],

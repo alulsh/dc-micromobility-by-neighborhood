@@ -19,30 +19,6 @@ declare module "services" {
     string[]
   ];
 
-  export type CabiColorStopExpression = [
-    string,
-    string[],
-    string[],
-    number,
-    string[],
-    number,
-    string[],
-    number,
-    string[],
-    number,
-    string[],
-    number,
-    string[],
-    number,
-    string[],
-    number,
-    string[],
-    number,
-    string[],
-    number,
-    string[]
-  ];
-
   export interface Service {
     default: boolean;
     service: string;
@@ -54,7 +30,7 @@ declare module "services" {
     pointCircleColor: string;
     polygonLayerId: string;
     polygonFillOutlineColor: string;
-    polygonFillColor: any;
+    polygonFillColor: ColorStopExpression;
     featureStateName: string;
     featureStateDisabledName: string;
   }
@@ -77,7 +53,7 @@ declare module "services" {
     polygonLayerId: string;
     pointLayerId: string;
     polygonFillOutlineColor: string;
-    polygonFillColor: any;
+    polygonFillColor: ColorStopExpression;
     featureStateName: string;
   }
 

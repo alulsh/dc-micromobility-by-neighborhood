@@ -132,6 +132,6 @@ function removePopup(layerName: string) {
 }
 
 services.forEach((service) => {
-  createLayerPopup(service);
+  createLayerPopup(<Service | CabiSubService>service);
   removePopup(service.pointLayerId);
 });
