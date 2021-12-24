@@ -42,6 +42,7 @@ declare module "services" {
     pointLayerId: string;
     pointCircleColor: string;
     availability: CabiSubService;
+    percentAvailable: CabiSubService;
     capacity: CabiSubService;
   }
 

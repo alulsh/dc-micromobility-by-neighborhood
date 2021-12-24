@@ -1,15 +1,6 @@
 import { map } from "./map.js";
 import { services } from "./constants.js";
-function calculatePercentageAvailable(totalBikesAvailable, totalBikeCapacity) {
-    let percentageAvailable;
-    if (totalBikesAvailable === 0) {
-        percentageAvailable = 0;
-    }
-    else {
-        percentageAvailable = (totalBikesAvailable / totalBikeCapacity) * 100;
-    }
-    return percentageAvailable.toFixed(2);
-}
+import calculatePercentageAvailable from "./utilities.js";
 function checkIfDisabled(properties) {
     let disabledText = "";
     if (properties.isDisabled === 1) {
@@ -38,10 +29,11 @@ function generatePointPopUpHTML(service, eventFeatures) {
 function generatePolygonPopupHTML(service, eventFeatures) {
     let html = `<h4>${eventFeatures.properties.NBH_NAMES}</h4>`;
     if (service.service === "Capital Bikeshare") {
+        console.log(eventFeatures);
         const percentageAvailable = calculatePercentageAvailable(eventFeatures.state.totalBikesAvailable, eventFeatures.state.totalBikeCapacity);
         html += `
       <p>
-        ${percentageAvailable}% available</br>
+        ${percentageAvailable.string}% available</br>
         ${eventFeatures.state.totalBikesAvailable} bikes available</br>
         ${eventFeatures.state.totalBikeCapacity} bike capacity</br>
       </p>
@@ -54,12 +46,25 @@ function generatePolygonPopupHTML(service, eventFeatures) {
     }
     return html;
 }
+function extractServiceName(textContent) {
+    let serviceName;
+    if ((textContent === null || textContent === void 0 ? void 0 : textContent.substring(0, 7)) === "Capital") {
+        serviceName = "Capital Bikeshare";
+    }
+    else {
+        const lastSpace = textContent === null || textContent === void 0 ? void 0 : textContent.lastIndexOf(" ");
+        serviceName = textContent === null || textContent === void 0 ? void 0 : textContent.substring(0, lastSpace);
+    }
+    return serviceName;
+}
 function getActiveService() {
+    let activeService;
     const activeElements = document.getElementsByClassName("active");
     const { textContent } = activeElements[0];
-    const lastSpace = textContent === null || textContent === void 0 ? void 0 : textContent.lastIndexOf(" ");
-    const serviceName = textContent === null || textContent === void 0 ? void 0 : textContent.substring(0, lastSpace);
-    const activeService = services.filter((service) => service.service === serviceName);
+    if (textContent) {
+        const serviceName = extractServiceName(textContent);
+        activeService = services.filter((service) => service.service === serviceName);
+    }
     return activeService[0];
 }
 const popup = new mapboxgl.Popup({

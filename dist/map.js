@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { spin, helbiz } from "./constants.js";
 import { getCabiStationInformation, getCabiStationStatus, mergeCabiStationJSON, } from "./cabi.js";
 import { getVehicles } from "./vehicles.js";
+import calculatePercentageAvailable from "./utilities.js";
 mapboxgl.accessToken =
     "pk.eyJ1IjoiYWx1bHNoIiwiYSI6ImY0NDBjYTQ1NjU4OGJmMDFiMWQ1Y2RmYjRlMGI1ZjIzIn0.pngboKEPsfuC4j54XDT3VA";
 export const map = new mapboxgl.Map({
@@ -118,6 +119,7 @@ function addLayers(geoJSON) {
         addSource(geoJSON);
         if ((properties === null || properties === void 0 ? void 0 : properties.service) === "Capital Bikeshare") {
             createPolygonLayer(properties.availability);
+            createPolygonLayer(properties.percentAvailable);
             createPolygonLayer(properties.capacity);
         }
         else {
@@ -143,12 +145,14 @@ function setMapFeatureState(id, vehiclesPerNeighborhood, disabledVehiclesPerNeig
                 totalBikesAvailable += station.properties.bikesAvailable;
             }
         });
+        const percentAvailable = calculatePercentageAvailable(totalBikesAvailable, totalBikeCapacity);
         map.setFeatureState({
             source: "dc-neighborhoods-source",
             id,
         }, {
             totalBikeCapacity,
             totalBikesAvailable,
+            percentAvailable: percentAvailable.number,
         });
     }
     else {

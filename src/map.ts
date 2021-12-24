@@ -8,6 +8,7 @@ import {
   mergeCabiStationJSON,
 } from "./cabi.js";
 import { getVehicles } from "./vehicles.js";
+import calculatePercentageAvailable from "./utilities.js";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYWx1bHNoIiwiYSI6ImY0NDBjYTQ1NjU4OGJmMDFiMWQ1Y2RmYjRlMGI1ZjIzIn0.pngboKEPsfuC4j54XDT3VA";
@@ -134,6 +135,7 @@ async function addLayers(geoJSON: any) {
 
   if (properties?.service === "Capital Bikeshare") {
     createPolygonLayer(properties.availability);
+    createPolygonLayer(properties.percentAvailable);
     createPolygonLayer(properties.capacity);
   } else {
     createPolygonLayer(properties);
@@ -166,6 +168,12 @@ function setMapFeatureState(
         totalBikesAvailable += station.properties.bikesAvailable;
       }
     });
+
+    const percentAvailable = calculatePercentageAvailable(
+      totalBikesAvailable,
+      totalBikeCapacity
+    );
+
     map.setFeatureState(
       {
         source: "dc-neighborhoods-source",
@@ -174,6 +182,7 @@ function setMapFeatureState(
       {
         totalBikeCapacity,
         totalBikesAvailable,
+        percentAvailable: percentAvailable.number,
       }
     );
   } else {

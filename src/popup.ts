@@ -1,21 +1,7 @@
 import type { Service, CabiSubService } from "services";
 import { map } from "./map.js";
 import { services } from "./constants.js";
-
-function calculatePercentageAvailable(
-  totalBikesAvailable: number,
-  totalBikeCapacity: number
-) {
-  let percentageAvailable: number;
-
-  if (totalBikesAvailable === 0) {
-    percentageAvailable = 0;
-  } else {
-    percentageAvailable = (totalBikesAvailable / totalBikeCapacity) * 100;
-  }
-
-  return percentageAvailable.toFixed(2);
-}
+import calculatePercentageAvailable from "./utilities.js";
 
 function checkIfDisabled(properties: any) {
   let disabledText = "";
@@ -54,13 +40,14 @@ function generatePolygonPopupHTML(service: any, eventFeatures: any) {
   let html = `<h4>${eventFeatures.properties.NBH_NAMES}</h4>`;
 
   if (service.service === "Capital Bikeshare") {
+    console.log(eventFeatures);
     const percentageAvailable = calculatePercentageAvailable(
       eventFeatures.state.totalBikesAvailable,
       eventFeatures.state.totalBikeCapacity
     );
     html += `
       <p>
-        ${percentageAvailable}% available</br>
+        ${percentageAvailable.string}% available</br>
         ${eventFeatures.state.totalBikesAvailable} bikes available</br>
         ${eventFeatures.state.totalBikeCapacity} bike capacity</br>
       </p>
@@ -78,15 +65,30 @@ function generatePolygonPopupHTML(service: any, eventFeatures: any) {
   return html;
 }
 
+function extractServiceName(textContent: string) {
+  let serviceName: string;
+
+  if (textContent?.substring(0, 7) === "Capital") {
+    serviceName = "Capital Bikeshare";
+  } else {
+    const lastSpace = textContent?.lastIndexOf(" ");
+    serviceName = textContent?.substring(0, lastSpace);
+  }
+
+  return serviceName;
+}
+
 function getActiveService() {
+  let activeService: any;
   const activeElements = document.getElementsByClassName("active");
   const { textContent } = activeElements[0];
-  const lastSpace = textContent?.lastIndexOf(" ");
-  const serviceName = textContent?.substring(0, lastSpace);
+  if (textContent) {
+    const serviceName = extractServiceName(textContent);
 
-  const activeService = services.filter(
-    (service) => service.service === serviceName
-  );
+    activeService = services.filter(
+      (service) => service.service === serviceName
+    );
+  }
 
   return activeService[0];
 }
