@@ -13,7 +13,7 @@ const cabiProperties = {
         seventhColor: "#ee3122",
     },
     featureState: {
-        availability: "totalBikeAvailability",
+        availability: "totalBikesAvailable",
         capacity: "totalBikeCapacity",
         percentAvailable: "percentAvailable",
     },
