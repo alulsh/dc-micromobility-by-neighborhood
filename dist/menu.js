@@ -1,8 +1,8 @@
 import { services } from "./constants.js";
 import { map } from "./map.js";
 function clearMenuAndLayers(clickedLayer) {
-    const menuDiv = document.getElementById("menu");
-    menuDiv.childNodes.forEach((node) => {
+    const menu = document.getElementById("menu");
+    menu.childNodes.forEach((node) => {
         if (node.id !== clickedLayer) {
             node.classList.remove("active");
             map.setLayoutProperty(node.id, "visibility", "none");
@@ -55,8 +55,8 @@ function createMenuItem(service) {
     if (service.default) {
         link.className = "active";
     }
-    const menuDiv = document.getElementById("menu");
-    menuDiv === null || menuDiv === void 0 ? void 0 : menuDiv.appendChild(link);
+    const menu = document.getElementById("menu");
+    menu === null || menu === void 0 ? void 0 : menu.appendChild(link);
     link.onclick = function click() {
         clickMenuEvent(this, service);
     };

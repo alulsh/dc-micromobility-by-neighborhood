@@ -3,8 +3,8 @@ import { services } from "./constants.js";
 import { map } from "./map.js";
 
 function clearMenuAndLayers(clickedLayer: string) {
-  const menuDiv = <HTMLElement>document.getElementById("menu");
-  menuDiv.childNodes.forEach((node: any) => {
+  const menu = <HTMLElement>document.getElementById("menu");
+  menu.childNodes.forEach((node: any) => {
     if (node.id !== clickedLayer) {
       node.classList.remove("active");
       map.setLayoutProperty(node.id, "visibility", "none");
@@ -69,8 +69,8 @@ function createMenuItem(service: Service | CabiSubService) {
     link.className = "active";
   }
 
-  const menuDiv = document.getElementById("menu");
-  menuDiv?.appendChild(link);
+  const menu = document.getElementById("menu");
+  menu?.appendChild(link);
 
   link.onclick = function click() {
     clickMenuEvent(<HTMLElement>this, service);
