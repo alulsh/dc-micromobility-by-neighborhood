@@ -59,11 +59,11 @@ function addSource(geoJSON) {
         });
     }
 }
-function createPointLayer(properties) {
+function createPointLayer(service) {
     const layer = {
-        id: properties.pointLayerId,
+        id: service.pointLayerId,
         type: "circle",
-        source: properties.sourceId,
+        source: service.sourceId,
         layout: {
             visibility: "none",
         },
@@ -76,56 +76,56 @@ function createPointLayer(properties) {
                 "match",
                 ["get", "isDisabled"],
                 0,
-                properties.pointCircleColor,
+                service.pointCircleColor,
                 1,
                 "#ccc",
-                properties.pointCircleColor,
+                service.pointCircleColor,
             ],
         },
     };
-    if (properties.name === "Capital Bikeshare") {
+    if (service.name === "Capital Bikeshare") {
         // regionId 42 is for Washington, D.C.
         layer.filter = ["==", "regionId", "42"];
     }
-    if (properties.default) {
+    if (service.default) {
         if (layer.layout) {
             layer.layout.visibility = "visible";
         }
     }
     map.addLayer(layer);
 }
-function createPolygonLayer(properties) {
-    const polygonLayer = {
-        id: properties.polygonLayerId,
+function createPolygonLayer(service) {
+    const layer = {
+        id: service.polygonLayerId,
         type: "fill",
         source: "dc-neighborhoods-source",
         layout: {
             visibility: "none",
         },
         paint: {
-            "fill-color": properties.polygonFillColor,
+            "fill-color": service.polygonFillColor,
             "fill-opacity": 0.6,
-            "fill-outline-color": properties.polygonFillOutlineColor,
+            "fill-outline-color": service.polygonFillOutlineColor,
         },
     };
-    if (properties.default) {
-        polygonLayer.layout.visibility = "visible";
+    if (service.default) {
+        layer.layout.visibility = "visible";
     }
-    map.addLayer(polygonLayer);
+    map.addLayer(layer);
 }
 function addLayers(geoJSON) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { properties } = geoJSON;
+        const service = geoJSON.properties;
         addSource(geoJSON);
-        if ((properties === null || properties === void 0 ? void 0 : properties.name) === "Capital Bikeshare") {
-            createPolygonLayer(properties.availability);
-            createPolygonLayer(properties.percentAvailable);
-            createPolygonLayer(properties.capacity);
+        if ((service === null || service === void 0 ? void 0 : service.name) === "Capital Bikeshare") {
+            createPolygonLayer(service.availability);
+            createPolygonLayer(service.percentAvailable);
+            createPolygonLayer(service.capacity);
         }
         else {
-            createPolygonLayer(properties);
+            createPolygonLayer(service);
         }
-        createPointLayer(properties);
+        createPointLayer(service);
         return geoJSON;
     });
 }

@@ -68,11 +68,11 @@ function addSource(geoJSON: FeatureCollectionWithProperties) {
   }
 }
 
-function createPointLayer(properties: Service) {
+function createPointLayer(service: Service) {
   const layer: mapboxgl.AnyLayer = {
-    id: properties.pointLayerId,
+    id: service.pointLayerId,
     type: "circle",
-    source: properties.sourceId,
+    source: service.sourceId,
     layout: {
       visibility: "none",
     },
@@ -85,20 +85,20 @@ function createPointLayer(properties: Service) {
         "match",
         ["get", "isDisabled"],
         0,
-        properties.pointCircleColor,
+        service.pointCircleColor,
         1,
         "#ccc",
-        properties.pointCircleColor,
+        service.pointCircleColor,
       ],
     },
   };
 
-  if (properties.name === "Capital Bikeshare") {
+  if (service.name === "Capital Bikeshare") {
     // regionId 42 is for Washington, D.C.
     layer.filter = ["==", "regionId", "42"];
   }
 
-  if (properties.default) {
+  if (service.default) {
     if (layer.layout) {
       layer.layout.visibility = "visible";
     }
@@ -107,41 +107,41 @@ function createPointLayer(properties: Service) {
   map.addLayer(layer);
 }
 
-function createPolygonLayer(properties: Service | CabiSubService) {
-  const polygonLayer = {
-    id: properties.polygonLayerId,
+function createPolygonLayer(service: Service | CabiSubService) {
+  const layer = {
+    id: service.polygonLayerId,
     type: "fill",
     source: "dc-neighborhoods-source",
     layout: {
       visibility: "none",
     },
     paint: {
-      "fill-color": properties.polygonFillColor,
+      "fill-color": service.polygonFillColor,
       "fill-opacity": 0.6,
-      "fill-outline-color": properties.polygonFillOutlineColor,
+      "fill-outline-color": service.polygonFillOutlineColor,
     },
   };
 
-  if (properties.default) {
-    polygonLayer.layout.visibility = "visible";
+  if (service.default) {
+    layer.layout.visibility = "visible";
   }
 
-  map.addLayer(<AnyLayer>polygonLayer);
+  map.addLayer(<AnyLayer>layer);
 }
 
 async function addLayers(geoJSON: any) {
-  const { properties } = geoJSON;
+  const service = geoJSON.properties;
   addSource(geoJSON);
 
-  if (properties?.name === "Capital Bikeshare") {
-    createPolygonLayer(properties.availability);
-    createPolygonLayer(properties.percentAvailable);
-    createPolygonLayer(properties.capacity);
+  if (service?.name === "Capital Bikeshare") {
+    createPolygonLayer(service.availability);
+    createPolygonLayer(service.percentAvailable);
+    createPolygonLayer(service.capacity);
   } else {
-    createPolygonLayer(properties);
+    createPolygonLayer(service);
   }
 
-  createPointLayer(properties);
+  createPointLayer(service);
 
   return geoJSON;
 }
@@ -259,7 +259,6 @@ function fetchVehicleData() {
   getVehicles(<Service>helbiz)
     .then(addLayers)
     .then(calculateVehiclesPerNeighborhood);
-
   getCapitalBikeshareBikes()
     .then(addLayers)
     .then(calculateVehiclesPerNeighborhood);
