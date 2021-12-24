@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { capitalBikeshare } from "./constants.js";
 function convertToGeoJSON(bikeshareJSON) {
-    const newStationArray = [];
+    const stations = [];
     bikeshareJSON.forEach((station) => {
-        const newStation = {
+        const feature = {
             type: "Feature",
             geometry: {
                 type: "Point",
@@ -24,58 +24,58 @@ function convertToGeoJSON(bikeshareJSON) {
                 stationId: station.station_id,
             },
         };
-        newStationArray.push(newStation);
+        stations.push(feature);
     });
     return {
         type: "FeatureCollection",
         properties: capitalBikeshare,
-        features: newStationArray,
+        features: stations,
     };
 }
 function getCabiStationInformation() {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch("https://gbfs.capitalbikeshare.com/gbfs/en/station_information.json");
-        const jsonData = yield response.json();
-        const stationGeoJSON = convertToGeoJSON(jsonData.data.stations);
+        const json = yield response.json();
+        const stationGeoJSON = convertToGeoJSON(json.data.stations);
         return stationGeoJSON;
     });
 }
 function getCabiStationStatus() {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch("https://gbfs.capitalbikeshare.com/gbfs/en/station_status.json");
-        const jsonData = yield response.json();
-        return jsonData.data.stations;
+        const json = yield response.json();
+        return json.data.stations;
     });
 }
 function mergeCabiStationJSON(stationGeoJSON, stationStatus) {
-    const mergedArray = stationGeoJSON.features.map((feature) => (Object.assign(Object.assign({}, feature), stationStatus.find((station) => { var _a; return ((_a = feature === null || feature === void 0 ? void 0 : feature.properties) === null || _a === void 0 ? void 0 : _a.stationId) === station.station_id; }))));
-    const cleanedArray = mergedArray.map((item) => {
-        const cleanedItem = item;
-        delete cleanedItem.eightd_has_available_keys;
-        delete cleanedItem.legacy_id;
-        delete cleanedItem.station_status;
-        delete cleanedItem.is_returning;
-        delete cleanedItem.is_installed;
-        delete cleanedItem.last_reported;
-        delete cleanedItem.station_id;
-        cleanedItem.properties.isRenting = item.is_renting;
-        delete cleanedItem.is_renting;
-        cleanedItem.properties.ebikesAvailable = item.num_ebikes_available;
-        delete cleanedItem.num_ebikes_available;
-        cleanedItem.properties.docksAvailable = item.num_docks_available;
-        delete cleanedItem.num_docks_available;
-        cleanedItem.properties.bikesAvailable = item.num_bikes_available;
-        delete cleanedItem.num_bikes_available;
-        cleanedItem.properties.bikesDisabled = item.num_bikes_disabled;
-        delete cleanedItem.num_bikes_disabled;
-        cleanedItem.properties.docksDisabled = item.num_docks_disabled;
-        delete cleanedItem.num_docks_disabled;
-        return cleanedItem;
+    const mergedFeatures = stationGeoJSON.features.map((feature) => (Object.assign(Object.assign({}, feature), stationStatus.find((station) => { var _a; return ((_a = feature === null || feature === void 0 ? void 0 : feature.properties) === null || _a === void 0 ? void 0 : _a.stationId) === station.station_id; }))));
+    const cleanFeatures = mergedFeatures.map((feature) => {
+        const cleanFeature = feature;
+        delete cleanFeature.eightd_has_available_keys;
+        delete cleanFeature.legacy_id;
+        delete cleanFeature.station_status;
+        delete cleanFeature.is_returning;
+        delete cleanFeature.is_installed;
+        delete cleanFeature.last_reported;
+        delete cleanFeature.station_id;
+        cleanFeature.properties.isRenting = feature.is_renting;
+        delete cleanFeature.is_renting;
+        cleanFeature.properties.ebikesAvailable = feature.num_ebikes_available;
+        delete cleanFeature.num_ebikes_available;
+        cleanFeature.properties.docksAvailable = feature.num_docks_available;
+        delete cleanFeature.num_docks_available;
+        cleanFeature.properties.bikesAvailable = feature.num_bikes_available;
+        delete cleanFeature.num_bikes_available;
+        cleanFeature.properties.bikesDisabled = feature.num_bikes_disabled;
+        delete cleanFeature.num_bikes_disabled;
+        cleanFeature.properties.docksDisabled = feature.num_docks_disabled;
+        delete cleanFeature.num_docks_disabled;
+        return cleanFeature;
     });
     return {
         type: "FeatureCollection",
         properties: capitalBikeshare,
-        features: cleanedArray,
+        features: cleanFeatures,
     };
 }
 export { convertToGeoJSON, getCabiStationInformation, getCabiStationStatus, mergeCabiStationJSON, };
