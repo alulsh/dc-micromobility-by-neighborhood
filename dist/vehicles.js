@@ -37,7 +37,7 @@ function getVehicles(service) {
         let vehicleJSON;
         const response = yield fetch(service.url);
         const jsonData = yield response.json();
-        if (service.service === "Helbiz") {
+        if (service.name === "Helbiz") {
             vehicleJSON = filterVehicles(jsonData.data.bikes, "scooter");
         }
         else {

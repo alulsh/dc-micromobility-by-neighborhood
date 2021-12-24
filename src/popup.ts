@@ -17,7 +17,7 @@ function generatePointPopUpHTML(
 ) {
   let html;
 
-  if (service.service === "Capital Bikeshare") {
+  if (service.name === "Capital Bikeshare") {
     html = `<h4>${eventFeatures.properties.name}</h4>
             <p>
             ${eventFeatures.properties.bikesAvailable} bikes available<br/>
@@ -28,9 +28,9 @@ function generatePointPopUpHTML(
             </p>
           `;
   } else {
-    html = `<p>${checkIfDisabled(eventFeatures.properties)} ${
-      service.service
-    } ${eventFeatures.properties.vehicleType}</p>`;
+    html = `<p>${checkIfDisabled(eventFeatures.properties)} ${service.name} ${
+      eventFeatures.properties.vehicleType
+    }</p>`;
   }
 
   return html;
@@ -39,8 +39,7 @@ function generatePointPopUpHTML(
 function generatePolygonPopupHTML(service: any, eventFeatures: any) {
   let html = `<h4>${eventFeatures.properties.NBH_NAMES}</h4>`;
 
-  if (service.service === "Capital Bikeshare") {
-    console.log(eventFeatures);
+  if (service.name === "Capital Bikeshare") {
     const percentageAvailable = calculatePercentageAvailable(
       eventFeatures.state.totalBikesAvailable,
       eventFeatures.state.totalBikeCapacity
@@ -54,10 +53,10 @@ function generatePolygonPopupHTML(service: any, eventFeatures: any) {
       `;
   } else {
     html += `<p>${eventFeatures.state[service.featureStateName]} ${
-      service.service
+      service.name
     } ${service.vehicleType}</br>
     ${eventFeatures.state[service.featureStateDisabledName]} disabled ${
-      service.service
+      service.name
     } ${service.vehicleType} 
     </p>`;
   }
@@ -85,9 +84,7 @@ function getActiveService() {
   if (textContent) {
     const serviceName = extractServiceName(textContent);
 
-    activeService = services.filter(
-      (service) => service.service === serviceName
-    );
+    activeService = services.filter((service) => service.name === serviceName);
   }
 
   return activeService[0];

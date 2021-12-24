@@ -38,7 +38,7 @@ async function getVehicles(service: Service) {
   const response = await fetch(service.url);
   const jsonData = await response.json();
 
-  if (service.service === "Helbiz") {
+  if (service.name === "Helbiz") {
     vehicleJSON = filterVehicles(jsonData.data.bikes, "scooter");
   } else {
     vehicleJSON = jsonData.data.bikes;

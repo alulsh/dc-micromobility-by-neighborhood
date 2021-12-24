@@ -63,7 +63,7 @@ function createMenuItem(service: Service | CabiSubService) {
   const link = document.createElement("a");
   link.href = "#";
   link.id = service.polygonLayerId;
-  link.textContent = service.menuName;
+  link.textContent = service.menuText;
 
   if (service.default) {
     link.className = "active";

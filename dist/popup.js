@@ -10,7 +10,7 @@ function checkIfDisabled(properties) {
 }
 function generatePointPopUpHTML(service, eventFeatures) {
     let html;
-    if (service.service === "Capital Bikeshare") {
+    if (service.name === "Capital Bikeshare") {
         html = `<h4>${eventFeatures.properties.name}</h4>
             <p>
             ${eventFeatures.properties.bikesAvailable} bikes available<br/>
@@ -22,14 +22,13 @@ function generatePointPopUpHTML(service, eventFeatures) {
           `;
     }
     else {
-        html = `<p>${checkIfDisabled(eventFeatures.properties)} ${service.service} ${eventFeatures.properties.vehicleType}</p>`;
+        html = `<p>${checkIfDisabled(eventFeatures.properties)} ${service.name} ${eventFeatures.properties.vehicleType}</p>`;
     }
     return html;
 }
 function generatePolygonPopupHTML(service, eventFeatures) {
     let html = `<h4>${eventFeatures.properties.NBH_NAMES}</h4>`;
-    if (service.service === "Capital Bikeshare") {
-        console.log(eventFeatures);
+    if (service.name === "Capital Bikeshare") {
         const percentageAvailable = calculatePercentageAvailable(eventFeatures.state.totalBikesAvailable, eventFeatures.state.totalBikeCapacity);
         html += `
       <p>
@@ -40,8 +39,8 @@ function generatePolygonPopupHTML(service, eventFeatures) {
       `;
     }
     else {
-        html += `<p>${eventFeatures.state[service.featureStateName]} ${service.service} ${service.vehicleType}</br>
-    ${eventFeatures.state[service.featureStateDisabledName]} disabled ${service.service} ${service.vehicleType} 
+        html += `<p>${eventFeatures.state[service.featureStateName]} ${service.name} ${service.vehicleType}</br>
+    ${eventFeatures.state[service.featureStateDisabledName]} disabled ${service.name} ${service.vehicleType} 
     </p>`;
     }
     return html;
@@ -63,7 +62,7 @@ function getActiveService() {
     const { textContent } = activeElements[0];
     if (textContent) {
         const serviceName = extractServiceName(textContent);
-        activeService = services.filter((service) => service.service === serviceName);
+        activeService = services.filter((service) => service.name === serviceName);
     }
     return activeService[0];
 }

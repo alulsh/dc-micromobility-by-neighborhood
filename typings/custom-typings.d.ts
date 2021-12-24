@@ -21,8 +21,8 @@ declare module "services" {
 
   export interface Service {
     default: boolean;
-    service: string;
-    menuName: string;
+    name: string;
+    menuText: string;
     url: string;
     vehicleType: string;
     sourceId: string;
@@ -36,7 +36,7 @@ declare module "services" {
   }
 
   export interface CabiService {
-    service: string;
+    name: string;
     vehicleType: string;
     sourceId: string;
     pointLayerId: string;
@@ -48,8 +48,8 @@ declare module "services" {
 
   export interface CabiSubService {
     default: boolean;
-    service: string;
-    menuName: string;
+    name: string;
+    menuText: string;
     vehicleType: string;
     polygonLayerId: string;
     pointLayerId: string;
