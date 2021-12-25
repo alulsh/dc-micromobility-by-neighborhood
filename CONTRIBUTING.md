@@ -2,7 +2,7 @@
 
 ## Issues
 
-Please [create a new issue](https://github.com/alulsh/dc-bikeshare-by-neighborhood/issues/new) to report any bugs, data quality issues, or missing DC bikeshare services.
+Please [create a new issue](https://github.com/alulsh/dc-micromobility-by-neighborhood/issues/new) to report any bugs, data quality issues, or missing DC micromobility services.
 
 ## Development
 
@@ -17,8 +17,8 @@ If you're only viewing this project locally, you do not need to install Node.js.
 To clone this repo, switch to the latest LTS version of Node via [nvm](https://github.com/nvm-sh/nvm), and install development dependencies:
 
 ```sh
-git clone git@github.com:alulsh/dc-bikeshare-by-neighborhood.git
-cd dc-bikeshare-by-neighborhood
+git clone git@github.com:alulsh/dc-micromobility-by-neighborhood.git
+cd dc-micromobility-by-neighborhood
 nvm use
 npm install
 ```
@@ -38,7 +38,7 @@ This project uses the following production dependencies:
 
 ## Tests
 
-Run `npm test` to run tests locally. This project runs tests automatically on every commit using [GitHub Workflows](https://github.com/alulsh/dc-bikeshare-by-neighborhood/actions).
+Run `npm test` to run tests locally. This project runs tests automatically on every commit using [GitHub Workflows](https://github.com/alulsh/dc-micromobility-by-neighborhood/actions).
 
 This project uses [Jest](https://jestjs.io/) for tests. Since this project loads [Mapbox GL JS](https://docs.mapbox.com/mapbox-gl-js/api/) through the Mapbox CDN instead of bundling an npm package, the Jest tests mock Mapbox GL JS using the [global object](https://jestjs.io/docs/en/configuration#globals-object) in the test [set up file](https://jestjs.io/docs/en/configuration#setupfiles-array).
 
@@ -55,6 +55,6 @@ If you're using [Visual Studio Code](https://code.visualstudio.com/), you can ad
 
 ## Deployment
 
-This project is hosted on GitHub Pages using the `main` branch. You can view the GitHub pages deployment log at https://github.com/alulsh/dc-bikeshare-by-neighborhood/deployments.
+This project is hosted on GitHub Pages using the `main` branch. You can view the GitHub pages deployment log at https://github.com/alulsh/dc-micromobility-by-neighborhood/deployments.
 
-You can view the live website for this project at https://www.alexandraulsh.com/dc-bikeshare-by-neighborhood/.
+You can view the live website for this project at https://www.alexandraulsh.com/dc-micromobility-by-neighborhood/.
