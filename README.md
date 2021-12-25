@@ -1,31 +1,38 @@
-# DC Bikeshare Bikes by Neighborhood
+# DC Micromobility by Neighborhood
 
-https://www.alexandraulsh.com/dc-bikeshare-by-neighborhood
+https://www.alexandraulsh.com/dc-micromobility-by-neighborhood/
 
-Explore Washington, DC bikeshare bikes by [DC neighborhood clusters](http://opendata.dc.gov/datasets/neighborhood-clusters).
+Explore Washington, DC micromobility services by [DC neighborhood clusters](http://opendata.dc.gov/datasets/neighborhood-clusters).
 
-![Screenshot of dc-bikeshare-by-neighborhood map](assets/map-full.png)
+![dc-micromobility-by-neighborhood map](assets/map-full.png)
 
 ## Features
 
-### Toggle data sources
+### Toggle micromobility services
 
-![Toggle bikeshare data sources](assets/toggle.png)
+Toggle different micromobility service providers using the left-hand menu.
 
-Toggle between different bikeshare data sources using the left-hand menu.
+![Toggle micromobility services](assets/toggle.png)
 
 ### Mouseover neighborhoods
 
-![Mouseover a DC neighborhood](assets/mouseover-neighborhood.png)
+Mouse over a DC neighborhood to see micromobility availability.
 
-Mouse over a DC neighborhood polygon to see the percentage of available bikes, total number of available bikes, and total planned bikeshare capacity for that neighborhood.
+![Mouseover a DC neighborhood for Capital Bikeshare availability](assets/mouseover-neighborhood-cabi.png)
 
-### Mouseover bikeshare stations
+![Mouseover a DC neighborhood for Helbiz scooter availability](assets/mouseover-neighborhood-helbiz.png)
 
-Zoom in to see black dots for the bikeshare stations in each neighborhood. Mouseover a station to see the station name, available bikes and docks, disabled bikes and docks, and station capacity.
+### Capital Bikeshare stations
 
-![Mouseover a bikeshare station](assets/mouseover-station.png)
+When viewing Capital Bikeshare layers, zoom in to see points for bikeshare stations. Mouseover a station to see the station name, available bikes and docks, disabled bikes and docks, and station capacity.
 
+![Capital Bikeshare station information](assets/mouseover-station.png)
+
+### Scooters
+
+When viewing scooter layers, zoom in to see points for scooters. Disabled scooters are gray.
+
+![Scooter information](assets/scooter-points.png)
 ## Data sources
 
 ### DC neighborhood clusters
@@ -34,7 +41,7 @@ DC neighborhood clusters come from the District of Columbia's Office of the Chie
 
 ### Current bikeshare services in DC
 
-DDOT maintains a list of active public dockless micromobility (including bikeshare and scooter) APIs in https://ddot.dc.gov/page/dockless-api.
+The District Department of Transportation (DDOT) [maintains a list](https://ddot.dc.gov/page/dockless-api) of active public dockless micromobility (including bikeshare and scooter) APIs in Washington, DC.
 
 #### Capital Bikeshare
 
