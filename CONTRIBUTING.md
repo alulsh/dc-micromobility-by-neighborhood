@@ -36,6 +36,13 @@ This project uses the following production dependencies:
 - [Mapbox GL JS](https://docs.mapbox.com/mapbox-gl-js/api/) for maps
 - [Turf](https://github.com/Turfjs/turf)'s [`pointsWithinPolygon`](http://turfjs.org/docs/#pointsWithinPolygon) function to calculate the number of bikes (points) per DC neighborhood cluster (polygon)
 
+
+## Types
+
+This project uses TypeScript for types and uses [@types/mapbox-gl](https://www.npmjs.com/package/@types/mapbox-gl), [@types/geojson](https://www.npmjs.com/package/@types/geojson), and custom type declarations in `typings/custom-typings.d.ts`.
+
+This project does not the built-in type definitions in the [@turf/turf](https://www.npmjs.com/package/@turf/turf) module. Instead, it uses manually copied [type declarations from the Turf module source code](https://github.com/Turfjs/turf/blob/cd719cde909db79340d390de39d2c6afe3173062/packages/turf-points-within-polygon/index.d.ts#L14-L21), stored in `typings/turf-typings.d.ts`. This enables this project to load the Turf library from a CDN and use the Turf global variable with TypeScript. This system avoids needing to set up a module bundling or transpilation system just to use TypeScript with Turf.
+
 ## Tests
 
 Run `npm test` to run tests locally. This project runs tests automatically on every commit using [GitHub Workflows](https://github.com/alulsh/dc-micromobility-by-neighborhood/actions).
