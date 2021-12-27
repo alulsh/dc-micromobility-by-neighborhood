@@ -39,7 +39,7 @@ When viewing scooter layers, zoom in to see points for scooters. Disabled scoote
 
 DC neighborhood clusters come from the District of Columbia's Office of the Chief Technology Officer's [DC Open Data Portal](http://opendata.dc.gov/datasets/neighborhood-clusters). The government of DC does not provide official neighborhood polygons. Instead, they provide neighborhood cluster polygons.
 
-### Current bikeshare services in DC
+### Current micromobility services in DC
 
 The District Department of Transportation (DDOT) [maintains a list](https://ddot.dc.gov/page/dockless-api) of active public dockless micromobility (including bikeshare and scooter) APIs in Washington, DC.
 
@@ -47,19 +47,31 @@ The District Department of Transportation (DDOT) [maintains a list](https://ddot
 
 Capital Bikeshare provides a [General Bikeshare Feed Specification](https://gbfs.capitalbikeshare.com/gbfs/gbfs.json) (GBFS) JSON API. Station capacity information comes from the [station information](https://gbfs.capitalbikeshare.com/gbfs/en/station_information.json) endpoint, while live station availability information comes from the [station status](https://gbfs.capitalbikeshare.com/gbfs/en/station_status.json) endpoint.
 
-#### JUMP/Lime
+#### Helbiz
 
-In May 2020, [Lime acquired Jump e-bikes from Uber](https://techcrunch.com/2020/05/07/uber-leads-170-million-lime-investment-offloads-jump-to-lime/). You can access live Jump e-bike data at https://data.lime.bike/api/partners/v1/gbfs/washington_dc/free_bike_status.json. Unfortunately, [this API does not allow cross-origin resource sharing](https://github.com/alulsh/dc-bikeshare-by-neighborhood/issues/7), so you can't use it in client-side JavaScript.
-
-### Historical bikeshare services in DC
-
-Most dockless pedal bike operations left Washington, DC, in [summer 2018](https://ggwash.org/view/69307/who-killed-dcs-dockless-pedal-bicycles).
+Helbiz operates electric scooters and provides a [GBFS](https://api.helbiz.com/admin/reporting/washington/gbfs/gbfs.json) API endpoint.
 
 #### Spin
 
-Spin ended its dockless bike program and switched to electric scooters in [August 2018](https://dc.curbed.com/2018/8/20/17761122/dc-dockless-bikes-scooters-transportation-spin-pilot).
+Spin operates electric scooters and provides a [GBFS](https://gbfs.spin.pm/api/gbfs/v1/washington_dc/free_bike_status) API endpoint. In [August 2018](https://dc.curbed.com/2018/8/20/17761122/dc-dockless-bikes-scooters-transportation-spin-pilot), Spin ended its dockless bike program and switched to electric scooters.
 
-This February 6th, 2018, tweet from [DDOT](https://twitter.com/DDOTDC/status/960885112731832320) mentioned the former Spin API information was available at https://web.spin.pm/api/gbfs/v1/gbfs in GBFS format.
+#### Current services without CORS
+
+These micromobility services currently operate in DC but do not allow cross-origin resource sharing (CORS) on their API endpoints despite being listed publicly on [DDOT's website](https://ddot.dc.gov/page/dockless-api). While you can view these APIs anytime in a web browser or via a curl request, you can't use these APIs in client-side JavaScript.
+
+##### JUMP/Lime
+
+In May 2020, [Lime acquired Jump e-bikes from Uber](https://techcrunch.com/2020/05/07/uber-leads-170-million-lime-investment-offloads-jump-to-lime/). You can access live Jump e-bike data at https://data.lime.bike/api/partners/v1/gbfs/washington_dc/free_bike_status.json. Unfortunately, [this API does not allow cross-origin resource sharing](https://github.com/alulsh/dc-micromobility-by-neighborhood/issues/7), so you can't use this API in other applications.
+
+##### Lyft
+
+DDOT lists https://s3.amazonaws.com/lyft-lastmile-production-iad/lbs/dca/free_bike_status.json as a public API endpoint for Lyft scooters on its [dockless API page](https://ddot.dc.gov/page/dockless-api). While you can view the API freely in a web browser or via a curl request, since [this endpoint does not allow CORS](https://github.com/alulsh/dc-micromobility-by-neighborhood/issues/14), you can't use it in client-side JavaScript applications.
+
+### Historical micromobility services in DC
+
+#### Razor
+
+While Razor is still listed on DDOT's [dockless API page](https://ddot.dc.gov/page/dockless-api), it [stopped operating in DC in March 2020](https://www.washingtonpost.com/transportation/2020/02/27/lime-bird-bolt-razor-lose-appeals-operate-scooters-dc/).
 
 #### Mobike
 
