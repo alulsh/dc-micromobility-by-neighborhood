@@ -1,4 +1,4 @@
-import {
+import type {
   Position,
   BBox,
   Feature,
@@ -8,7 +8,7 @@ import {
   MultiPolygon,
   FeatureCollection,
 } from "geojson";
-import { FeatureCollectionWithProperties } from "../src/map";
+import type { FeatureCollectionWithProperties } from "../src/map";
 
 export as namespace turf;
 
@@ -27,6 +27,8 @@ export declare function polygon<P = Properties>(
     id?: Id;
   }
 ): Feature<Polygon, P>;
+
+// copied from https://github.com/Turfjs/turf/blob/cd719cde909db79340d390de39d2c6afe3173062/packages/turf-points-within-polygon/index.d.ts#L14-L21
 
 export declare function pointsWithinPolygon<
   F extends Point | MultiPoint,
