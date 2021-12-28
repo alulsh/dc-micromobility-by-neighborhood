@@ -33,6 +33,7 @@ When viewing Capital Bikeshare layers, zoom in to see points for bikeshare stati
 When viewing scooter layers, zoom in to see points for scooters. Disabled scooters are gray.
 
 ![Scooter information](assets/scooter-points.png)
+
 ## Data sources
 
 ### DC neighborhood clusters
@@ -66,6 +67,10 @@ In May 2020, [Lime acquired Jump e-bikes from Uber](https://techcrunch.com/2020/
 ##### Lyft
 
 DDOT lists https://s3.amazonaws.com/lyft-lastmile-production-iad/lbs/dca/free_bike_status.json as a public API endpoint for Lyft scooters on its [dockless API page](https://ddot.dc.gov/page/dockless-api). While you can view the API freely in a web browser or via a curl request, since [this endpoint does not allow CORS](https://github.com/alulsh/dc-micromobility-by-neighborhood/issues/14), you can't use it in client-side JavaScript applications.
+
+##### Bird
+
+DDOT lists https://gbfs.bird.co/dc as a public API endpoint for Bird scooters on its [dockless API page](https://ddot.dc.gov/page/dockless-api). Unfortunately, this API endpoint suffers from [intermittent CORS errors](https://github.com/alulsh/dc-micromobility-by-neighborhood/issues/15).
 
 ### Historical micromobility services in DC
 
