@@ -87,3 +87,7 @@ Mobike left the DC market in [July 2018](https://www.washingtonpost.com/news/dr-
 Ofo left the DC market in [July 2018](https://www.washingtonpost.com/news/dr-gridlock/wp/2018/07/24/dockless-bike-share-company-ofo-is-the-first-to-pull-out-of-d-c/). Ofo did not provide an API that could be securely used with client-side JavaScript. [Their main API required authentication with an OTP code and authorization token](https://github.com/ubahnverleih/WoBike/blob/master/Ofo.md).
 
 [DDOT DC provided an API endpoint](https://twitter.com/DDOTDC/status/963143987216314368) but it was HTTP only. It also could not be used securely client-side.
+
+## Privacy
+
+All of the APIs used in this project are publicly available and listed on DDOT's [dockless API page](https://ddot.dc.gov/page/dockless-api). While these APIs provide anonymized data, they still include unique identifiers for each vehicle. This project goes one step further and removes unique identifiers from vehicle data.
