@@ -36,7 +36,6 @@ This project uses the following production dependencies:
 - [Mapbox GL JS](https://docs.mapbox.com/mapbox-gl-js/api/) for maps
 - [Turf](https://github.com/Turfjs/turf)'s [`pointsWithinPolygon`](http://turfjs.org/docs/#pointsWithinPolygon) function to calculate the number of bikes (points) per DC neighborhood cluster (polygon)
 
-
 ## Types
 
 This project uses TypeScript for types and uses [@types/mapbox-gl](https://www.npmjs.com/package/@types/mapbox-gl), [@types/geojson](https://www.npmjs.com/package/@types/geojson), and custom type declarations in `typings/custom-typings.d.ts`.
@@ -65,3 +64,7 @@ If you're using [Visual Studio Code](https://code.visualstudio.com/), you can ad
 This project is hosted on GitHub Pages using the `main` branch. You can view the GitHub pages deployment log at https://github.com/alulsh/dc-micromobility-by-neighborhood/deployments.
 
 You can view the live website for this project at https://www.alexandraulsh.com/dc-micromobility-by-neighborhood/.
+
+### URL redirect
+
+The old repository name for this project was dc-bikeshare-by-neighborhood and the map was hosted at https://www.alexandraulsh.com/dc-bikeshare-by-neighborhood/. While GitHub repos automatically redirect after name changes, GitHub pages do not automatically redirect. While [jekyll-redirect-from](https://github.com/jekyll/jekyll-redirect-from) can handle redirects, this project uses client-side redirection techniques that can get your website falsely flagged as a phishing attack. As a result, the [dc-bikeshare-by-neighborhood.md file in alulsh.github.io](https://github.com/alulsh/alulsh.github.io/commit/78c1077c1660c9ebc41d4c871facdac7188f3857) serves as a manual redirect for this project.
